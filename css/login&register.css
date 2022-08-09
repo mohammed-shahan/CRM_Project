@@ -9,6 +9,12 @@ body{
     width: 50%;
 }
 
+#imgcontainer img{
+    height: 250px;
+    margin-left: 450px;
+    margin-top:250px
+}
+
 #logotext {
     font-size: 40px;
     margin-left: 2%;
@@ -29,8 +35,13 @@ body{
 #login h2{
     margin-top: 5px;
     font-size: 28px;
-    margin-bottom: 60px;
+    margin-bottom: 50px;
     font-weight: bold;
+}
+
+.usertype{
+    margin-left: 100px;
+    margin-bottom: 20px;
 }
 
 #user{

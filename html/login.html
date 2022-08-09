@@ -6,13 +6,17 @@
 <body>
     <div id="imgcontainer">
         <h1 id="logotext">CRM</h1>
-        <img src="" alt="">
+        <img src="../images/loginimg.png" alt="Login image">
     </div>
     <div id="login">
         <h3>Welcome back</h3>
         <h2>Login to your account</h2>
 
         <form action="#">
+            <input type="radio" class="usertype" name="usertype">
+            <label for="user">User</label>
+            <input type="radio" class="admintype" name="usertype">
+            <label for="admin">Admin</label>
             <p id="user">Username</p>
             <input type="text" id="username" placeholder="username">
             <p id="pass">Password</p>
