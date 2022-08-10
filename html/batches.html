@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Batches</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <style>
         #course-detail .details {
             width: 50%;
@@ -22,40 +24,42 @@
     <header>
         <span class="title">CRM</span>
     </header>
-    <div class="nav">
-        <div class="profile">
-            <img src="../images/profile.webp" alt="Profile Picture">
-            <div>
-                <span class="name">Mohammed Shahan</span>
-                <span class="email">admin@transporter.xyz</span>
+    <div class="row">
+        <div class="nav col s2">
+            <div class="profile">
+                <img src="../images/profile.webp" alt="Profile Picture">
+                <div>
+                    <span class="name">Mohammed Shahan</span>
+                    <span class="email">admin@transporter.xyz</span>
+                </div>
             </div>
+            <ul class="menu">
+                <li><a href="dash1.html">Dashboard</a></li>
+                <li><a href="courselist.html">Course List</a></li>
+                <li><a href="qualificationlist.html">Qualifications</a></li>
+                <li><a href="#" class="active">Batches</a></li>
+                <li><a href="#">Order</a></li>
+                <li><a href="#">Shop Order</a></li>
+                <li><a href="#">Travel</a></li>
+                <li><a href="#">Shops</a></li>
+                <li><a href="#">Broadcast</a></li>
+                <li><a href="#">Transactions</a></li>
+                <li><a href="#">Report</a></li>
+                <li><a href="#">Logs</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
         </div>
-        <ul class="menu">
-            <li><a href="dash1.html">Dashboard</a></li>
-            <li><a href="courselist.html">Course List</a></li>
-            <li><a href="qualificationlist.html">Qualifications</a></li>
-            <li><a href="#" class="active">Batches</a></li>
-            <li><a href="#">Order</a></li>
-            <li><a href="#">Shop Order</a></li>
-            <li><a href="#">Travel</a></li>
-            <li><a href="#">Shops</a></li>
-            <li><a href="#">Broadcast</a></li>
-            <li><a href="#">Transactions</a></li>
-            <li><a href="#">Report</a></li>
-            <li><a href="#">Logs</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <div class="card" id="batch-detail" style="display: none;"></div>
-        <div class="card">
-            <table id="batches">
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                </tr>
-            </table>
+        <div class="content col s10 offset-s2">
+            <div class="card" id="batch-detail" style="display: none;"></div>
+            <div class="card">
+                <table id="batches">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
     

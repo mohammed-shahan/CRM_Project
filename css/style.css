@@ -20,16 +20,8 @@ header .title {
 }
 
 
-
-.card{
-    padding: 10px;
-    margin: 5px 10px;
-    box-shadow: 0 0  5px 1px gray;
-    border-radius: 5px;
-}
-
 .nav {
-    width: 220px;
+    /* width: 220px; */
     height: 100%;
     position: fixed;
     border-right: 2px solid;
@@ -83,22 +75,6 @@ header .title {
 
 .content {
     margin-left: 220px;
-}
-
-.content table tr td {
-    padding: 8px 10px;
-}
-
-.content table tr th{
-    color: gray;
-}
-
-.content table tr td{
-    color: gray;
-}
-
-.content table tr td:first-child{
-    color: black;
 }
 
 .content table tr:hover{
