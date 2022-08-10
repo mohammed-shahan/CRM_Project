@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        #course-detail .details {
+            width: 50%;
+            display: inline-block;
+        }
+
+        #course-detail .desc {
+            width: 50%;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="title">CRM</span>
+    </header>
+    <div class="nav">
+        <div class="profile">
+            <img src="../images/profile.webp" alt="Profile Picture">
+            <div>
+                <span class="name">Mohammed Shahan</span>
+                <span class="email">admin@transporter.xyz</span>
+            </div>
+        </div>
+        <ul class="menu">
+            <li><a href="dash1.html">Dashboard</a></li>
+            <li><a href="#" class="active">Course List</a></li>
+            <li><a href="qualificationlist.html">Qualifications</a></li>
+            <li><a href="batches.html">Batches</a></li>
+            <li><a href="#">Order</a></li>
+            <li><a href="#">Shop Order</a></li>
+            <li><a href="#">Travel</a></li>
+            <li><a href="#">Shops</a></li>
+            <li><a href="#">Broadcast</a></li>
+            <li><a href="#">Transactions</a></li>
+            <li><a href="#">Report</a></li>
+            <li><a href="#">Logs</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="card" id="course-detail" style="display: none;"></div>
+        <div class="card">
+            <table id="courselist">
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Trainer</th>
+                    <th>Start Date</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+
+    <script src="../js/courselist.js"></script>
+</body>
+</html>
