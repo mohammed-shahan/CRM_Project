@@ -2,30 +2,49 @@
 <html lang="en">
 <head><title>CRM - Login</title>
     <link rel="stylesheet" href="../css/login&register.css">
+
+    <script src="../js/login.js"></script>
+
 </head>
 <body>
     <div id="imgcontainer">
         <h1 id="logotext">CRM</h1>
+
+        <img src="../images/loginimg.png" alt="Login image">
+
         <img src="" alt="">
+
     </div>
     <div id="login">
         <h3>Welcome back</h3>
         <h2>Login to your account</h2>
 
         <form action="#">
-            <p id="user">Username</p>
+
+            <input type="radio" class="usertype" name="usertype">
+            <label for="user">User</label>
+            <input type="radio" class="admintype" name="usertype">
+            <label for="admin">Admin</label>
+            <p class="fieldlabel">Username</p>
             <input type="text" id="username" placeholder="username">
-            <p id="pass">Password</p>
-            <input type="text" id="password" placeholder="password">
+            <p class="fieldlabel">Password</p>
+            <input type="password" id="password" placeholder="password">
+
             <br>
             <input type="checkbox" id="remember" name="Rem_me" value="Remember me">
             <label id="rem" for="remember">Remember me</label>
             <a href="http://google.com">Forgot password?</a><br>
-            <input type="submit" value="Sign In" id="submit">
+
+            <input type="submit" value="Sign In" id="submit" onclick="validate()">
         </form>
 
         <p id="no_acc">Have no account yet?</p>
-        <input type="submit" id="register" value="Register">
+        <a href="register.html"><input type="button" id="register" value="Register Now"></a>
+
+           
+        </form>
+
+       
     </div>
 </body>
 </html>
