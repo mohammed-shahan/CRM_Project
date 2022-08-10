@@ -64,35 +64,39 @@ var courses = [
     },
 ]
 
-const table = document.getElementById('courselist')
+function listCourses() {
+    const table = document.getElementById('courselist')
+    table.innerHTML = ''
+    
+    courses.forEach((course, index) => {
+        var row = document.createElement('tr')
+        table.appendChild(row)
+        var code = row.insertCell(0);
+        var name = row.insertCell(1);
+        var trainer = row.insertCell(2);
+        var date = row.insertCell(3);
+    
+        row.id = index;
+        code.innerHTML = course.code;
+        name.innerHTML = course.name;
+        trainer.innerHTML = course.trainer;
+        date.innerHTML = course.startDate;
+    
+        row.addEventListener('click', viewCourse)
+    });
+}
 
-var count = 1;
-courses.forEach((course, index) => {
-    var row = table.insertRow(count++);
-    var code = row.insertCell(0);
-    var name = row.insertCell(1);
-    var trainer = row.insertCell(2);
-    var date = row.insertCell(3);
-
-    row.id = index;
-    code.innerHTML = course.code;
-    name.innerHTML = course.name;
-    trainer.innerHTML = course.trainer;
-    date.innerHTML = course.startDate;
-
-    row.addEventListener('click', viewCourse)
-});
 
 function viewCourse(event) {
     courseDetail = document.getElementById('course-detail')
     courseDetail.innerHTML = ''
 
     var courseDet = document.createElement('div')
-    courseDet.className = 'details'
+    courseDet.className = 'col s4'
     
     var courseDesc = document.createElement('div')
-    courseDesc.className = 'desc'
-    var dect = document.createElement('h2')
+    courseDesc.className = 'col s8'
+    var dect = document.createElement('h4')
     dect.innerHTML = 'Description'
     courseDesc.appendChild(dect)
     courseDesc.innerHTML += courses[event.target.parentElement.id].description;
@@ -100,7 +104,7 @@ function viewCourse(event) {
     courseDetail.appendChild(courseDet)
     courseDetail.appendChild(courseDesc)
     
-    var heading = document.createElement('h1')
+    var heading = document.createElement('h3')
     heading.innerHTML = courses[event.target.parentElement.id].name;
     courseDet.appendChild(heading)
 
@@ -122,3 +126,5 @@ function viewCourse(event) {
 
     courseDetail.style.display = 'block';
 }
+
+listCourses()
