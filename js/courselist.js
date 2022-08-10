@@ -121,5 +121,4 @@ function viewCourse(event) {
     courseDet.appendChild(amount)
 
     courseDetail.style.display = 'block';
-    console.log(event.target.parentElement.id);
 }
