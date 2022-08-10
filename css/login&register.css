@@ -9,11 +9,14 @@ body{
     width: 50%;
 }
 
+
 #imgcontainer img{
     height: 250px;
     margin-left: 450px;
     margin-top:250px
 }
+
+
 
 #logotext {
     font-size: 40px;
@@ -45,6 +48,16 @@ body{
 }
 
 .fieldlabel{
+
+#login h2{
+    margin-top: 5px;
+    font-size: 28px;
+    margin-bottom: 60px;
+    font-weight: bold;
+}
+
+#user{
+
     margin-bottom: 5px;
     font-size: 15px;
 }
@@ -56,6 +69,13 @@ body{
     padding-left: 10px;
 }
 
+
+#pass{
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+
 #password{
     width: 100%;
     height: 30px;
@@ -66,6 +86,8 @@ body{
 #rem{
     font-size: 15px;
 }
+
+
 
 
 
@@ -87,7 +109,11 @@ body{
     border-radius: 5px;
 }
 
+
 #submit:hover, #register:hover{
+
+#submit:hover{
+
     cursor: pointer;
 }
 
@@ -95,7 +121,9 @@ body{
     margin-top: 100px;
     margin-left: 110px;
     font-size: 14px;
+
     margin-bottom: 8px;
+
 }
 
 #register{
@@ -107,6 +135,7 @@ body{
     border-color: rgb(55, 58, 212);
     border-radius: 5px;
     background-color: #ffffff;
+
 }
 
 
@@ -142,5 +171,8 @@ body{
     height: 30px;
     margin-bottom: 20px;
     padding-left: 10px;
+}
+
+
 }
 
