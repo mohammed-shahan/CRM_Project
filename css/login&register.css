@@ -47,7 +47,7 @@ body{
     margin-bottom: 20px;
 }
 
-.fieldlabel{
+
 
 #login h2{
     margin-top: 5px;
@@ -110,12 +110,11 @@ body{
 }
 
 
-#submit:hover, #register:hover{
-
-#submit:hover{
+#register:hover,#submit:hover{
 
     cursor: pointer;
 }
+
 
 #no_acc{
     margin-top: 100px;
@@ -171,8 +170,5 @@ body{
     height: 30px;
     margin-bottom: 20px;
     padding-left: 10px;
-}
-
-
 }
 
