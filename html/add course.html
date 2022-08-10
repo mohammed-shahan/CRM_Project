@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/addcourse.css">
 </head>
 <body>
     <header>
@@ -32,23 +33,51 @@
             <li ><a href="#">Logout</a></li>
         </ul>
     </div>
-    <div class="content">
+    
             <div class="container">
+                
                 <form id="form" class="form">
-                    <h2>Registration Form</h2>
+                    <h2>Add Course</h2>
+                    <div class="innerformleft" >
                     <div class="form-control">
-                        <label for="username">Full Name</label>
-                        <input type="text" id="username" placeholder="Full Name">
-                        <small>Error Message</small>
+                        <label for="coursename">Course Name</label>
+                        <input type="text" id="coursename" placeholder="Course Name">
+                        
                     </div>
                     <div class="form-control">
-                        <label for="email">Email</label>
-                        <input type="text" id="email" placeholder="E-mail">
-                        <small>Error Message</small>
+                        <label for="courseid">Course Id</label>
+                        <input type="text" id="courseid" placeholder="Course ID">
+                        
                     </div>
+                    <div class="form-control">
+                        <label for="date">Start Date</label>
+                        <input type="date" id="date" placeholder="Start date">
+                        
+                    </div>
+                    </div>
+                    <div class="innerformright">
+                    <div class="form-control">
+                        <label for="trainername">Trainer</label>
+                        <input type="text" id="trainername" placeholder="Trainer Name">
+                       
+                    </div>
+                    <div class="form-control">
+                        <label for="duration">Duration in days</label>
+                        <input type="text" id="duration" placeholder="E-mail">
+                        
+                    </div>
+
+                    <div class="form-control">
+                        <label for="amount">Course Price</label>
+                        <input type="number" id="amount" placeholder="Course Price" step="100">
+                       
+                    </div>
+                    </div>
+                    <button>Add Course</button>
+
                 </form>
             
         </div>
-    </div>
+    
 </body>
 </html>
