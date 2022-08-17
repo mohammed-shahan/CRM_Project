@@ -19,6 +19,11 @@ const navitems = [
         'label': 'Batches',
         'url': 'batches.html',
     },
+    {
+        'name': 'categories',
+        'label': 'Categories',
+        'url': 'categories.html',
+    },
 ]
 
 const navheader = '<li><div class="user-view">\
@@ -30,10 +35,11 @@ const navheader = '<li><div class="user-view">\
 <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>\
 </div></li>'
 
+
+// navdrawer options
 const options = {
     'edge': 'left'
 }
-
 
 
 // render navdrawer elements
