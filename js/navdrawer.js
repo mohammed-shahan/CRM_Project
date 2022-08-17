@@ -19,6 +19,11 @@ const navitems = [
         'label': 'Batches',
         'url': 'batches.html',
     },
+    {
+        'name': 'categories',
+        'label': 'Categories',
+        'url': 'categories.html',
+    },
 ]
 
 const navheader = '<li><div class="user-view">\
