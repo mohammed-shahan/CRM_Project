@@ -48,7 +48,7 @@ navitems.forEach(item => {
     
     if (page === item.name){
         a.href = '#'
-        a.className = 'active'
+        li.className = 'active indigo accent-1'
     }else{
         a.href = item.url
     }
