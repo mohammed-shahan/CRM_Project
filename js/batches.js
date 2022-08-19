@@ -27,14 +27,17 @@ batches.forEach((b, index) => {
 function viewBatches(event) {
     batchDetail = document.getElementById('batch-detail')
     batchDetail.innerHTML = ''
+    batchDetailContent = document.createElement('div')
+    batchDetailContent.className = 'card-content'
+    batchDetail.appendChild(batchDetailContent)
 
     var code = document.createElement('div')
     code.innerHTML = 'Code: ' + batches[event.target.parentElement.id].code
-    batchDetail.appendChild(code)
+    batchDetailContent.appendChild(code)
 
     var name = document.createElement('div')
     name.innerHTML = 'Name: ' + batches[event.target.parentElement.id].name
-    batchDetail.appendChild(name)
+    batchDetailContent.appendChild(name)
 
     batchDetail.style.display = 'block';
 }
