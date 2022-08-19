@@ -1,35 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><title>CRM - Login</title>
-    <link rel="stylesheet" href="../css/login&register.css">
-    <script src="../js/login.js"></script>
-</head>
-<body>
-    <div id="imgcontainer">
-        <h1 id="logotext">CRM</h1>
-        <img src="../images/loginimg.png" alt="Login image">
-    </div>
-    <div id="login">
-        <h3>Welcome back</h3>
-        <h2>Login to your account</h2>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
 
-        <form action="#">
-            <input type="radio" class="usertype" name="usertype">
-            <label for="user">User</label>
-            <input type="radio" class="admintype" name="usertype">
-            <label for="admin">Admin</label>
-            <p class="fieldlabel">Username</p>
-            <input type="text" id="username" placeholder="username">
-            <p class="fieldlabel">Password</p>
-            <input type="password" id="password" placeholder="password">
-            <br>
-            <input type="checkbox" id="remember" name="Rem_me" value="Remember me">
-            <label id="rem" for="remember">Remember me</label>
-            <a href="http://google.com">Forgot password?</a><br>
-            <input type="submit" value="Sign In" id="submit" onclick="validate()">
+  <body> 
+    <img src="../images/crm.jpg" alt="logo-img" style="width: 100px; height: auto; margin-left: 2%;">
+    <h4 class="login-msg" align="middle" style="color: indigo; margin-top: 5%;">Login to your account</h4>
+    <div class="container" align="middle" style="margin-top: 3%;">
+      <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+        <form class="col s12" method="post">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="email" type="email" class="validate">
+              <label for="email">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="password" type="password" class="validate">
+              <label for="password">Password</label>
+            </div>
+            <label style='float: right;'>
+              <a class='pink-text' href='#!'><b>Forgot Password?</b></a>
+            </label>
+          </div>
+
+          <br />
+            <center>
+              <div class='row'>
+                <button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
+              </div>
+            </center>
         </form>
-        <p>Have no account yet?</p>
-        <a href="register.html"><input type="button" value="Register Now"></a>
+      </div>
     </div>
-</body>
+    <p align="middle"><a href="register.html">Create account</a></p>
+      
+  </body>
 </html>
