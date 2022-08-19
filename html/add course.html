@@ -6,78 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/addcourse.css">
+    
+
+<link rel="stylesheet" href="../css/addcourse.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+       
+    <script>
+        const page = 'dashboard'
+    </script>
 </head>
 <body>
-    <header>
-        <span class="title">CRM</span>
-    </header>
-    <div class="nav">
-        <div class="profile">
-            <img src="../images/profile.webp" alt="Profile Picture">
-            <div>
-                <span class="name">Mohammed Shahan</span>
-                <span class="email">admin@crm.xyz</span>
-            </div>
+    <!-- navbar -->
+    <nav>
+        <div class="nav-wrapper indigo darken-4">
+            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+            <a href="#" class="brand-logo">CRM</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#">Logout</a></li>
+            </ul>
         </div>
-        <ul class="menu">
-            <li><a href="#" class="active">Home</a></li>
-            <li><a href="#">Roles</a></li>
-            <li><a href="#">Users</a></li>
-            <li><a href="#">Courses</a></li>
-            <li><a href="#">Enquiries</a></li>
-            <li><a href="#">Course Categories</a></li>
-            <li><a href="#">Qualification</a></li>
-            <li><a href="#">Batches</a></li>
-            <li><a href="#">Settings</a></li>
-            <li ><a href="#">Logout</a></li>
-        </ul>
+    </nav>
+
+    <!-- navdrawer -->
+    <ul id="slide-out" class="sidenav"></ul>
+    <div class="container">
+                
+        <form id="form" class="form">
+            <h2>Add Course</h2>
+            <div class="innerformleft" >
+            <div class="form-control">
+                <label for="coursename">Course Name</label>
+                <input type="text" id="coursename" placeholder="Course Name">
+                
+            </div>
+            <div class="form-control">
+                <label for="courseid">Course Id</label>
+                <input type="text" id="courseid" placeholder="Course ID">
+                
+            </div>
+            <div class="form-control">
+                <label for="date">Start Date</label>
+                <input type="date" id="date" placeholder="Start date">
+                
+            </div>
+            </div>
+            <div class="innerformright">
+            <div class="form-control">
+                <label for="trainername">Trainer</label>
+                <input type="text" id="trainername" placeholder="Trainer Name">
+               
+            </div>
+            <div class="form-control">
+                <label for="duration">Duration in days</label>
+                <input type="text" id="duration" placeholder="E-mail">
+                
+            </div>
+    
+            <div class="form-control">
+                <label for="amount">Course Price</label>
+                <input type="number" id="amount" placeholder="Course Price" step="100">
+               
+            </div>
+            </div>
+            <button>Add Course</button>
+    
+        </form>
+    
     </div>
     
-            <div class="container">
-                
-                <form id="form" class="form">
-                    <h2>Add Course</h2>
-                    <div class="innerformleft" >
-                    <div class="form-control">
-                        <label for="coursename">Course Name</label>
-                        <input type="text" id="coursename" placeholder="Course Name">
-                        
-                    </div>
-                    <div class="form-control">
-                        <label for="courseid">Course Id</label>
-                        <input type="text" id="courseid" placeholder="Course ID">
-                        
-                    </div>
-                    <div class="form-control">
-                        <label for="date">Start Date</label>
-                        <input type="date" id="date" placeholder="Start date">
-                        
-                    </div>
-                    </div>
-                    <div class="innerformright">
-                    <div class="form-control">
-                        <label for="trainername">Trainer</label>
-                        <input type="text" id="trainername" placeholder="Trainer Name">
-                       
-                    </div>
-                    <div class="form-control">
-                        <label for="duration">Duration in days</label>
-                        <input type="text" id="duration" placeholder="E-mail">
-                        
-                    </div>
-
-                    <div class="form-control">
-                        <label for="amount">Course Price</label>
-                        <input type="number" id="amount" placeholder="Course Price" step="100">
-                       
-                    </div>
-                    </div>
-                    <button>Add Course</button>
-
-                </form>
-            
-        </div>
-    
+    <script src="../js/navdrawer.js"></script>   
 </body>
 </html>
+
+
+
+
+
