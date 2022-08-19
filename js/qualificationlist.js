@@ -1,3 +1,6 @@
+import { button } from "./buttons.js";
+
+
 var qualifications = [
     {
         code: 'Q001',
@@ -9,32 +12,121 @@ var qualifications = [
     },
 ]
 
-const table = document.getElementById('qualifications')
 
-var count = 1;
-qualifications.forEach((q, index) => {
-    var row = table.insertRow(count++);
-    var code = row.insertCell(0);
-    var name = row.insertCell(1);
+function showQualifications() {
+    const tbody = document.getElementById('qual-tbody')
+    tbody.innerHTML = ''
 
-    row.id = index;
-    code.innerHTML = q.code;
-    name.innerHTML = q.name;
+    qualifications.forEach((q, index) => {
+        var row = document.createElement('tr')
+        var code = row.insertCell(0);
+        var name = row.insertCell(1);
+        var actions = row.insertCell(2);
+        actions.className = 'actions';
+    
+        code.innerHTML = q.code;
+        name.innerHTML = q.name;
 
-    row.addEventListener('click', viewQualification)
-});
+        const editBtn = button(editQual, 'Edit', 'edit', 'indigo accent-4');
+        const deleteBtn = button(deleteQual, 'Delete', 'delete', 'red')
 
-function viewQualification(event) {
-    qualDetail = document.getElementById('qualification-detail')
-    qualDetail.innerHTML = ''
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
 
-    var code = document.createElement('div')
-    code.innerHTML = 'Code: ' + qualifications[event.target.parentElement.id].code
-    qualDetail.appendChild(code)
+        row.id = index;
 
-    var name = document.createElement('div')
-    name.innerHTML = 'Name: ' + qualifications[event.target.parentElement.id].name
-    qualDetail.appendChild(name)
-
-    qualDetail.style.display = 'block';
+        tbody.appendChild(row);
+    });    
 }
+
+function deleteQual() {
+    const id = event.target.parentElement.parentElement.id;
+    
+    if(confirm(`You sure you want to delete ${qualifications[id].code}: ${qualifications[id].name}?`)){
+        delete qualifications[id];
+        showQualifications();
+    }
+}
+
+function editQual(event) {
+    const id = event.target.parentElement.parentElement.id;
+    var modal = M.Modal.getInstance(document.getElementById('edit-qual-modal'));
+
+    const txtName = document.getElementById('txtEditName');
+    const txtCode = document.getElementById('txtEditCode');
+    const txtId = document.getElementById('txtEditId');
+
+    txtName.value = qualifications[id].name;
+    txtCode.value = qualifications[id].code;
+    txtId.value = id;
+
+    modal.open()
+}
+
+function addQualConfirm() {
+    var modal = M.Modal.getInstance(document.getElementById('add-qual-modal'));
+    const txtName = document.getElementById('txtAddName');
+    const txtCode = document.getElementById('txtAddCode');
+    
+    if (txtCode.value === ''){
+        alert('Code cannot be empty!');
+        return
+    }
+    if (txtName.value === ''){
+        alert('Name cannot be empty!');
+        return
+    }
+
+    qualifications.push({
+        code: txtCode.value,
+        name: txtName.value
+    })
+
+    txtCode.value = ''
+    txtName.value = ''
+
+    showQualifications();
+
+    modal.close();
+}
+
+function editQualConfirm() {
+    var modal = M.Modal.getInstance(document.getElementById('edit-qual-modal'));
+    const txtName = document.getElementById('txtEditName');
+    const txtCode = document.getElementById('txtEditCode');
+    const id = Number(document.getElementById('txtEditId').value);
+    
+    if (txtCode.value === ''){
+        alert('Code cannot be empty!');
+        return
+    }
+    if (txtName.value === ''){
+        alert('Name cannot be empty!');
+        return
+    }
+
+    qualifications[id].code = txtCode.value;
+    qualifications[id].name = txtName.value;
+
+    txtCode.value = ''
+    txtName.value = ''
+
+    showQualifications();
+
+    modal.close();
+}
+
+function addQualCancel() {
+    const txtName = document.getElementById('txtAddName');
+    const txtCode = document.getElementById('txtAddCode');
+
+    txtCode.value = '';
+    txtName.value = '';
+}
+
+
+showQualifications();
+
+window.addQualCancel = addQualCancel;
+window.editQualConfirm = editQualConfirm;
+window.addQualConfirm = addQualConfirm;
