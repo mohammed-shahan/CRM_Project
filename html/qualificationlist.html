@@ -29,19 +29,55 @@
     <!-- navdrawer -->
     <ul id="slide-out" class="sidenav"></ul>
     <div class="container">
-        <div class="card" id="qualification-detail" style="display: none;"></div>
         <div class="card">
             <table id="qualifications">
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="qual-tbody"></tbody>
             </table>
         </div>
     </div>
-    
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-qual-modal">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="add-qual-modal" class="modal">
+        <div class="modal-content">
+            <form action="">
+                <label>Code: <input type="text" id="txtAddCode"></label>
+                <label>Name: <input type="text" id="txtAddName"></label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addQualCancel()">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="addQualConfirm()">Add</a>
+        </div>
+    </div>
+
+    <div id="edit-qual-modal" class="modal">
+        <div class="modal-content">
+            <form action="">
+                <label>Code: <input type="text" id="txtEditCode"></label>
+                <label>Name: <input type="text" id="txtEditName"></label>
+                <input type="hidden" id="txtEditId">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editQualConfirm()">Save</a>
+        </div>
+    </div>
 
     <script src="../js/navdrawer.js"></script>   
-    <script src="../js/qualificationlist.js"></script>
+    <script src="../js/modal.js"></script>
+    <script type="module" src="../js/qualificationlist.js"></script>
 </body>
 </html>

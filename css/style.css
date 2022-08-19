@@ -1,3 +1,7 @@
 .sidenav .background img {
     width: 100%;
 }
+
+.actions {
+    max-width: 50px;
+}
