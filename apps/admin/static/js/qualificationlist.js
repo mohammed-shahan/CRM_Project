@@ -1,4 +1,4 @@
-import { button } from "./buttons.js";
+import { button } from "/static/js/buttons.js";
 
 
 var qualifications = [
