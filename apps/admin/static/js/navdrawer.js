@@ -1,3 +1,6 @@
+// Safe to delete
+
+
 const navitems = [
     {
         'name': 'dashboard',
@@ -28,9 +31,9 @@ const navitems = [
 
 const navheader = '<li><div class="user-view">\
 <div class="background">\
-    <img src="../images/books.jpg">\
+    <img src="/static/images/books.jpg">\
 </div>\
-<a href="#user"><img class="circle" src="../images/profile.webp"></a>\
+<a href="#user"><img class="circle" src="/static/images/profile.webp"></a>\
 <a href="#name"><span class="white-text name">John Doe</span></a>\
 <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>\
 </div></li>'
@@ -43,24 +46,24 @@ const options = {
 
 
 // render navdrawer elements
-navdr = document.getElementById('slide-out')
-navdr.innerHTML = navheader
-navitems.forEach(item => {
-    const a = document.createElement('a')
-    const li = document.createElement('li')
+// navdr = document.getElementById('slide-out')
+// navdr.innerHTML = navheader
+// navitems.forEach(item => {
+//     const a = document.createElement('a')
+//     const li = document.createElement('li')
 
-    li.appendChild(a)
-    a.innerText = item.label
+//     li.appendChild(a)
+//     a.innerText = item.label
     
-    if (page === item.name){
-        a.href = '#'
-        li.className = 'active indigo accent-1'
-    }else{
-        a.href = item.url
-    }
+//     if (page === item.name){
+//         a.href = '#'
+//         li.className = 'active indigo accent-1'
+//     }else{
+//         a.href = item.url
+//     }
 
-    navdr.appendChild(li)
-});
+//     navdr.appendChild(li)
+// });
 
 
 // navdrawer click

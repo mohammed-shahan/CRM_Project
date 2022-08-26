@@ -1,0 +1,42 @@
+{% extends 'admin/base.html' %}
+{% block title %}Qualifications{% endblock %}
+
+{% block style %}
+{{ super() }}
+    <style>
+        #course-detail .details {
+            width: 50%;
+            display: inline-block;
+        }
+
+        #course-detail .desc {
+            width: 50%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="card" id="batch-detail" style="display: none;"></div>
+        <div class="card">
+            <div class="card-content">
+                <table id="batches">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script src="static/js/batches.js"></script>
+{% endblock %}

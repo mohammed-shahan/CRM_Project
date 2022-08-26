@@ -1,33 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qualifications</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    
-    <script>
-        const page = 'qualifications'
-    </script>
-</head>
-<body>
-    <!-- navbar -->
-    <nav>
-        <div class="nav-wrapper indigo darken-4">
-            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
-            <a href="#" class="brand-logo">CRM</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </div>
-    </nav>
-    
-    <!-- navdrawer -->
-    <ul id="slide-out" class="sidenav"></ul>
+{% extends 'admin/base.html' %}
+
+{% block title %}Qualifications{% endblock %}
+
+{% block content %}
+
     <div class="container">
         <div class="card">
             <div class="card-content">
@@ -78,8 +54,9 @@
         </div>
     </div>
 
-    <script src="../js/navdrawer.js"></script>   
-    <script src="../js/modal.js"></script>
-    <script type="module" src="../js/qualificationlist.js"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="module" src="static/js/qualificationlist.js"></script>
+{% endblock %}
