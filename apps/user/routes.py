@@ -1,4 +1,3 @@
-from os import path
 from flask import render_template
 
 from . import bp
