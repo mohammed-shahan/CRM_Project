@@ -5,11 +5,12 @@ from importlib import import_module
 from .config import Config
 
 # import for creating test items, can be removed
-from .models import Users, InternalUse
+# from .models import Categories, Trainers, Courses
 
 
 appsList = (
     'admin',
+    'user',
 )
 
 
@@ -27,15 +28,13 @@ def create_app():
 
 
 def setup_database(flask_app):
-    with flask_app.app_context():
-        # alchemy creates the db from SQLALCHEMY_DATABASE_URI and models.py classes
-        db.create_all()
+    pass
+#     with flask_app.app_context():
+#         db.create_all()
 
-        # only for test items, can be removed
-        db.session.add(InternalUse(browser_open=1, statistics='98.6', commercials='sold'))
-        db.session.add(InternalUse(browser_open=0, statistics=70.2, commercials='bid'))
-        db.session.add(Users(username='pi', email='pi@pipapo.org', profile='ceo'))
-        db.session.add(Users(username='pa', email='pa@pipapo.org', profile='chief'))
-        db.session.add(Users(username='po', email='po@pipapo.org', profile='leader'))
-        db.session.commit()
+#         db.session.add(Categories('Web'))
+#         db.session.add(Categories('Mobile'))
+#         db.session.add(Trainers('Abhilash'))
+#         db.session.add(Courses('flask', 'python flask', 4, 1, 1))
+#         db.session.commit()
 
