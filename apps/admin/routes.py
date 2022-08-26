@@ -1,12 +1,7 @@
 from os import path
-from flask import Blueprint, render_template
+from flask import render_template
 
-# Blueprint Configuration
-bp = Blueprint(
-    'admin_bp', __name__,
-    static_folder='static',
-    url_prefix='/admin'
-)
+from . import bp
 
 
 @bp.route('/', methods=['GET'])
