@@ -16,4 +16,4 @@ if __name__ == "__main__":
         setup_database(app_factory)
 
     # print(app_factory.config)
-    app_factory.run(host='localhost', port=5050)
+    app_factory.run(host='0.0.0.0', port=5050)
