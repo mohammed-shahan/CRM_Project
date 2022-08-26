@@ -1,29 +1,28 @@
-# install flask-sqlalchemy into venv via pycharm file,settings,project,interpreter (if problem)
-from os import path
 from flask import Flask
 from .database import db
+from importlib import import_module
+
+from .config import Config
 
 # import for creating test items, can be removed
 from .models import Users, InternalUse
 
-this_dir = path.abspath(path.join(path.dirname("__file__")))
-db_path = path.join(this_dir, 'database.db')
+
+appsList = (
+    'admin',
+)
 
 
 def create_app():
     app = Flask(__name__)
-    app.config['DEBUG'] = False
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + db_path
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = "False"   # supress FSADeprecationWarning
+    app.config.from_object(Config)
     # flask initializes Alchemy with the application
     db. init_app(app)
     # Register Blueprints and routes, one route is also sufficient
-    from .admin import routes
-    app.register_blueprint(routes.admin_bp)
-    # from Flask_SQLAlchemy_Project_Template.routes_internal import routes as internal_routes
-    # from Flask_SQLAlchemy_Project_Template.routes_user import routes as user_routes
-    # app.register_blueprint(internal_routes.internal_bp)
-    # app.register_blueprint(user_routes.user_bp)
+    for module_name in appsList:
+        module = import_module('apps.{}.routes'.format(module_name))
+        app.register_blueprint(module.bp)
+    
     return app
 
 

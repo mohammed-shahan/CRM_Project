@@ -1,0 +1,44 @@
+{% extends 'admin/base.html' %}
+{% block title %}Qualifications{% endblock %}
+
+{% block style %}
+{{ super() }}
+    <style>
+        #course-detail .details {
+            width: 50%;
+            display: inline-block;
+        }
+
+        #course-detail .desc {
+            width: 50%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="card-content row" id="course-detail" style="display: none;"></div>
+        </div>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Trainer</th>
+                        <th>Start Date</th>
+                    </tr>
+                </thead>
+                <tbody id="courselist"></tbody>
+            </table>
+        </div>
+    </div>    
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script src="static/js/courselist.js"></script>
+{% endblock %}
