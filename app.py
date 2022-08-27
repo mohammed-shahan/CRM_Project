@@ -12,8 +12,8 @@ from apps.config import Config
 if __name__ == "__main__":
     app_factory = create_app()
     # do not kill db, if exists
-    if not path.isfile(Config.db_path):
-        setup_database(app_factory)
+    # if not path.isfile(Config.db_path):
+    #     setup_database(app_factory)
 
     # print(app_factory.config)
     app_factory.run(host='0.0.0.0', port=5050)
