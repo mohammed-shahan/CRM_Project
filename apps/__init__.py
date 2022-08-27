@@ -11,6 +11,7 @@ from .models import Categories, Trainers, Courses
 appsList = (
     'admin',
     'user',
+    'auth',
 )
 
 
