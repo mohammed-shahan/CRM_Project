@@ -1,10 +1,14 @@
 from flask import redirect, url_for, render_template, jsonify, abort, request
+from flask_login import login_required
 
 from . import bp
 from apps.models import Categories
 from apps.database import db
+from apps.auth.utils import admin_required
 
 @bp.route('/categories/<int:id>', methods=['DELETE'])
+@login_required
+@admin_required
 def categories_delete(id):
     try:
         cat = Categories.query.filter_by(id=id)
