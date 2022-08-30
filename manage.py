@@ -16,9 +16,10 @@ def deploy():
     upgrade()
 
 def dummy():
+    from werkzeug.security import generate_password_hash
     from apps import create_app
     from apps.database import db
-    from apps.models import Categories, Roles
+    from apps.models import Categories, Roles, Users
 
     app = create_app()
     app.app_context().push()
@@ -29,6 +30,12 @@ def dummy():
     
     for role in ['Admin', 'User']:
         db.session.add(Roles(role))
+    db.session.commit()
+
+    db.session.add(Users('admin', '1', generate_password_hash('admin1'), 'admin@1', 1))
+    db.session.add(Users('admin', '2', generate_password_hash('admin2'), 'admin@2', 1))
+    db.session.add(Users('admin', '3', generate_password_hash('admin3'), 'admin@3', 1))
+    db.session.add(Users('admin', '4', generate_password_hash('admin4'), 'admin@4', 1))
     db.session.commit()
     
 
