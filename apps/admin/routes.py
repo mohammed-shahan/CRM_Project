@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import bp
-from apps.models import Categories
+from apps.models import Categories, Qualifications
 from apps.database import db
 from apps.auth.utils import admin_required
 
@@ -17,8 +17,30 @@ def dashboard():
 @bp.route('/qualifications', methods=['GET'])
 @login_required
 @admin_required
-def qualifications():
-    return render_template('admin/pages/qualifications.html')
+def qualifications_get():
+    return render_template('admin/pages/qualifications.html', qualifications=Qualifications.query.all())
+
+@bp.route("/qualifications", methods=['POST'])
+@login_required
+@admin_required
+def qualifications_post():
+    id = request.form.get('id')
+    qName = request.form.get('qName')
+    try:
+        if id:
+            q = Qualifications.query.filter_by(id=int(id)).first()
+            setattr(q, 'qualification', qName)
+            db.session.commit()
+        else:
+            db.session.add(Qualifications(qName))
+            db.session.commit()
+    except:
+        flash('Failed to add Qualification')
+        return redirect(url_for('admin_bp.qualifications_get'))
+    else:
+        flash('Qualification added successfully')
+        return redirect(url_for('admin_bp.qualifications_get'))
+
 
 @bp.route('/batches')
 @login_required

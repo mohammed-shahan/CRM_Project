@@ -70,9 +70,9 @@ class Qualifications(db.Model):
     users         = db.relationship('UserQualifications')
     courses       = db.relationship('CourseQualifications')
 
-    def __init__(self, qualification, status) -> None:
+    def __init__(self, qualification) -> None:
         self.qualification = qualification
-        self.status        = status
+        self.status        = True
 
 
 class UserQualifications(db.Model):
