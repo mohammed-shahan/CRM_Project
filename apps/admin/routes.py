@@ -58,7 +58,10 @@ def users():
 @login_required
 @admin_required
 def categories_get():
-    return render_template('admin/pages/categories.html', categories=Categories.query.all())
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    categories = Categories.query.paginate(page=page, per_page=rowsPerPage)
+    return render_template('admin/pages/categories.html', categories=categories)
 
 
 @bp.route("/categories", methods=['POST'])
