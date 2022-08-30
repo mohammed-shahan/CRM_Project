@@ -28,17 +28,25 @@ def login():
 
         user = Users.query.filter_by(email=email).first()
         if user:
-            print('hello')
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('admin_bp.dashboard'))
+                if(current_user.role==1):
+                    return redirect(url_for('admin_bp.dashboard'))
+                else:
+                    return redirect(url_for('auth_bp.warning'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exist.', category='error')
 
     return render_template("auth/pages/login.html", user=current_user)
+
+@bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('auth_bp.login'))
 
 # Register route
 @bp.route("/register/", methods=("GET", "POST"))
@@ -51,7 +59,6 @@ def register():
 
         user = Users.query.filter_by(email=email).first()
         if user:
-            print("Already exists")
             flash('Email already exists.', category='error')
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
@@ -61,7 +68,7 @@ def register():
             flash('Password must be at least 6 characters.', category='error')
         else:
             new_user = Users(email=email, firstName=first_name, lastName=last_name, password=generate_password_hash(
-                password, method='sha256'),role=2)
+                password, method='sha256'),role=1)
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
@@ -69,3 +76,8 @@ def register():
             return redirect(url_for("auth_bp.login"))
 
     return render_template('auth/pages/register.html', user=current_user)
+
+
+@bp.route("/warning/",methods=("GET", "POST"))
+def warning():
+    return render_template('auth/pages/warning.html')
