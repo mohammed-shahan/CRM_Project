@@ -24,10 +24,13 @@ def qualifications():
 @login_required
 @admin_required
 def batches():
-    print(current_user)
     return render_template('admin/pages/batches.html')
 
-
+@bp.route('/users')
+@login_required
+@admin_required
+def users():
+    return render_template('admin/pages/users.html')
 
 @bp.route('/categories', methods=['GET'])
 @login_required
