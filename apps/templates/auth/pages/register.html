@@ -1,41 +1,45 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  </head>
+{% extends 'auth/base.html' %}
+{% block title %}Register{% endblock %}
 
-  <body>
-    <img src="../images/crm.jpg" alt="logo-img" style="width: 100px; height: auto; margin-left: 2%;">
-    <h4 class="login-msg" align="middle" style="color: indigo; margin-top: 4%;">Register Now</h4>
+{% block style %}
+{{ super() }}
+    <style>
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    {% if error %}  
+    <p><strong>Error</strong>: {{error}}</p>  
+    {% endif %}  
+
+    <img src="/static/images/crm.jpg" alt="logo-img" style="width: 100px; height: auto; margin-left: 2%;">
+    <h4 class="register-msg" align="middle" style="color: indigo; margin-top: 4%;">Register Now</h4>
     <div class="container" align="middle" style="margin-top: 3%;">
         <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
             <div class="row">
-                <form class="col s12" id="reg-form">
+                
+                <form class="col s12" id="reg-form" method="post">
                 <div class="row">
                     <div class="input-field col s6">
-                    <input id="first_name" type="text" class="validate" required>
+                    <input name="first_name" type="text" class="validate" required>
                     <label for="first_name">First Name</label>
                     </div>
                     <div class="input-field col s6">
-                    <input id="last_name" type="text" class="validate" required>
+                    <input name="last_name" type="text" class="validate" required>
                     <label for="last_name">Last Name</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                    <input id="email" type="email" class="validate" required>
+                    <input name="email" type="email" class="validate" required>
                     <label for="email">Email</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                    <input id="password" type="password" class="validate" minlength="6" required>
+                    <input name="password" type="password" class="validate" minlength="6" required>
                     <label for="password">Password</label>
                     </div>
                 </div>
@@ -51,7 +55,6 @@
             </div>
         </div>
     </div>
-    <p align="middle">Already have an account? <br><a href="login.html">LogIn</a></p>
+    <p align="middle">Already have an account? <br><a href="{{url_for('auth_bp.login')}}">LogIn</a></p>
 
-  </body>
-</html>
+{% endblock %}

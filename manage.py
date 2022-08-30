@@ -18,13 +18,17 @@ def deploy():
 def dummy():
     from apps import create_app
     from apps.database import db
-    from apps.models import Categories
+    from apps.models import Categories, Roles
 
     app = create_app()
     app.app_context().push()
 
     for category in set('Lorem ipsum dolor sit amet consectetur adipiscing elit Donec vel sem nulla Curabitur feugiat hendrerit quam eleifend venenatis Morbi nulla dolor dictum ut rutrum at fermentum a felis Fusce tincidunt aliquam elementum Sed sollicitudin leo lorem id luctus quam rutrum et Maecenas vitae vehicula nisi Proin sit amet lectus eu sapien dictum dictum Aenean vulputate risus'.split()):
         db.session.add(Categories(category))
+    db.session.commit()
+    
+    for role in ['Admin', 'User']:
+        db.session.add(Roles(role))
     db.session.commit()
     
 
