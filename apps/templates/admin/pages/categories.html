@@ -15,7 +15,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for category in categories %}
+                        {% for category in categories.items %}
                             <tr id="{{ category.id }}">
                                 <td class="catName">{{ category.category }}</td>
                                 <td class="actions">
@@ -26,6 +26,36 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s1"></div>
+                    <div class="col s10 center">
+                        <ul class="pagination">
+                            <li class="{% if categories.page == 1 %}disabled{% endif %}"><a href="{{ url_for('admin_bp.categories_get', page=categories.prev_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_left</i></a></li>
+                            {% for page_num in categories.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                                {% if page_num %}
+                                    <li class="{% if categories.page == page_num %}active indigo accent-4{% else %}waves-effect{% endif %}"><a href="{{ url_for('admin_bp.categories_get', page=page_num, rows=request.args.get('rows', 10)) }}">{{ page_num }}</a></li>
+                                {% else %}
+                                    ...
+                                {% endif %}
+                            {% endfor %}
+                            <li class="{% if categories.page == categories.pages %}disabled{% endif %}"><a href="{{ url_for('admin_bp.categories_get', page=categories.next_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_right</i></a></li>
+                        </ul>
+                        <div class="grey-text text-darken-2">
+                            Showing page {{ categories.page }} of {{ categories.pages }}
+                        </div>
+                    </div>
+                    <div class="input-field col s1">
+                        <select onchange="pageRows(event)">
+                            {% for i in [5, 10, 20, 50, 100] %}
+                            <option {% if categories.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                </div>
             </div>
         </div>
     </div>
@@ -113,6 +143,11 @@
         function addCancel() {
             const txtName = document.getElementById('txtAddName');
             txtName.value = '';
+        }
+
+        function pageRows(event) {
+            const rows = event.target.value
+            window.location.href = `/admin/categories?rows=${rows}`
         }
     </script>
 {% endblock %}
