@@ -94,3 +94,9 @@ def categories_post():
 @admin_required
 def courses():
     return render_template('admin/pages/courses.html')
+
+@bp.route('/enquiries')
+@login_required
+@admin_required
+def enquiries_get():
+    return render_template('admin/enquiries.html')
