@@ -6,6 +6,18 @@ from apps.models import Categories, Qualifications
 from apps.database import db
 from apps.auth.utils import admin_required
 
+
+@bp.route('/categories/<int:id>', methods=['GET'])
+def categories_get(id):
+    cat = Categories.query.filter_by(id=id).first()
+    if cat:
+        return jsonify({'category': {
+            'id': id,
+            'category': cat.category
+        }}), 200
+    else:
+        abort(404)
+
 @bp.route('/categories/<int:id>', methods=['DELETE'])
 @login_required
 @admin_required
@@ -21,6 +33,17 @@ def categories_delete(id):
         else:
             abort(404)
 
+
+@bp.route('/qualifications/<int:id>', methods=['GET'])
+def qualifications_get(id):
+    q = Qualifications.query.filter_by(id=id).first()
+    if q:
+        return jsonify({'qualification': {
+            'id': id,
+            'qualification': q.qualification
+        }}), 200
+    else:
+        abort(404)
 
 @bp.route('/qualifications/<int:id>', methods=['DELETE'])
 @login_required
