@@ -16,6 +16,7 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(users, 'admin_bp.users_get') }}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -24,8 +25,8 @@
                                 <td class="firstName">{{ user.firstName }}</td>
                                 <td class="lastName">{{ user.lastName }}</td>
                                 <td class="email">{{ user.email }}</td>
-                                <td class="role">{{ user.role }}</td>
-                                <td class="actions">
+                                <td class="role">{{ roles[user.role] }}</td>
+                                <td class="actions" colspan="2">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ user.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
                                 </td>
@@ -47,8 +48,8 @@
                 <label>Email: <input type="text" name="email" id="editEmail" required></label>
                 <div class="input-field">
                     <select name="role" id="editRole">
-                        {% for role in roles %}
-                            <option value="{{ role.id }}">{{ role.role }}</option>
+                        {% for id, role in roles.items() %}
+                            <option value="{{ id }}">{{ role }}</option>
                         {% endfor %}
                     </select>
                     <label>Role</label>
@@ -77,10 +78,11 @@
                 const lName = document.getElementById('editLname');
                 const email = document.getElementById('editEmail');
                 const role = document.getElementById('editRole');
+                console.log(data);
 
                 Id.value=id;
-                fName.value = data.user.firstName;
-                lName.value = data.user.lastName;
+                fName.value = data.user.firstname;
+                lName.value = data.user.lastname;
                 email.value = data.user.email;
                 role.value = `${data.user.role}`
                 if (typeof(Event) === 'function') {
@@ -115,11 +117,6 @@
             } else {
                 document.editForm.reportValidity()
             }
-        }
-
-        function pageRows(event) {
-            const rows = event.target.value
-            window.location.href = `/admin/users?rows=${rows}`
-        }
+        }   
     </script>
 {% endblock %}

@@ -59,10 +59,13 @@ def batches():
 @login_required
 @admin_required
 def users_get():
+    roles = {}
+    for role in Roles.query.all():
+        roles[role.id] = role.role
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     users = Users.query.paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/users.html', users=users, user=current_user, roles=Roles.query.all())
+    return render_template('admin/pages/users.html', users=users, user=current_user, roles=roles)
 
 @bp.route("/users", methods=['POST'])
 @login_required
@@ -72,11 +75,13 @@ def users_post():
     firstName = request.form.get('firstName')
     lastName = request.form.get('lastName')
     email = request.form.get('email')
+    role = request.form.get('role')
     try:
             user = Users.query.filter_by(id=int(id)).first()
             setattr(user, 'firstName', firstName)
             setattr(user, 'lastName', lastName)
             setattr(user, 'email', email)
+            setattr(user, 'role', role)
             db.session.commit()
     except:
         flash('Failed to add User')
