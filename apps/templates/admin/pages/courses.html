@@ -1,4 +1,6 @@
 {% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
+
 {% block title %}Courses{% endblock %}
 
 {% block style %}
@@ -26,13 +28,22 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Code</th>
                         <th>Name</th>
+                        <th>Duration (weeks)</th>
                         <th>Trainer</th>
-                        <th>Start Date</th>
+                        <td id="rows-select">{{ pg.rows(courses, 'admin_bp.courses_get') }}</td>
                     </tr>
                 </thead>
-                <tbody id="courselist"></tbody>
+                <tbody>
+                    {% for course in courses.items %}
+                        <tr id="{{ course.id }}">
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.duration }}</td>
+                            <td>{{ course.trainer }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>    
@@ -40,5 +51,5 @@
 
 {% block scripts %}
 {{ super() }}
-    <script src="static/js/courselist.js"></script>
+    <!-- <script src="static/js/courselist.js"></script> -->
 {% endblock %}
