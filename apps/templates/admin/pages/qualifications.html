@@ -17,7 +17,7 @@
                     <tbody>
                         {% for qualification in qualifications.items %}
                             <tr id="{{ qualification.id }}">
-                                <td class="qName">{{ qualification.qualification }}</td>
+                                <td>{{ qualification.qualification }}</td>
                                 <td class="actions">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ qualification.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ qualification.id }})">Delete<i class="material-icons left">delete</i></a>
@@ -69,32 +69,34 @@
 {{ super() }}
 <script>
     function edit(id) {
-        const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
-        const qName = children.find(element => element.className === 'qName').innerText
+        fetch(`/api/qualifications/${id}`)
+        .then(response => response.json())
+        .then((data) => {
+            var modal = M.Modal.getInstance(document.getElementById('edit-qual-modal'));
+            
+            const txtName = document.getElementById('txtEditName');
+            const txtId = document.getElementById('txtEditId');
 
-        var modal = M.Modal.getInstance(document.getElementById('edit-qual-modal'));
+            txtId.value = id;
+            txtName.value = data.qualification.qualification;
 
-        const txtName = document.getElementById('txtEditName');
-        const txtId = document.getElementById('txtEditId');
-
-        txtId.value = id;
-        txtName.value = qName;
-
-        modal.open();
+            modal.open();
+        })
     }
 
     function del(id) {
-        const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
-        const qName = children.find(element => element.className === 'qName').innerText
-
-        if (confirm(`You sure you want to delete ${qName}?`)){
-            fetch(`/api/qualifications/${id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            }).then(() => location.reload());
-        }
+        fetch(`/api/qualifications/${id}`)
+        .then(response => response.json())
+        .then((data) => {
+            if (confirm(`You sure you want to delete ${data.qualification.qualification}?`)){
+                fetch(`/api/qualifications/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
+        })
     }
-
+    
     function addConfirm() {
         if (document.addForm.checkValidity()){
             document.addForm.submit()

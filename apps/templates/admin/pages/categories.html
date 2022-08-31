@@ -17,7 +17,7 @@
                     <tbody>
                         {% for category in categories.items %}
                             <tr id="{{ category.id }}">
-                                <td class="catName">{{ category.category }}</td>
+                                <td>{{ category.category }}</td>
                                 <td class="actions">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ category.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ category.id }})">Delete<i class="material-icons left">delete</i></a>
@@ -70,31 +70,32 @@
 {{ super() }}
     <script>
         function edit(id) {
-            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
-            const catName = children.find(element => element.className === 'catName').innerText
+            fetch(`/api/categories/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                var modal = M.Modal.getInstance(document.getElementById('edit-cat-modal'));
+                
+                const txtName = document.getElementById('txtEditName');
+                const txtId = document.getElementById('txtEditId');
 
+                txtId.value = id;
+                txtName.value = data.category.category;
 
-            var modal = M.Modal.getInstance(document.getElementById('edit-cat-modal'));
-
-            const txtName = document.getElementById('txtEditName');
-            const txtId = document.getElementById('txtEditId');
-
-            txtId.value = id;
-            txtName.value = catName;
-
-            modal.open();
+                modal.open();
+            })
         }
 
         function del(id) {
-            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
-            const catName = children.find(element => element.className === 'catName').innerText
-
-            if (confirm(`You sure you want to delete ${catName}?`)){
-                fetch(`/api/categories/${id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                }).then(() => location.reload());
-            }
+            fetch(`/api/categories/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                if (confirm(`You sure you want to delete ${data.category.category}?`)){
+                    fetch(`/api/categories/${id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    }).then(() => location.reload());
+                }
+            })
         }
 
         function addConfirm() {
