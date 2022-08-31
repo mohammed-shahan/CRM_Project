@@ -1,76 +1,136 @@
 {% extends 'admin/base.html' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}users{% endblock %}
 
 {% block content %}
 
-<div class="container">
-    <div class="card">
-        <div class="card-content">
-            <table id="users">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Country</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Lindsey Stroud</td>
-                        <td>lindsey.stroud@gmail.com</td>
-                        <td>Spain</td>
-                    </tr>
-                    <tr>
-                        <td>Nicci Troiani</td>
-                        <td>niccitroiani@gmail.com</td>
-                        <td>UAE</td>
-                    </tr>
-                    <tr>
-                        <td>George Fields</td>
-                        <td>george.fields@gmail.com</td>
-                        <td>Qatar</td>
-                    </tr>
-                    <tr>
-                        <td>Rebecca Moore</td>
-                        <td>rebecca.moore@gamil.com</td>
-                        <td>USA</td>
-                    </tr>
-                    <tr>
-                        <td>Jane Doe</td>
-                        <td>jane.doe@gmail.com</td>
-                        <td>Canada</td>
-                    </tr>
-                    <tr>
-                        <td>Lindsey Stroud</td>
-                        <td>lindsey.stroud@gmail.com</td>
-                        <td>Spain</td>
-                    </tr>
-                    <tr>
-                        <td>Nicci Troiani</td>
-                        <td>niccitroiani@gmail.com</td>
-                        <td>UAE</td>
-                    </tr>
-                    <tr>
-                        <td>George Fields</td>
-                        <td>george.fields@gmail.com</td>
-                        <td>Qatar</td>
-                    </tr>
-                    <tr>
-                        <td>Rebecca Moore</td>
-                        <td>rebecca.moore@gamil.com</td>
-                        <td>USA</td>
-                    </tr>
-                    <tr>
-                        <td>Jane Doe</td>
-                        <td>jane.doe@gmail.com</td>
-                        <td>Canada</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <table id="users">
+                    <thead>
+                        <tr>
+                            <th>Fist Name</th>
+                            <th>last Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users.items %}
+                            <tr id="{{ user.id }}">
+                                <td class="firstName">{{ user.firstName }}</td>
+                                <td class="lastName">{{ user.lastName }}</td>
+                                <td class="email">{{ user.email }}</td>
+                                <td class="role">{{ user.role }}</td>
+                                <td class="actions">
+                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ user.id }})">Edit<i class="material-icons left">edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if users.pages != 0 %}
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s1"></div>
+                    <div class="col s10 center">
+                        <ul class="pagination">
+                            <li class="{% if users.page == 1 %}disabled{% endif %}"><a href="{{ url_for('admin_bp.users_get', page=users.prev_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_left</i></a></li>
+                            {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                                {% if page_num %}
+                                    <li class="{% if users.page == page_num %}active indigo accent-4{% else %}waves-effect{% endif %}"><a href="{{ url_for('admin_bp.users_get', page=page_num, rows=request.args.get('rows', 10)) }}">{{ page_num }}</a></li>
+                                {% else %}
+                                    ...
+                                {% endif %}
+                            {% endfor %}
+                            <li class="{% if users.page == users.pages %}disabled{% endif %}"><a href="{{ url_for('admin_bp.users_get', page=users.next_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_right</i></a></li>
+                        </ul>
+                        <div class="grey-text text-darken-2">
+                            Showing page {{ users.page }} of {{ users.pages }}
+                        </div>
+                    </div>
+                    <div class="input-field col s1">
+                        <select onchange="pageRows(event)">
+                            {% for i in [5, 10, 20, 50, 100] %}
+                            <option {% if users.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div id="edit-user-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/users" method="post" name="editForm">
+                <label>First Name: <input type="text" name="firstName" id="txtEditName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+                <label>Last Name: <input type="text" name="lastName" id="txtEditName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+                <label>Email: <input type="text" name="emial" id="txtEditName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
         </div>
     </div>
-</div>
-   
 
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script>
+        function edit(id) {
+            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
+            const firstName = children.find(element => element.className === 'firstName').innerText
+            const lastName = children.find(element => element.className === 'lastName').innerText
+            const emial = children.find(element => element.className === 'email').innerText
+
+
+            var modal = M.Modal.getInstance(document.getElementById('edit-user-modal'));
+
+            const txtName = document.getElementById('txtEditName');
+            const txtId = document.getElementById('txtEditId');
+
+            txtId.value = id;
+            txtName.value = userName;
+
+            modal.open();
+        }
+
+        function del(id) {
+            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
+            const userName = children.find(element => element.className === 'userName').innerText
+
+            if (confirm(`You sure you want to delete ${userName}?`)){
+                fetch(`/api/users/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
+        }
+
+        function editConfirm() {
+            if (document.editForm.checkValidity()){
+                document.editForm.submit()
+            } else {
+                document.editForm.reportValidity()
+            }
+        }
+
+        function pageRows(event) {
+            const rows = event.target.value
+            window.location.href = `/admin/users?rows=${rows}`
+        }
+    </script>
 {% endblock %}
