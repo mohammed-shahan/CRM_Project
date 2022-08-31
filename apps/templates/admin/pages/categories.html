@@ -1,4 +1,5 @@
 {% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
 
 {% block title %}Categories{% endblock %}
 
@@ -12,13 +13,14 @@
                         <tr>
                             <th>Category</th>
                             <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(categories, 'admin_bp.categories_get') }}</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% for category in categories.items %}
                             <tr id="{{ category.id }}">
                                 <td>{{ category.category }}</td>
-                                <td class="actions">
+                                <td class="actions" colspan="2">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ category.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ category.id }})">Delete<i class="material-icons left">delete</i></a>
                                 </td>
@@ -29,7 +31,6 @@
             </div>
         </div>
         
-        {% import "pagination.html" as pg %}
         {{ pg.pagination(categories, 'admin_bp.categories_get') }}
     </div>
 

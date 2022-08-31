@@ -1,4 +1,5 @@
 {% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
 
 {% block title %}Qualifications{% endblock %}
 
@@ -12,13 +13,14 @@
                         <tr>
                             <th>Name</th>
                             <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(qualifications, 'admin_bp.qualifications_get') }}</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% for qualification in qualifications.items %}
                             <tr id="{{ qualification.id }}">
                                 <td>{{ qualification.qualification }}</td>
-                                <td class="actions">
+                                <td class="actions" colspan="2">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ qualification.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ qualification.id }})">Delete<i class="material-icons left">delete</i></a>
                                 </td>
@@ -28,7 +30,6 @@
                 </table>
             </div>
         </div>
-        {% import "pagination.html" as pg %}
         {{ pg.pagination(qualifications, 'admin_bp.qualifications_get') }}
     </div>
 

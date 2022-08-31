@@ -20,21 +20,18 @@
                         Showing page {{ obj.page }} of {{ obj.pages }}
                     </div>
                 </div>
-                <div class="input-field col s1">
-                    <select onchange="pageRows(event)">
-                        {% for i in [5, 10, 20, 50, 100] %}
-                        <option {% if obj.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
             </div>
         </div>
     </div>
-    <script>
-        function pageRows(event) {
-            const rows = event.target.value
-            window.location.href =  "{{ url_for(url_fn) }}" + `?rows=${rows}`
-        }
-    </script>
 {% endif %}
+{% endmacro %}
+
+{% macro rows(obj, url_fn) %}
+<div class="input-field col s1">
+    <select onchange="pageRows('{{ url_for(url_fn) }}')">
+        {% for i in [5, 10, 20, 50, 100] %}
+        <option {% if obj.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
+        {% endfor %}
+    </select>
+</div>
 {% endmacro %}
