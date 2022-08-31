@@ -92,3 +92,19 @@ def users_delete(id):
             return jsonify({}), 204
         else:
             abort(404)
+
+
+@bp.route('/roles', methods=['GET'])
+@login_required
+@admin_required
+def roles_get():
+    roles = []
+    for role in Roles.query.all():
+        roles.append({
+            'id': role.id,
+            'role': role.role
+        })
+    if roles:
+        return jsonify({'roles': roles}), 200
+    else:
+        return jsonify({}), 204
