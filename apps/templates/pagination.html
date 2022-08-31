@@ -1,0 +1,40 @@
+{% macro pagination(obj, url_fn) %}
+{% if obj.pages > 1 %}
+    <div class="card">
+        <div class="card-content">
+            <div class="row">
+                <div class="col s1"></div>
+                <div class="col s10 center">
+                    <ul class="pagination">
+                        <li class="{% if obj.page == 1 %}disabled{% endif %}"><a href="{{ url_for(url_fn, page=obj.prev_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_left</i></a></li>
+                        {% for page_num in obj.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_num %}
+                                <li class="{% if obj.page == page_num %}active indigo accent-4{% else %}waves-effect{% endif %}"><a href="{{ url_for(url_fn, page=page_num, rows=request.args.get('rows', 10)) }}">{{ page_num }}</a></li>
+                            {% else %}
+                                ...
+                            {% endif %}
+                        {% endfor %}
+                        <li class="{% if obj.page == obj.pages %}disabled{% endif %}"><a href="{{ url_for(url_fn, page=obj.next_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_right</i></a></li>
+                    </ul>
+                    <div class="grey-text text-darken-2">
+                        Showing page {{ obj.page }} of {{ obj.pages }}
+                    </div>
+                </div>
+                <div class="input-field col s1">
+                    <select onchange="pageRows(event)">
+                        {% for i in [5, 10, 20, 50, 100] %}
+                        <option {% if obj.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function pageRows(event) {
+            const rows = event.target.value
+            window.location.href =  "{{ url_for(url_fn) }}" + `?rows=${rows}`
+        }
+    </script>
+{% endif %}
+{% endmacro %}
