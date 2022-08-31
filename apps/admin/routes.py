@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import bp
-from apps.models import Categories, Qualifications, Users, Batches
+from apps.models import Categories, Qualifications, Users, Batches, Roles
 from apps.database import db
 from apps.auth.utils import admin_required
 
@@ -62,7 +62,7 @@ def users_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     users = Users.query.paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/users.html', users=users, user=current_user)
+    return render_template('admin/pages/users.html', users=users, user=current_user, roles=Roles.query.all())
 
 @bp.route("/users", methods=['POST'])
 @login_required
