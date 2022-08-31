@@ -62,7 +62,7 @@ def users_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     users = Users.query.paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/users.html', users=users)
+    return render_template('admin/pages/users.html', users=users, user=current_user)
 
 @bp.route("/users", methods=['POST'])
 @login_required
