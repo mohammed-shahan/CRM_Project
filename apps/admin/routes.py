@@ -18,7 +18,10 @@ def dashboard():
 @login_required
 @admin_required
 def qualifications_get():
-    return render_template('admin/pages/qualifications.html', qualifications=Qualifications.query.all())
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    qualifications = Qualifications.query.paginate(page=page, per_page=rowsPerPage)
+    return render_template('admin/pages/qualifications.html', qualifications=qualifications)
 
 @bp.route("/qualifications", methods=['POST'])
 @login_required
