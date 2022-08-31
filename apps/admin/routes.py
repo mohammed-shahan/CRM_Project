@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import bp
-from apps.models import Categories, Qualifications
+from apps.models import Categories, Qualifications, Users, Batches
 from apps.database import db
 from apps.auth.utils import admin_required
 
@@ -45,17 +45,46 @@ def qualifications_post():
         return redirect(url_for('admin_bp.qualifications_get'))
 
 
-@bp.route('/batches')
+@bp.route('/batches', methods=['GET'])
 @login_required
 @admin_required
 def batches():
-    return render_template('admin/pages/batches.html')
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    batches = Batches.query.paginate(page=page, per_page=rowsPerPage)
+    return render_template('admin/pages/batches.html', batches=batches)
 
-@bp.route('/users')
+
+@bp.route('/users', methods=['GET'])
 @login_required
 @admin_required
-def users():
-    return render_template('admin/pages/users.html')
+def users_get():
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    users = Users.query.paginate(page=page, per_page=rowsPerPage)
+    return render_template('admin/pages/users.html', users=users)
+
+@bp.route("/users", methods=['POST'])
+@login_required
+@admin_required
+def users_post():
+    id = request.form.get('id')
+    firstName = request.form.get('firstName')
+    lastName = request.form.get('lastName')
+    email = request.form.get('email')
+    try:
+            user = Users.query.filter_by(id=int(id)).first()
+            setattr(user, 'firstName', firstName)
+            setattr(user, 'lastName', lastName)
+            setattr(user, 'email', email)
+            db.session.commit()
+    except:
+        flash('Failed to add User')
+        return redirect(url_for('admin_bp.users_get'))
+    else:
+        flash('User added successfully')
+        return redirect(url_for('admin_bp.users_get'))
+
 
 @bp.route('/categories', methods=['GET'])
 @login_required
