@@ -73,7 +73,7 @@ def users_get(id):
             'firstname': user.firstName,
             'lastname': user.lastName,
             'email': user.email,
-            'role': Roles.query.filter_by(id=user.role).first().role
+            'role': user.role
         }}), 200
     else:
         abort(404)

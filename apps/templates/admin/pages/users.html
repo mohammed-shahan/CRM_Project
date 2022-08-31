@@ -71,12 +71,18 @@
     <div id="edit-user-modal" class="modal">
         <div class="modal-content">
             <form action="/admin/users" method="post" name="editForm">
-                <label>First Name: <input type="text" name="firstName" id="txtEditName" required></label>
-                <input type="hidden" id="txtEditId" name="id">
-                <label>Last Name: <input type="text" name="lastName" id="txtEditName" required></label>
-                <input type="hidden" id="txtEditId" name="id">
-                <label>Email: <input type="text" name="emial" id="txtEditName" required></label>
-                <input type="hidden" id="txtEditId" name="id">
+                <input type="hidden" id="editId" name="id">
+                <label>First Name: <input type="text" name="firstName" id="editFname" required></label>
+                <label>Last Name: <input type="text" name="lastName" id="editLname" required></label>
+                <label>Email: <input type="text" name="email" id="editEmail" required></label>
+                <div class="input-field">
+                    <select name="role" id="editRole">
+                        {% for role in roles %}
+                            <option value="{{ role.id }}">{{ role.role }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Role</label>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -91,33 +97,46 @@
 {{ super() }}
     <script>
         function edit(id) {
-            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
-            const firstName = children.find(element => element.className === 'firstName').innerText
-            const lastName = children.find(element => element.className === 'lastName').innerText
-            const emial = children.find(element => element.className === 'email').innerText
+            fetch(`/api/users/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                var modal = M.Modal.getInstance(document.getElementById('edit-user-modal'));
 
+                const Id = document.getElementById('editId');
+                const fName = document.getElementById('editFname');
+                const lName = document.getElementById('editLname');
+                const email = document.getElementById('editEmail');
+                const role = document.getElementById('editRole');
 
-            var modal = M.Modal.getInstance(document.getElementById('edit-user-modal'));
-
-            const txtName = document.getElementById('txtEditName');
-            const txtId = document.getElementById('txtEditId');
-
-            txtId.value = id;
-            txtName.value = userName;
-
-            modal.open();
+                Id.value=id;
+                fName.value = data.user.firstName;
+                lName.value = data.user.lastName;
+                email.value = data.user.email;
+                role.value = `${data.user.role}`
+                if (typeof(Event) === 'function') {
+                    var event = new Event('change');
+                } else {  // for IE11
+                    var event = document.createEvent('Event');
+                    event.initEvent('change', true, true);
+                }
+                role.dispatchEvent(event);
+                
+                
+                modal.open();
+            })
         }
 
         function del(id) {
-            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
-            const userName = children.find(element => element.className === 'userName').innerText
-
-            if (confirm(`You sure you want to delete ${userName}?`)){
-                fetch(`/api/users/${id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                }).then(() => location.reload());
-            }
+            fetch(`/api/users/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                if (confirm(`You sure you want to delete the user: ${data.user.firstname}, email: ${data.user.email}?`)){
+                    fetch(`/api/users/${id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    }).then(() => location.reload());
+                }
+            })
         }
 
         function editConfirm() {
