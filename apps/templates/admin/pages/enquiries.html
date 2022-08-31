@@ -1,0 +1,122 @@
+{% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
+
+{% block title %}Enquiries{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <table id="categories">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(categories, 'admin_bp.categories_get') }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories.items %}
+                            <tr id="{{ category.id }}">
+                                <td>{{ category.category }}</td>
+                                <td class="actions" colspan="2">
+                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ category.id }})">Edit<i class="material-icons left">edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ category.id }})">Delete<i class="material-icons left">delete</i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        {{ pg.pagination(categories, 'admin_bp.categories_get') }}
+    </div>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-cat-modal">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="add-cat-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/categories" method="post" name="addForm">
+                <label>Category Name: <input type="text" name="catName" id="txtAddName" required></label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addCancel()">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="addConfirm()">Add</a>
+        </div>
+    </div>
+
+    <div id="edit-cat-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/categories" method="post" name="editForm">
+                <label>Category Name: <input type="text" name="catName" id="txtEditName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script>
+        function edit(id) {
+            fetch(`/api/categories/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                var modal = M.Modal.getInstance(document.getElementById('edit-cat-modal'));
+                
+                const txtName = document.getElementById('txtEditName');
+                const txtId = document.getElementById('txtEditId');
+
+                txtId.value = id;
+                txtName.value = data.category.category;
+
+                modal.open();
+            })
+        }
+
+        function del(id) {
+            fetch(`/api/categories/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                if (confirm(`You sure you want to delete ${data.category.category}?`)){
+                    fetch(`/api/categories/${id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    }).then(() => location.reload());
+                }
+            })
+        }
+
+        function addConfirm() {
+            if (document.addForm.checkValidity()){
+                document.addForm.submit()
+            } else {
+                document.addForm.reportValidity()
+            }
+        }
+
+        function editConfirm() {
+            if (document.editForm.checkValidity()){
+                document.editForm.submit()
+            } else {
+                document.editForm.reportValidity()
+            }
+        }
+
+        function addCancel() {
+            const txtName = document.getElementById('txtAddName');
+            txtName.value = '';
+        }
+    </script>
+{% endblock %}
