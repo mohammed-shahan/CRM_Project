@@ -1,0 +1,37 @@
+
+// navdrawer options
+const navOptions = {
+    'edge': 'left'
+}
+
+// navdrawer options
+const modalOptions = {
+}
+
+
+
+// navdrawer click
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, navOptions);
+});
+
+// Modal
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems, modalOptions);
+});
+
+
+// Select
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems, {});
+});
+
+
+// Pagination rows select
+function pageRows(url) {
+    const rows = event.target.value
+    window.location.href =  url + `?rows=${rows}`
+}

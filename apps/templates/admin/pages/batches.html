@@ -1,0 +1,161 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}batches{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <table id="batches">
+                    <thead>
+                        <tr>
+                            <th>Batch</th>
+                            <th>Course</th>
+                            <th>Size</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for batch in batches.items %}
+                            <tr id="{{ batch.id }}">
+                                <td class="batName">{{ batch.id }}</td>
+                                <td class="batName">{{ batch.course }}</td>
+                                <td class="batName">{{ batch.size }}</td>
+                                <td class="batName">{{ batch.status }}</td>
+                                <td class="actions">
+                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ batch.id }})">Edit<i class="material-icons left">edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ batch.id }})">Delete<i class="material-icons left">delete</i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if batches.pages != 0 %}
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s1"></div>
+                    <div class="col s10 center">
+                        <ul class="pagination">
+                            <li class="{% if batches.page == 1 %}disabled{% endif %}"><a href="{{ url_for('admin_bp.batches_get', page=batches.prev_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_left</i></a></li>
+                            {% for page_num in batches.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                                {% if page_num %}
+                                    <li class="{% if batches.page == page_num %}active indigo accent-4{% else %}waves-effect{% endif %}"><a href="{{ url_for('admin_bp.batches_get', page=page_num, rows=request.args.get('rows', 10)) }}">{{ page_num }}</a></li>
+                                {% else %}
+                                    ...
+                                {% endif %}
+                            {% endfor %}
+                            <li class="{% if batches.page == batches.pages %}disabled{% endif %}"><a href="{{ url_for('admin_bp.batches_get', page=batches.next_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_right</i></a></li>
+                        </ul>
+                        <div class="grey-text text-darken-2">
+                            Showing page {{ batches.page }} of {{ batches.pages }}
+                        </div>
+                    </div>
+                    <div class="input-field col s1">
+                        <select onchange="pageRows(event)">
+                            {% for i in [5, 10, 20, 50, 100] %}
+                            <option {% if batches.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                      </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-bat-modal">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="add-bat-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/batches" method="post" name="addForm">
+                <label>batch Name: <input type="text" name="batName" id="txtAddName" required></label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addCancel()">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="addConfirm()">Add</a>
+        </div>
+    </div>
+
+    <div id="edit-bat-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/batches" method="post" name="editForm">
+                <label>batch Name: <input type="text" name="batName" id="txtEditName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script>
+        function edit(id) {
+            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
+            const batName = children.find(element => element.className === 'batName').innerText
+
+
+            var modal = M.Modal.getInstance(document.getElementById('edit-bat-modal'));
+
+            const txtName = document.getElementById('txtEditName');
+            const txtId = document.getElementById('txtEditId');
+
+            txtId.value = id;
+            txtName.value = batName;
+
+            modal.open();
+        }
+
+        function del(id) {
+            const children = Array.prototype.slice.call(document.getElementById(id).childNodes);
+            const batName = children.find(element => element.className === 'batName').innerText
+
+            if (confirm(`You sure you want to delete ${batName}?`)){
+                fetch(`/api/batches/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
+        }
+
+        function addConfirm() {
+            if (document.addForm.checkValidity()){
+                document.addForm.submit()
+            } else {
+                document.addForm.reportValidity()
+            }
+        }
+
+        function editConfirm() {
+            if (document.editForm.checkValidity()){
+                document.editForm.submit()
+            } else {
+                document.editForm.reportValidity()
+            }
+        }
+
+        function addCancel() {
+            const txtName = document.getElementById('txtAddName');
+            txtName.value = '';
+        }
+
+        function pageRows(event) {
+            const rows = event.target.value
+            window.location.href = `/admin/batches?rows=${rows}`
+        }
+    </script>
+{% endblock %}

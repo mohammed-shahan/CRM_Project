@@ -1,0 +1,122 @@
+{% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
+
+{% block title %}Qualifications{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <table id="qualifications">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(qualifications, 'admin_bp.qualifications_get') }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for qualification in qualifications.items %}
+                            <tr id="{{ qualification.id }}">
+                                <td>{{ qualification.qualification }}</td>
+                                <td class="actions" colspan="2">
+                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ qualification.id }})">Edit<i class="material-icons left">edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ qualification.id }})">Delete<i class="material-icons left">delete</i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{ pg.pagination(qualifications, 'admin_bp.qualifications_get') }}
+    </div>
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-qual-modal">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="add-qual-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/qualifications" method="post" name="addForm">
+                <label>Name: <input type="text" id="txtAddName" name="qName" required></label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addCancel()">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="addConfirm()">Add</a>
+        </div>
+    </div>
+
+    <div id="edit-qual-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/qualifications" method="post" name="editForm">
+                <label>Name: <input type="text" id="txtEditName" name="qName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    function edit(id) {
+        fetch(`/api/qualifications/${id}`)
+        .then(response => response.json())
+        .then((data) => {
+            var modal = M.Modal.getInstance(document.getElementById('edit-qual-modal'));
+            
+            const txtName = document.getElementById('txtEditName');
+            const txtId = document.getElementById('txtEditId');
+
+            txtId.value = id;
+            txtName.value = data.qualification.qualification;
+
+            modal.open();
+        })
+    }
+
+    function del(id) {
+        fetch(`/api/qualifications/${id}`)
+        .then(response => response.json())
+        .then((data) => {
+            if (confirm(`You sure you want to delete ${data.qualification.qualification}?`)){
+                fetch(`/api/qualifications/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
+        })
+    }
+    
+    function addConfirm() {
+        if (document.addForm.checkValidity()){
+            document.addForm.submit()
+        } else {
+            document.addForm.reportValidity()
+        }
+    }
+
+    function editConfirm() {
+        if (document.editForm.checkValidity()){
+            document.editForm.submit()
+        } else {
+            document.editForm.reportValidity()
+        }
+    }
+
+    function addCancel() {
+        const txtName = document.getElementById('txtAddName');
+        txtName.value = '';
+    }
+</script>
+{% endblock %}

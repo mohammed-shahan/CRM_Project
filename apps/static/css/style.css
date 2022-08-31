@@ -1,0 +1,11 @@
+.sidenav .background img {
+    width: 100%;
+}
+
+.actions {
+    max-width: 50px;
+}
+
+#rows-select {
+    max-width: 0.5vw;
+}
