@@ -3,7 +3,6 @@ def deploy():
     from apps import create_app
     from apps.database import db
     from flask_migrate import upgrade, migrate, init, stamp
-    from apps.models import Users
 
     app = create_app()
     app.app_context().push()
@@ -19,7 +18,7 @@ def dummy():
     from werkzeug.security import generate_password_hash
     from apps import create_app
     from apps.database import db
-    from apps.models import Categories, Roles, Users, Qualifications
+    from apps.models import Categories, Roles, Users, Qualifications, Courses, Trainers
 
     app = create_app()
     app.app_context().push()
@@ -41,7 +40,16 @@ def dummy():
     db.session.add(Users('admin', '3', generate_password_hash('admin3'), 'admin@3', 1))
     db.session.add(Users('admin', '4', generate_password_hash('admin4'), 'admin@4', 1))
     db.session.commit()
+
+    db.session.add(Trainers('Abhilash', 'ab@gmail.com', "5646786786"))
+    db.session.add(Trainers('Akshay', 'ak@gmail.com', "56786876"))
+    db.session.add(Trainers('Ben', 'ben@gmail.com', "5646785486"))
+    db.session.commit()
     
+    db.session.add(Courses('Python', 'Basics of python', 4, 1, 1))
+    db.session.add(Courses('Java', 'Basics of java', 5, 2, 2))
+    db.session.add(Courses('C++', 'Basics of c++', 3, 3, 3))
+    db.session.commit()
 
 if __name__ == '__main__':
     deploy()

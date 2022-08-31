@@ -2,7 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import bp
-from apps.models import Categories, Qualifications, Users, Batches, Roles
+from apps.models import Categories, Qualifications, Users, Batches, Roles, Courses
 from apps.database import db
 from apps.auth.utils import admin_required
 
@@ -120,8 +120,11 @@ def categories_post():
 @bp.route('/courses')
 @login_required
 @admin_required
-def courses():
-    return render_template('admin/pages/courses.html', user=current_user)
+def courses_get():
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    courses = Courses.query.paginate(page=page, per_page=rowsPerPage)
+    return render_template('admin/pages/courses.html', user=current_user, courses=courses)
 
 @bp.route('/enquiries')
 @login_required
