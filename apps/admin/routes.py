@@ -11,7 +11,7 @@ from apps.auth.utils import admin_required
 @login_required
 @admin_required
 def dashboard():
-    return render_template('admin/pages/dashboard.html')
+    return render_template('admin/pages/dashboard.html', user=current_user)
 
 
 @bp.route('/qualifications', methods=['GET'])
@@ -21,7 +21,7 @@ def qualifications_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     qualifications = Qualifications.query.paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/qualifications.html', qualifications=qualifications)
+    return render_template('admin/pages/qualifications.html', qualifications=qualifications, user=current_user)
 
 @bp.route("/qualifications", methods=['POST'])
 @login_required
@@ -49,13 +49,13 @@ def qualifications_post():
 @login_required
 @admin_required
 def batches():
-    return render_template('admin/pages/batches.html')
+    return render_template('admin/pages/batches.html', user=current_user)
 
 @bp.route('/users')
 @login_required
 @admin_required
 def users():
-    return render_template('admin/pages/users.html')
+    return render_template('admin/pages/users.html', user=current_user)
 
 @bp.route('/categories', methods=['GET'])
 @login_required
@@ -64,7 +64,7 @@ def categories_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     categories = Categories.query.paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/categories.html', categories=categories)
+    return render_template('admin/pages/categories.html', categories=categories, user=current_user)
 
 
 @bp.route("/categories", methods=['POST'])
@@ -93,10 +93,10 @@ def categories_post():
 @login_required
 @admin_required
 def courses():
-    return render_template('admin/pages/courses.html')
+    return render_template('admin/pages/courses.html', user=current_user)
 
 @bp.route('/enquiries')
 @login_required
 @admin_required
 def enquiries_get():
-    return render_template('admin/enquiries.html')
+    return render_template('admin/enquiries.html', user=current_user)
