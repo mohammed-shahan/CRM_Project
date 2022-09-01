@@ -86,7 +86,8 @@ class Users(db.Model, UserMixin):
     firstName   = db.Column(db.String(20), nullable=False)
     lastName    = db.Column(db.String(20), nullable=False)
     email       = db.Column(db.String(120), unique=True, nullable=False)
-    password    = db.Column(db.String(300), nullable=False, unique=True)
+    phone       = db.Column(db.String(13))
+    password    = db.Column(db.String(300), nullable=False)
 
     role        = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
@@ -96,11 +97,12 @@ class Users(db.Model, UserMixin):
     enrollments = db.relationship("Enrollments")
     enquiries   = db.relationship("Enquiries")
 
-    def __init__(self, firstName, lastName, password, email, role) -> None:
+    def __init__(self, firstName, lastName, password, email, phone, role) -> None:
         self.firstName  = firstName
         self.lastName   = lastName
         self.password   = password
         self.email      = email
+        self.phone      = phone
         self.role       = role
 
 

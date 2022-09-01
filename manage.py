@@ -20,6 +20,8 @@ def dummy():
     from apps.database import db
     from apps.models import Categories, Roles, Users, Qualifications, Courses, Trainers
 
+    import csv
+
     app = create_app()
     app.app_context().push()
 
@@ -35,17 +37,26 @@ def dummy():
         db.session.add(Roles(role))
     db.session.commit()
 
-    db.session.add(Users('admin', '1', generate_password_hash('admin1'), 'admin@1', 1))
-    db.session.add(Users('admin', '2', generate_password_hash('admin2'), 'admin@2', 1))
-    db.session.add(Users('admin', '3', generate_password_hash('admin3'), 'admin@3', 1))
-    db.session.add(Users('admin', '4', generate_password_hash('admin4'), 'admin@4', 1))
+
+    db.session.add(Users('admin', '1', generate_password_hash('admin1'), 'admin@1', '6846546543', Roles.query.filter_by(role='Admin').first().id))
+    db.session.add(Users('admin', '2', generate_password_hash('admin2'), 'admin@2', '6656854443', Roles.query.filter_by(role='Admin').first().id))
+    db.session.add(Users('admin', '3', generate_password_hash('admin3'), 'admin@3', '6655484643', Roles.query.filter_by(role='Admin').first().id))
+    db.session.add(Users('admin', '4', generate_password_hash('admin4'), 'admin@4', '6846435465', Roles.query.filter_by(role='Admin').first().id))
+    
+    with open('stud_course_database.csv') as f:
+        password = generate_password_hash('user123')
+        csvreader = csv.reader(f)
+        header = next(csvreader)
+        for _, name, _, email, phone in csvreader:
+            db.session.add(Users(name.split()[0], ' '.join(name.split()[1:]), password, email, phone, Roles.query.filter_by(role='User').first().id))
     db.session.commit()
 
     db.session.add(Trainers('Abhilash', 'ab@gmail.com', "5646786786"))
     db.session.add(Trainers('Akshay', 'ak@gmail.com', "56786876"))
     db.session.add(Trainers('Ben', 'ben@gmail.com', "5646785486"))
     db.session.commit()
-    
+
+
     db.session.add(Courses('Python', 'Basics of python', 4, 1, 1))
     db.session.add(Courses('Java', 'Basics of java', 5, 2, 2))
     db.session.add(Courses('C++', 'Basics of c++', 3, 3, 3))
