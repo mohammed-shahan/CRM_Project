@@ -1,3 +1,4 @@
+from xmlrpc.client import boolean
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
@@ -144,7 +145,7 @@ def courses_get():
         courses = Courses.query.paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/courses.html', user=current_user, courses=courses, trainers=trainers)
 
-@bp.route('/enquiries')
+@bp.route('/enquiries', methods=['GET'])
 @login_required
 @admin_required
 def enquiries_get():
@@ -158,3 +159,25 @@ def enquiries_get():
     for course in Courses.query.all():
         courses[course.id] = course.name
     return render_template('admin/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses)
+
+@bp.route("/enquiries", methods=['POST'])
+@login_required
+@admin_required
+def enquiries_post():
+    id = request.form.get('id')
+    user = request.form.get('user')
+    course = request.form.get('course')
+    print(course)
+    description = request.form.get('description')
+    status = request.form.get('status')
+    stat = "true" == status
+    try:
+            enquiry = Enquiries.query.filter_by(id=int(id)).first()
+            setattr(enquiry, 'status', stat)
+            db.session.commit()
+    except:
+        flash('Failed to add Enquiry')
+        return redirect(url_for('admin_bp.enquiries_get'))
+    else:
+        flash('Enquiry added successfully')
+        return redirect(url_for('admin_bp.enquiries_get'))

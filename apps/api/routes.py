@@ -149,7 +149,7 @@ def courses_get(id):
         return jsonify({'course': {
             'id': id,
             'name': course.name,
-            'duration': course.duration,
+            'duration': course.durationWeeks,
             'description': course.description,
             'rating': course.rating,
             'comment': course.comment,
