@@ -1,0 +1,111 @@
+{% extends 'user/base.html' %}
+{% import "pagination.html" as pg %}
+
+{% block title %}Enquiries{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <table id="enquiries">
+                    <thead>
+                        <tr>
+                            <th>enquiry</th>
+                            <th>Course</th>
+                            <th>Descriprtion</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(enquiries, 'user_bp.enquiries_get') }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- TODO: Enquiries List only the user enquiries -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{ pg.pagination(enquiries, 'admin_bp.enquiries_get') }}
+    </div>
+
+    <div id="edit-enquiry-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/enquiries" method="post" name="editForm">
+                <input type="hidden" id="editId" name="id">
+                <label>First Name: <input type="text" name="firstName" id="editFname" required></label>
+                <label>Last Name: <input type="text" name="lastName" id="editLname" required></label>
+                <label>Email: <input type="text" name="email" id="editEmail" required></label>
+                <div class="input-field">
+                    <select name="role" id="editRole">
+                        {% for id, role in roles.items() %}
+                            <option value="{{ id }}">{{ role }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Role</label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <!-- <script>
+        function edit(id) {
+            fetch(`/api/enquiries/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                var modal = M.Modal.getInstance(document.getElementById('edit-enquiry-modal'));
+
+                const Id = document.getElementById('editId');
+                const fName = document.getElementById('editFname');
+                const lName = document.getElementById('editLname');
+                const email = document.getElementById('editEmail');
+                const role = document.getElementById('editRole');
+                console.log(data);
+
+                Id.value=id;
+                fName.value = data.enquiry.firstname;
+                lName.value = data.enquiry.lastname;
+                email.value = data.enquiry.email;
+                role.value = `${data.enquiry.role}`
+                if (typeof(Event) === 'function') {
+                    var event = new Event('change');
+                } else {  // for IE11
+                    var event = document.createEvent('Event');
+                    event.initEvent('change', true, true);
+                }
+                role.dispatchEvent(event);
+                
+                
+                modal.open();
+            })
+        }
+
+        function del(id) {
+            fetch(`/api/enquiries/${id}`)
+            .then(response => response.json())
+            .then((data) => {
+                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.firstname}, email: ${data.enquiry.email}?`)){
+                    fetch(`/api/enquiries/${id}`, {
+                        method: 'DELETE',
+                        credentials: 'include'
+                    }).then(() => location.reload());
+                }
+            })
+        }
+
+        function editConfirm() {
+            if (document.editForm.checkValidity()){
+                document.editForm.submit()
+            } else {
+                document.editForm.reportValidity()
+            }
+        }   
+    </script> -->
+{% endblock %}

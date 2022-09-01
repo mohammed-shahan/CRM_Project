@@ -9,8 +9,8 @@
             <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
         </div>
     </li>
-    <li><a href="/user/">Dashboard</a></li>
-    <li><a href="/user/courses">Courses</a></li>
-    <li><a href="/user/enquiries">Enquiries</a></li>
-    <li><a href="/user/profile">Profile</a></li>
+    <li><a href="/user/" {% if request.path == '/user/' %}class="active indigo accent-1"{% endif %}><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="/user/courses" {% if request.path == '/user/courses' %}class="active indigo accent-1"{% endif %}><i class="material-icons">book</i>Courses</a></li>
+    <li><a href="/user/enquiries" {% if request.path == '/user/enquiries' %}class="active indigo accent-1"{% endif %}><i class="material-icons">contact_support</i>Enquiries</a></li>
+    <li><a href="/user/profile" {% if request.path == '/user/profile' %}class="active indigo accent-1"{% endif %}><i class="material-icons">account_circle</i>Profile</a></li>
 </ul>
