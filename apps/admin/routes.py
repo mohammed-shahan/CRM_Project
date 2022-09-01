@@ -138,4 +138,4 @@ def courses_get():
 @login_required
 @admin_required
 def enquiries_get():
-    return render_template('admin/enquiries.html', user=current_user)
+    return render_template('admin/pages/enquiries.html', user=current_user)
