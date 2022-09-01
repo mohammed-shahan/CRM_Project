@@ -9,11 +9,11 @@
             <a href="#email"><span class="white-text email">{{ user.email }}</span></a>
         </div>
     </li>
-    <li><a href="/admin/"><i class="material-icons">dashboard</i>Dashboard</a></li>
-    <li><a href="/admin/courses"><i class="material-icons">book</i>Courses</a></li>
-    <li><a href="/admin/qualifications"><i class="material-icons">workspace_premium</i>Qualifications</a></li>
-    <li><a href="/admin/batches"><i class="material-icons">groups</i>Batches</a></li>
-    <li><a href="/admin/categories"><i class="material-icons">category</i>Categories</a></li>
-    <li><a href="/admin/enquiries"><i class="material-icons">contact_support</i>Enquiries</a></li>
-    <li><a href="/admin/users"><i class="material-icons">manage_account</i>Users</a></li>
+    <li><a href="/admin" {% if request.path == '/admin/' %}class="active indigo accent-1"{% endif %}><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="/admin/courses" {% if request.path == '/admin/courses' %}class="active indigo accent-1"{% endif %}><i class="material-icons">book</i>Courses</a></li>
+    <li><a href="/admin/qualifications" {% if request.path == '/admin/qualifications' %}class="active indigo accent-1"{% endif %}><i class="material-icons">workspace_premium</i>Qualifications</a></li>
+    <li><a href="/admin/batches" {% if request.path == '/admin/batches' %}class="active indigo accent-1"{% endif %}><i class="material-icons">groups</i>Batches</a></li>
+    <li><a href="/admin/categories" {% if request.path == '/admin/categories' %}class="active indigo accent-1"{% endif %}><i class="material-icons">category</i>Categories</a></li>
+    <li><a href="/admin/enquiries" {% if request.path == '/admin/enquiries' %}class="active indigo accent-1"{% endif %}><i class="material-icons">contact_support</i>Enquiries</a></li>
+    <li><a href="/admin/users" {% if request.path == '/admin/users' %}class="active indigo accent-1"{% endif %}><i class="material-icons">manage_account</i>Users</a></li>
 </ul>
