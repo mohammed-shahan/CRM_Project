@@ -1,4 +1,5 @@
 {% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
 
 {% block title %}users{% endblock %}
 
@@ -15,6 +16,7 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>Actions</th>
+                            <td id="rows-select">{{ pg.rows(users, 'admin_bp.users_get') }}</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,8 +25,8 @@
                                 <td class="firstName">{{ user.firstName }}</td>
                                 <td class="lastName">{{ user.lastName }}</td>
                                 <td class="email">{{ user.email }}</td>
-                                <td class="role">{{ user.role }}</td>
-                                <td class="actions">
+                                <td class="role">{{ roles[user.role] }}</td>
+                                <td class="actions" colspan="2">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ user.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
                                 </td>
@@ -34,38 +36,7 @@
                 </table>
             </div>
         </div>
-        {% if users.pages != 0 %}
-        <div class="card">
-            <div class="card-content">
-                <div class="row">
-                    <div class="col s1"></div>
-                    <div class="col s10 center">
-                        <ul class="pagination">
-                            <li class="{% if users.page == 1 %}disabled{% endif %}"><a href="{{ url_for('admin_bp.users_get', page=users.prev_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_left</i></a></li>
-                            {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-                                {% if page_num %}
-                                    <li class="{% if users.page == page_num %}active indigo accent-4{% else %}waves-effect{% endif %}"><a href="{{ url_for('admin_bp.users_get', page=page_num, rows=request.args.get('rows', 10)) }}">{{ page_num }}</a></li>
-                                {% else %}
-                                    ...
-                                {% endif %}
-                            {% endfor %}
-                            <li class="{% if users.page == users.pages %}disabled{% endif %}"><a href="{{ url_for('admin_bp.users_get', page=users.next_num, rows=request.args.get('rows', 10)) }}"><i class="material-icons">chevron_right</i></a></li>
-                        </ul>
-                        <div class="grey-text text-darken-2">
-                            Showing page {{ users.page }} of {{ users.pages }}
-                        </div>
-                    </div>
-                    <div class="input-field col s1">
-                        <select onchange="pageRows(event)">
-                            {% for i in [5, 10, 20, 50, 100] %}
-                            <option {% if users.per_page == i %}selected{% endif %} value="{{ i }}">{{ i }}</option>
-                            {% endfor %}
-                        </select>
-                      </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+        {{ pg.pagination(users, 'admin_bp.users_get') }}
     </div>
 
     <div id="edit-user-modal" class="modal">
@@ -77,8 +48,8 @@
                 <label>Email: <input type="text" name="email" id="editEmail" required></label>
                 <div class="input-field">
                     <select name="role" id="editRole">
-                        {% for role in roles %}
-                            <option value="{{ role.id }}">{{ role.role }}</option>
+                        {% for id, role in roles.items() %}
+                            <option value="{{ id }}">{{ role }}</option>
                         {% endfor %}
                     </select>
                     <label>Role</label>
@@ -107,10 +78,11 @@
                 const lName = document.getElementById('editLname');
                 const email = document.getElementById('editEmail');
                 const role = document.getElementById('editRole');
+                console.log(data);
 
                 Id.value=id;
-                fName.value = data.user.firstName;
-                lName.value = data.user.lastName;
+                fName.value = data.user.firstname;
+                lName.value = data.user.lastname;
                 email.value = data.user.email;
                 role.value = `${data.user.role}`
                 if (typeof(Event) === 'function') {
@@ -145,11 +117,6 @@
             } else {
                 document.editForm.reportValidity()
             }
-        }
-
-        function pageRows(event) {
-            const rows = event.target.value
-            window.location.href = `/admin/users?rows=${rows}`
-        }
+        }   
     </script>
 {% endblock %}
