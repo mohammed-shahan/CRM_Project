@@ -52,8 +52,8 @@
                 <label>Description: <input disabled type="text" name="description" id="editdescription" required></label>
                 <div class="input-field">
                     <select name="status" id="editStatus">
-                        <option value="0">Pending</option>
-                        <option value="1">Approved</option>
+                        <option value="false">Pending</option>
+                        <option value="true">Approved</option>
                     </select>
                     <label>Status</label>
                 </div>
@@ -95,13 +95,15 @@
                     course.value = data.course.name;
                 })
                 description.value = data.enquiry.description;
-                stat = data.enquiry.status;
-                console.log(stat)
-                if (stat == true){
-                    status.value = "Approved";
-                } else {
-                    status.value = "Pending";
+                status.value = `${data.enquiry.status}`;
+                console.log(status.value);
+                if (typeof(Event) === 'function') {
+                    var event = new Event('change');
+                } else {  // for IE11
+                    var event = document.createEvent('Event');
+                    event.initEvent('change', true, true);
                 }
+                status.dispatchEvent(event);
                 
                 
                 modal.open();
