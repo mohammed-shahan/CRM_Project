@@ -1,5 +1,6 @@
 {% extends 'admin/base.html' %}
 {% import "pagination.html" as pg %}
+{% import "search.html" as s %}
 
 {% block title %}Categories{% endblock %}
 
@@ -7,13 +8,23 @@
 
     <div class="container">
         <div class="card">
+            <div class="row">
+                <div class="col s11">
+                    {{ s.search('admin_bp.categories_get') }}
+                </div>
+                <div class="col s1">
+                    {{ pg.rows(categories, 'admin_bp.categories_get') }}
+                </div>
+            </div>
+        </div>
+        <div class="card">
             <div class="card-content">
                 <table id="categories">
                     <thead>
                         <tr>
                             <th>Category</th>
                             <th>Actions</th>
-                            <td id="rows-select">{{ pg.rows(categories, 'admin_bp.categories_get') }}</td>
+                            <td id="rows-select"></td>
                         </tr>
                     </thead>
                     <tbody>
