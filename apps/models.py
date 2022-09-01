@@ -34,6 +34,9 @@ class Courses(db.Model):
     description   = db.Column(db.String(100))
     rating        = db.Column(db.Float)
     comment       = db.Column(db.String(100))
+    videoLink     = db.Column(db.String(100))
+    syllabus      = db.Column(db.String(100))
+    status        = db.Column(db.Boolean)
     
     category      = db.Column(db.Integer, db.ForeignKey('categories.id'))
     trainer       = db.Column(db.Integer, db.ForeignKey('trainers.id'))
@@ -43,12 +46,15 @@ class Courses(db.Model):
     enrollments   = db.relationship("Enrollments")
     enquiries     = db.relationship("Enquiries")
 
-    def __init__(self, name, description, durationWeeks, category, trainer) -> None:
+    def __init__(self, name, description, durationWeeks, category, trainer, videoLink, syllabus, status) -> None:
         self.name           = name
         self.description    = description
         self.durationWeeks  = durationWeeks
         self.category       = category
         self.trainer        = trainer
+        self.videoLink      = videoLink
+        self.syllabus       = syllabus
+        self.status         = status
 
 
 class Roles(db.Model):

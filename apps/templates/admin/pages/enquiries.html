@@ -8,27 +8,27 @@
     <div class="container">
         <div class="card">
             <div class="card-content">
-                <table id="users">
+                <table id="enquiries">
                     <thead>
                         <tr>
-                            <th>User</th>
+                            <th>enquiry</th>
                             <th>Course</th>
                             <th>Descriprtion</th>
                             <th>Status</th>
                             <th>Actions</th>
-                            <td id="rows-select">{{ pg.rows(users, 'admin_bp.users_get') }}</td>
+                            <td id="rows-select">{{ pg.rows(enquiries, 'admin_bp.enquiries_get') }}</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for user in users.items %}
-                            <tr id="{{ user.id }}">
-                                <td class="firstName">{{ user.firstName }}</td>
-                                <td class="lastName">{{ user.lastName }}</td>
-                                <td class="email">{{ user.email }}</td>
-                                <td class="role">{{ roles[user.role] }}</td>
+                        {% for enquiry in enquiries.items %}
+                            <tr id="{{ enquiry.id }}">
+                                <td class="user">{{ enquiry.user }}</td>
+                                <td class="course">{{ enquiry.course }}</td>
+                                <td class="desc">{{ enquiry.description }}</td>
+                                <td class="status">{{ enquiry.status }}</td>
                                 <td class="actions" colspan="2">
-                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ user.id }})">Edit<i class="material-icons left">edit</i></a>
-                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
+                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ enquiry.id }})">Edit<i class="material-icons left">edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ enquiry.id }})">Delete<i class="material-icons left">delete</i></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -36,12 +36,12 @@
                 </table>
             </div>
         </div>
-        {{ pg.pagination(users, 'admin_bp.users_get') }}
+        {{ pg.pagination(enquiries, 'admin_bp.enquiries_get') }}
     </div>
 
-    <div id="edit-user-modal" class="modal">
+    <div id="edit-enquiry-modal" class="modal">
         <div class="modal-content">
-            <form action="/admin/users" method="post" name="editForm">
+            <form action="/admin/enquiries" method="post" name="editForm">
                 <input type="hidden" id="editId" name="id">
                 <label>First Name: <input type="text" name="firstName" id="editFname" required></label>
                 <label>Last Name: <input type="text" name="lastName" id="editLname" required></label>
@@ -68,10 +68,10 @@
 {{ super() }}
     <script>
         function edit(id) {
-            fetch(`/api/users/${id}`)
+            fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
-                var modal = M.Modal.getInstance(document.getElementById('edit-user-modal'));
+                var modal = M.Modal.getInstance(document.getElementById('edit-enquiry-modal'));
 
                 const Id = document.getElementById('editId');
                 const fName = document.getElementById('editFname');
@@ -81,10 +81,10 @@
                 console.log(data);
 
                 Id.value=id;
-                fName.value = data.user.firstname;
-                lName.value = data.user.lastname;
-                email.value = data.user.email;
-                role.value = `${data.user.role}`
+                fName.value = data.enquiry.firstname;
+                lName.value = data.enquiry.lastname;
+                email.value = data.enquiry.email;
+                role.value = `${data.enquiry.role}`
                 if (typeof(Event) === 'function') {
                     var event = new Event('change');
                 } else {  // for IE11
@@ -99,11 +99,11 @@
         }
 
         function del(id) {
-            fetch(`/api/users/${id}`)
+            fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
-                if (confirm(`You sure you want to delete the user: ${data.user.firstname}, email: ${data.user.email}?`)){
-                    fetch(`/api/users/${id}`, {
+                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.firstname}, email: ${data.enquiry.email}?`)){
+                    fetch(`/api/enquiries/${id}`, {
                         method: 'DELETE',
                         credentials: 'include'
                     }).then(() => location.reload());
