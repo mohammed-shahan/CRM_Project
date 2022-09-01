@@ -18,7 +18,7 @@ def dummy():
     from werkzeug.security import generate_password_hash
     from apps import create_app
     from apps.database import db
-    from apps.models import Categories, Roles, Users, Qualifications, Courses, Trainers
+    from apps.models import Categories, Roles, Users, Qualifications, Courses, Trainers, Enquiries
 
     import csv
 
@@ -90,6 +90,13 @@ def dummy():
                 'Enabled'==status
             ))
         db.session.commit()
+
+    
+    #adding some enquiries
+    db.session.add(Enquiries('This is the description of enquiry 1', 1, 4, 1))
+    db.session.add(Enquiries('This is the description of enquiry 2', 0, 5, 1))
+    db.session.add(Enquiries('This is the description of enquiry 3', 0, 4, 2))
+    db.session.commit()
 
 if __name__ == '__main__':
     deploy()

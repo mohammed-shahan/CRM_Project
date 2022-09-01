@@ -11,7 +11,7 @@
                 <table id="enquiries">
                     <thead>
                         <tr>
-                            <th>enquiry</th>
+                            <th>User</th>
                             <th>Course</th>
                             <th>Descriprtion</th>
                             <th>Status</th>
@@ -22,10 +22,14 @@
                     <tbody>
                         {% for enquiry in enquiries.items %}
                             <tr id="{{ enquiry.id }}">
-                                <td class="user">{{ enquiry.user }}</td>
-                                <td class="course">{{ enquiry.course }}</td>
+                                <td class="user">{{ users[enquiry.user] }}</td>
+                                <td class="course">{{ courses[enquiry.course] }}</td>
                                 <td class="desc">{{ enquiry.description }}</td>
-                                <td class="status">{{ enquiry.status }}</td>
+                                {% if enquiry.status==False %}
+                                    <td class="status">Pending</td>
+                                {% else %}
+                                    <td class="status">Approved</td>
+                                {% endif %}
                                 <td class="actions" colspan="2">
                                     <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ enquiry.id }})">Edit<i class="material-icons left">edit</i></a>
                                     <a href="#" class="waves-effect waves-light btn red" onclick="del({{ enquiry.id }})">Delete<i class="material-icons left">delete</i></a>
@@ -43,16 +47,15 @@
         <div class="modal-content">
             <form action="/admin/enquiries" method="post" name="editForm">
                 <input type="hidden" id="editId" name="id">
-                <label>First Name: <input type="text" name="firstName" id="editFname" required></label>
-                <label>Last Name: <input type="text" name="lastName" id="editLname" required></label>
-                <label>Email: <input type="text" name="email" id="editEmail" required></label>
+                <label>User: <input disabled type="text" name="user" id="editUser" required></label>
+                <label>Course: <input disabled type="text" name="course" id="editCourse" required></label>
+                <label>Description: <input disabled type="text" name="description" id="editdescription" required></label>
                 <div class="input-field">
-                    <select name="role" id="editRole">
-                        {% for id, role in roles.items() %}
-                            <option value="{{ id }}">{{ role }}</option>
-                        {% endfor %}
+                    <select name="status" id="editStatus">
+                        <option value="0">Pending</option>
+                        <option value="1">Approved</option>
                     </select>
-                    <label>Role</label>
+                    <label>Status</label>
                 </div>
             </form>
         </div>
@@ -74,24 +77,31 @@
                 var modal = M.Modal.getInstance(document.getElementById('edit-enquiry-modal'));
 
                 const Id = document.getElementById('editId');
-                const fName = document.getElementById('editFname');
-                const lName = document.getElementById('editLname');
-                const email = document.getElementById('editEmail');
-                const role = document.getElementById('editRole');
+                const user = document.getElementById('editUser');
+                const course = document.getElementById('editCourse');
+                const description = document.getElementById('editdescription');
+                const status = document.getElementById('editStatus');
                 console.log(data);
 
                 Id.value=id;
-                fName.value = data.enquiry.firstname;
-                lName.value = data.enquiry.lastname;
-                email.value = data.enquiry.email;
-                role.value = `${data.enquiry.role}`
-                if (typeof(Event) === 'function') {
-                    var event = new Event('change');
-                } else {  // for IE11
-                    var event = document.createEvent('Event');
-                    event.initEvent('change', true, true);
+                fetch(`/api/users/${data.enquiry.user}`)
+                .then(response => response.json())
+                .then(data => {
+                    user.value = data.user.email;
+                })
+                fetch(`/api/courses/${data.enquiry.course}`)
+                .then(response => response.json())
+                .then(data => {
+                    course.value = data.course.name;
+                })
+                description.value = data.enquiry.description;
+                stat = data.enquiry.status;
+                console.log(stat)
+                if (stat == true){
+                    status.value = "Approved";
+                } else {
+                    status.value = "Pending";
                 }
-                role.dispatchEvent(event);
                 
                 
                 modal.open();
@@ -102,7 +112,7 @@
             fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
-                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.firstname}, email: ${data.enquiry.email}?`)){
+                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.user}, description: ${data.enquiry.description}?`)){
                     fetch(`/api/enquiries/${id}`, {
                         method: 'DELETE',
                         credentials: 'include'
