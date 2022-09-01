@@ -1,0 +1,11 @@
+{% macro search(url_fn) %}
+<form action="{{ url_for(url_fn) }}" method="get" name="searchBox">
+    <div class="row">
+        <div class="input-field col s11">
+            <input id="search" type="text" name="search" {% if request.args.get('search') %}value="{{ request.args.get('search') }}"{% endif %}>
+            <label for="search">Search</label>
+            <i class="material-icons prefix" onclick="searchBox.submit()" style="cursor: pointer;">search</i>
+        </div>
+    </div>
+</form>
+{% endmacro %}

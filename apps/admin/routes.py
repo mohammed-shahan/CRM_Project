@@ -96,7 +96,12 @@ def users_post():
 def categories_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    categories = Categories.query.paginate(page=page, per_page=rowsPerPage)
+    search = request.args.get('search', '')
+    if search != '':
+        search = f'%{search}%'
+        categories = Categories.query.filter(Categories.category.like(search)).paginate(page=page, per_page=rowsPerPage)
+    else:
+        categories = Categories.query.paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/categories.html', categories=categories, user=current_user)
 
 
@@ -131,7 +136,12 @@ def courses_get():
         trainers[t.id] = t.name
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    courses = Courses.query.paginate(page=page, per_page=rowsPerPage)
+    search = request.args.get('search', '')
+    if search != '':
+        search = f'%{search}%'
+        courses = Courses.query.filter(Courses.name.like(search)).paginate(page=page, per_page=rowsPerPage)
+    else:
+        courses = Courses.query.paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/courses.html', user=current_user, courses=courses, trainers=trainers)
 
 @bp.route('/enquiries')

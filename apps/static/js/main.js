@@ -35,3 +35,11 @@ function pageRows(url) {
     const rows = event.target.value
     window.location.href =  url + `?rows=${rows}`
 }
+
+
+// Tooltips
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems, {});
+});
