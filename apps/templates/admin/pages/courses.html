@@ -25,26 +25,28 @@
             <div class="card-content row" id="course-detail" style="display: none;"></div>
         </div>
         <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Duration (weeks)</th>
-                        <th>Trainer</th>
-                        <td id="rows-select">{{ pg.rows(courses, 'admin_bp.courses_get') }}</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for course in courses.items %}
-                        <tr id="{{ course.id }}">
-                            <td>{{ course.name }}</td>
-                            <td>{{ course.durationWeeks }}</td>
-                            <td>{{ course.trainer }}</td>
-                            <td></td>
+            <div class="card-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Duration (weeks)</th>
+                            <th>Trainer</th>
+                            <td id="rows-select">{{ pg.rows(courses, 'admin_bp.courses_get') }}</td>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {% for course in courses.items %}
+                            <tr id="{{ course.id }}">
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.durationWeeks }}</td>
+                                <td>{{ trainers[course.trainer] }}</td>
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>    
 {% endblock %}
