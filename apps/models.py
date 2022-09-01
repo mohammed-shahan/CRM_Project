@@ -35,25 +35,26 @@ class Courses(db.Model):
     rating        = db.Column(db.Float)
     comment       = db.Column(db.String(100))
     videoLink     = db.Column(db.String(100))
-    syllabus      = db.Column(db.String(100))
     status        = db.Column(db.Boolean)
     
     category      = db.Column(db.Integer, db.ForeignKey('categories.id'))
     trainer       = db.Column(db.Integer, db.ForeignKey('trainers.id'))
+    qualification = db.Column(db.Integer, db.ForeignKey('qualifications.id'))
 
     batches       = db.relationship('Batches')
     reviews       = db.relationship('Reviews')
     enrollments   = db.relationship("Enrollments")
     enquiries     = db.relationship("Enquiries")
 
-    def __init__(self, name, description, durationWeeks, category, trainer, videoLink, syllabus, status) -> None:
+    def __init__(self, name, description, durationWeeks, category, trainer, videoLink, comment, qualification, status) -> None:
         self.name           = name
         self.description    = description
         self.durationWeeks  = durationWeeks
         self.category       = category
         self.trainer        = trainer
         self.videoLink      = videoLink
-        self.syllabus       = syllabus
+        self.comment        = comment
+        self.qualification  = qualification
         self.status         = status
 
 
@@ -72,13 +73,15 @@ class Qualifications(db.Model):
     id            = db.Column(db.Integer, primary_key=True)
     qualification = db.Column(db.String(20), unique=True)
     status        = db.Column(db.Boolean)
+    level         = db.Column(db.Integer, nullable=False)
 
     users         = db.relationship('UserQualifications')
-    courses       = db.relationship('CourseQualifications')
+    courses       = db.relationship('Courses')
 
-    def __init__(self, qualification) -> None:
+    def __init__(self, qualification, status, level) -> None:
         self.qualification = qualification
-        self.status        = True
+        self.status        = status
+        self.level         = level
 
 
 class UserQualifications(db.Model):
@@ -119,16 +122,6 @@ class UserLogs(db.Model):
 
     def __init__(self, user) -> None:
         self.user = user
-
-
-class CourseQualifications(db.Model):
-    id            = db.Column(db.Integer, primary_key=True)
-    course        = db.Column(db.Integer, db.ForeignKey('courses.id'))
-    qualification = db.Column(db.Integer, db.ForeignKey('qualifications.id'))
-
-    def __init__(self, course, qualification) -> None:
-        self.course        = course
-        self.qualification = qualification
 
 
 class Batches(db.Model):
