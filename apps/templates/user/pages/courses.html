@@ -1,145 +1,159 @@
 {% extends 'user/base.html' %}
+{% import "search.html" as s %}
+{% import "pagination.html" as pg %}
+
 {% block title %}Courses{% endblock %}
 
 {% block style %}
 {{ super() }}
-    <style>
-        
-        .card-action {
-            
-            border-top: 1px solid rgba(245, 241, 241, 0.5) !important;
-            
-        }
-    </style>
+<style>
+    .card-action {
+
+        border-top: 1px solid rgba(245, 241, 241, 0.5) !important;
+
+    }
+
+</style>
 {% endblock %}
 
 
 {% block content %}
-    
+
 <div class="container">
-    
+
     <h4 class="center">Courses</h4>
-    
+
+    <div class="card">
+        <div class="row">
+            <div class="col s11">
+                {{ s.search('admin_bp.courses_get') }}
+            </div>
+            <div class="col s1">
+                {{ pg.rows(courses, 'admin_bp.courses_get') }}
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         {% for course in courses.items %}
-       
-        <div class="col s12 m12 card light-blue darken-1" id="{{ course.id }}">
-        
+
+        <div class="col s12 m12 card light-blue darken-1">
+
             <div class="card-content white-text">
-            <span class="card-title">{{ course.name }}</span>
-            <p>{{ course.description }}</p>
-            
-            <div class="card-action">
-            <button class="btn modal-trigger right" href="#modal1">Enquire</button>
-        </div>
-            
+                <span class="card-title">{{ course.name }}</span>
+                <p>{{ course.description }}</p>
+
+                <div class="card-action">
+                    <button id="{{ course.id }}" class="btn right" onclick="fetchdata(event)">Enquire</button>
+                </div>
+
             </div>
 
         </div>
         {% endfor %}
     </div>
-           
+
 </div>
 
 
 <div id="modal1" class="modal">
     <div class="modal-content">
-      <h4 class="title center">Course Title</h4>
-      <p>Course Description  Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta corrupti doloremque odit, impedit repellat quo nam laboriosam iure est! Aspernatur quibusdam cumque ab dolores aliquid iusto voluptatem ipsam dignissimos quaerat!</p>
+        <h4 class="title center" id="coursetitle">Course Title</h4>
+        <p id="coursedescr">Course Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta corrupti
+            doloremque odit, impedit repellat quo nam laboriosam iure est! Aspernatur quibusdam cumque ab dolores
+            aliquid iusto voluptatem ipsam dignissimos quaerat!</p>
     </div>
 
     <div class="row fl-box">
-        
-        <div class="col s6 m4 center">
-            <label id="trainer">Trainer:</label>
-            <span>Trainer Name</span>
+
+        <div class="col s4 m4 center">
+            <label>Trainer:</label>
+            <span id="trainer">Trainer Name</span>
         </div>
-        <div class="col s6 m4 center">
-            <label id="trainer">Duration:</label>
-            <span>Trainer Name</span>
+        <div class="col s4 m4 center">
+            <label>Duration:</label>
+            <span id="duration">Duration</span>
         </div>
-        <div class="col s6 m4 center">
-            <label id="trainer">Rating:</label>
-            <span>Trainer Name</span>
+        <div class="col s4 m4 center">
+            <label>Rating:</label>
+            <span id="rating">Rating</span>
         </div>
+        <br>
+        <div class="col s4 m4 center">
+            <label>Status:</label>
+            <span id="status">Status</span>
+        </div>
+        <div class="col s4 m4 center">
+            <label>Qualification:</label>
+            <span id="qualification">Qualification</span>
+        </div>
+        <div class="col s4 m4 center">
+            <label>Category:</label>
+            <span id="category">Category</span>
+        </div>
+
     </div>
+<center>
+    <iframe  width="560" height="315" src="https://www.youtube.com/embed/Qr4QMBUPxWo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</center>
 
     <div class="modal-footer">
-        <button class="btn modal-trigger modal-close" id="" onclick="fetchdata(event)"">Enquire</button>
+        <button class="btn modal-trigger modal-close">Enquire</button>
         <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
     </div>
-  </div>
+</div>
 
 
-  <div id="modal2" class="modal">
+<div id="modal2" class="modal">
     <div class="modal-content center">
-      <h4 class="green">Enquired Successfully</h4>
-      
+        <h4 class="green">Enquired Successfully</h4>
+
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
     </div>
-  </div>
-          
+</div>
+
 
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>  
-          $(document).ready(function(){
-    $('.modal').modal();
-  });
-        
+<script>
+    function fetchdata(e) {
+        var modal = M.Modal.getInstance(document.getElementById('modal1'));
+        const id = e.target.id
 
+        // const txtId = document.getElementById('courseid');
+        const txtName = document.getElementById('coursetitle')
+        // const txtVideoLink = document.getElementById('txtEditVideoLink')
+        const txtDuration = document.getElementById('duration')
+        const selQualification = document.getElementById('qualification')
+        const selStatus = document.getElementById('status')
+        const selCategory = document.getElementById('category')
+        const selTrainer = document.getElementById('trainer')
+        const txtDescription = document.getElementById('coursedescr')
+        // const txtComment = document.getElementById('txtEditComment')
 
-//   function viewCourse(e) {
-//             setEditState(false)
-//             editState = false
-//             document.getElementById('editSaveBtn').style.display = 'none'
-//             document.getElementById('editEnableBtn').style.display = 'inline-block'
+        fetch(`/api/courses/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                const course = data.course
 
-//             var modal = M.Modal.getInstance(document.getElementById('edit-modal'));
-//             const id = e.target.parentElement.id
+                // txtId.innerText = id
+                txtName.innerText = course.name
+                // txtVideoLink.innerText = course.videolink
+                txtDuration.innerText = course.duration
+                selQualification.innerText = course.qualification
+                selStatus.innerText = course.status
+                selCategory.innerText = course.category
+                selTrainer.innerText = course.trainer
+                txtDescription.innerText = course.description
+                // txtComment.innerText = course.comment
 
-//             const txtId = document.getElementById('txtEditId');
-//             const txtName = document.getElementById('txtEditName')
-//             const txtVideoLink = document.getElementById('txtEditVideoLink')
-//             const txtDuration = document.getElementById('txtEditDuration')
-//             const selQualification = document.getElementById('selEditQualification')
-//             const selStatus = document.getElementById('selEditStatus')
-//             const selCategory = document.getElementById('selEditCategory')
-//             const selTrainer = document.getElementById('selEditTrainer')
-//             const txtDescription = document.getElementById('txtEditDescription')
-//             const txtComment = document.getElementById('txtEditComment')
+            })
 
-//             fetch(`/api/courses/${id}`)
-//             .then(response => response.json())
-//             .then(data => {
-//                 const course = data.course
-
-//                 txtId.value = id
-//                 txtName.value = course.name
-//                 txtVideoLink.value = course.videolink
-//                 txtDuration.value = course.duration
-//                 selQualification.value = course.qualification
-//                 selStatus.value = course.status
-//                 selCategory.value = course.category
-//                 selTrainer.value = course.trainer
-//                 txtDescription.value = course.description
-//                 txtComment.value = course.comment
-
-//                 M.updateTextFields();
-//                 M.textareaAutoResize(txtDescription);
-//                 M.textareaAutoResize(txtComment);
-//                 M.FormSelect.init(document.querySelectorAll('select'));
-//             })
-
-//             modal.open()
-//         }
-
-
-
-      </script>
+        modal.open()
+    }
+</script>
 {% endblock %}
