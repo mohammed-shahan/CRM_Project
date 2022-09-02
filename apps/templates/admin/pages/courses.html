@@ -24,6 +24,7 @@
                             <th>Name</th>
                             <th>Duration (weeks)</th>
                             <th>Status</th>
+                            <th>Rating</th>
                             <th>Trainer</th>
                         </tr>
                     </thead>
@@ -33,6 +34,11 @@
                                 <td>{{ course.name }}</td>
                                 <td>{{ course.durationWeeks }}</td>
                                 <td>{{ 'Enabled' if course.status else 'Disabled' }}</td>
+                                <td>
+                                    <i class="material-icons amber-text">{{ 'star ' * (course.rating | round(0, 'floor') | int) }}</i>
+                                    {% if (course.rating - course.rating | round(0, 'floor')) > 0 %}<i class="material-icons amber-text">star_half</i>{% endif %}
+                                    <i class="material-icons grey-text">{{ 'star_border ' * (5 - course.rating | round(0, 'ceil') | int) }}</i>
+                                </td>
                                 <td>{{ trainers[course.trainer] }}</td>
                             </tr>
                         {% endfor %}

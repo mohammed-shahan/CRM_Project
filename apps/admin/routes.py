@@ -20,7 +20,12 @@ def dashboard():
 def qualifications_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    qualifications = Qualifications.query.order_by(Qualifications.level.desc()).paginate(page=page, per_page=rowsPerPage)
+    search = request.args.get('search', '')
+    if search != '':
+        search = f'%{search}%'
+        qualifications = Qualifications.query.filter(Qualifications.qualification.like(search)).paginate(page=page, per_page=rowsPerPage)
+    else:
+        qualifications = Qualifications.query.order_by(Qualifications.level.desc()).paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/qualifications.html', qualifications=qualifications, user=current_user)
 
 @bp.route("/qualifications", methods=['POST'])

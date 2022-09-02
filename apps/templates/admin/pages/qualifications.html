@@ -1,5 +1,6 @@
 {% extends 'admin/base.html' %}
 {% import "pagination.html" as pg %}
+{% import "search.html" as s %}
 
 {% block title %}Qualifications{% endblock %}
 
@@ -9,6 +10,7 @@
         <div class="card">
             <div class="row">
                 <div class="col s11">
+                    {{ s.search('admin_bp.qualifications_get') }}
                 </div>
                 <div class="col s1">
                     {{ pg.rows(qualifications, 'admin_bp.qualifications_get') }}
