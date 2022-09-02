@@ -8,7 +8,7 @@ def admin_required(func):
     @wraps(func)
     def isadmin(*args,**kwargs):
         if(current_user.role!=1):
-            return redirect(url_for('auth_bp.warning'))
+            return redirect(url_for('auth_bp.login'))
         return func(*args,**kwargs)
     return isadmin
 
@@ -16,7 +16,7 @@ def user_required(func):
     @wraps(func)
     def isuser(*args,**kwargs):
         if(current_user.role!=2):
-            return redirect(url_for('auth_bp.warning'))
+            return redirect(url_for('auth_bp.login'))
         return func(*args,**kwargs)
     return isuser
 
