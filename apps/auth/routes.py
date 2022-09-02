@@ -34,7 +34,7 @@ def login():
                 if(current_user.role==1):
                     return redirect(url_for('admin_bp.dashboard'))
                 else:
-                    return redirect(url_for('user_bp.courses'))
+                    return redirect(url_for('user_bp.dashboard'))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:

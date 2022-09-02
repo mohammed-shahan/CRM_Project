@@ -70,7 +70,12 @@ def users_get():
         roles[role.id] = role.role
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    users = Users.query.paginate(page=page, per_page=rowsPerPage)
+    search = request.args.get('search', '')
+    if search != '':
+        search = f'%{search}%'
+        users = Users.query.filter(Users.email.like(search)).paginate(page=page, per_page=rowsPerPage)
+    else:
+        users = Users.query.paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/users.html', users=users, user=current_user, roles=roles)
 
 @bp.route("/users", methods=['POST'])
