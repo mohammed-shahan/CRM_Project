@@ -23,6 +23,7 @@ appsList = (
     'user',
     'auth',
     'api',
+    'root',
 )
 
 
