@@ -52,6 +52,7 @@ def dummy():
     db.session.add(Users('admin', '2', generate_password_hash('admin2'), 'admin@2', '6656854443', Roles.query.filter_by(role='Admin').first().id))
     db.session.add(Users('admin', '3', generate_password_hash('admin3'), 'admin@3', '6655484643', Roles.query.filter_by(role='Admin').first().id))
     db.session.add(Users('admin', '4', generate_password_hash('admin4'), 'admin@4', '6846435465', Roles.query.filter_by(role='Admin').first().id))
+    db.session.add(Users('user', 'abc', generate_password_hash('user123'), 'user@foo', '6846435465', Roles.query.filter_by(role='User').first().id))
     db.session.commit()
     
     # Add normal users
