@@ -20,24 +20,27 @@
     
     <h4 class="center">Courses</h4>
     
-    <div class="row fl-box">
+    <div class="row">
         {% for course in courses.items %}
-        <div class="col s12 m6 " id="{{ course.id }}">
-        <div class="card light-blue darken-1">
+       
+        <div class="col s12 m12 card light-blue darken-1" id="{{ course.id }}">
+        
             <div class="card-content white-text">
             <span class="card-title">{{ course.name }}</span>
             <p>{{ course.description }}</p>
-            </div>
+            
             <div class="card-action">
-            <a href="#modal1" class="modal-trigger">Enquire</a>
+            <button class="btn modal-trigger right" href="#modal1">Enquire</button>
+        </div>
             
             </div>
-        </div>
+
         </div>
         {% endfor %}
     </div>
            
 </div>
+
 
 <div id="modal1" class="modal">
     <div class="modal-content">
@@ -62,7 +65,7 @@
     </div>
 
     <div class="modal-footer">
-        <button class="btn modal-trigger modal-close" id="{{ course.id }}" onclick="fetchdata(event)"">Enquire</button>
+        <button class="btn modal-trigger modal-close" id="" onclick="fetchdata(event)"">Enquire</button>
         <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
     </div>
   </div>
