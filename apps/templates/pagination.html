@@ -23,6 +23,14 @@
             </div>
         </div>
     </div>
+    <script>
+        if (queryDict['search']){
+            const pageLinks = Array.prototype.slice.call(document.querySelectorAll('.pagination a'))
+            pageLinks.forEach(link => {
+                link.href = `${link.href}&search=${queryDict['search']}`
+            });
+        }
+    </script>
 {% endif %}
 {% endmacro %}
 
