@@ -12,4 +12,12 @@ def admin_required(func):
         return func(*args,**kwargs)
     return isadmin
 
+def user_required(func):
+    @wraps(func)
+    def isuser(*args,**kwargs):
+        if(current_user.role!=0):
+            return redirect(url_for('auth_bp.warning'))
+        return func(*args,**kwargs)
+    return isuser
+
         
