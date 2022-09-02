@@ -53,7 +53,62 @@
     <div id="add-modal" class="modal">
         <div class="modal-content">
             <form action="/admin/courses" method="post" name="addForm">
-                <label>Name: <input type="text" id="txtAddName" name="qName" required></label>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="txtAddName" name="name" required>
+                        <label for="txtAddName">Course Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input type="text" id="txtAddVideoLink" name="videolink" required>
+                        <label for="txtAddVideoLink">Video Link</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input type="text" id="txtAddDuration" name="duration" required>
+                        <label for="txtAddDuration">Duration (Weeks)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="qualification" id="selAddQualification">
+                            <option value=""></option>
+                        </select>
+                        <label for="selAddQualification">Qualification</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="status" id="selAddStatus">
+                            <option value=""></option>
+                        </select>
+                        <label for="selAddStatus">Status</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="category" id="selAddCategory">
+                            <option value=""></option>
+                        </select>
+                        <label for="selAddCategory">Category</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="trainer" id="selAddTrainer">
+                            <option value=""></option>
+                        </select>
+                        <label for="selAddTrainer">Trainer</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="description" id="txtAddDescription"></textarea>
+                        <label for="txtAddDescription">Description</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="comment" id="txtAddComment"></textarea>
+                        <label for="txtAddComment">Comment</label>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -65,18 +120,164 @@
     <div id="edit-modal" class="modal">
         <div class="modal-content">
             <form action="/admin/courses" method="post" name="editForm">
-                <label>Name: <input type="text" id="txtEditName" name="qName" required></label>
                 <input type="hidden" id="txtEditId" name="id">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="txtEditName" name="name" required disabled>
+                        <label for="txtEditName">Course Name</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s8">
+                        <input type="text" id="txtEditVideoLink" name="videolink" required disabled>
+                        <label for="txtEditVideoLink">Video Link</label>
+                    </div>
+                    <div class="input-field col s4">
+                        <input type="text" id="txtEditDuration" name="duration" required disabled>
+                        <label for="txtEditDuration">Duration (Weeks)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="qualification" id="selEditQualification" disabled>
+                            <option value=""></option>
+                        </select>
+                        <label for="selEditQualification">Qualification</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="status" id="selEditStatus" disabled>
+                            <option value=""></option>
+                        </select>
+                        <label for="selEditStatus">Status</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <select name="category" id="selEditCategory" disabled>
+                            <option value=""></option>
+                        </select>
+                        <label for="selEditCategory">Category</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <select name="trainer" id="selEditTrainer" disabled>
+                            <option value=""></option>
+                        </select>
+                        <label for="selEditTrainer">Trainer</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="description" id="txtEditDescription" disabled></textarea>
+                        <label for="txtEditDescription">Description</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea class="materialize-textarea" name="comment" id="txtEditComment" disabled></textarea>
+                        <label for="txtEditComment">Comment</label>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
-            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+            <a href="#" class="waves-effect btn-flat red" onclick="editCancel()">Cancel</a>
+            <a href="#" class="waves-effect btn-flat green" onclick="editEnable()" id="editEnableBtn">Edit</a>
+            <a href="#" class="waves-effect btn-flat green" onclick="editConfirm()" id="editSaveBtn">Save</a>
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <script></script>
+    <script>
+        var editState = false
+
+        function viewCourse(e) {
+            setEditState(false)
+            editState = false
+            document.getElementById('editSaveBtn').style.display = 'none'
+            document.getElementById('editEnableBtn').style.display = 'inline-block'
+
+            var modal = M.Modal.getInstance(document.getElementById('edit-modal'));
+            const id = e.target.parentElement.id
+
+            const txtId = document.getElementById('txtEditId');
+            const txtName = document.getElementById('txtEditName')
+            const txtVideoLink = document.getElementById('txtEditVideoLink')
+            const txtDuration = document.getElementById('txtEditDuration')
+            const selQualification = document.getElementById('selEditQualification')
+            const selStatus = document.getElementById('selEditStatus')
+            const selCategory = document.getElementById('selEditCategory')
+            const selTrainer = document.getElementById('selEditTrainer')
+            const txtDescription = document.getElementById('txtEditDescription')
+            const txtComment = document.getElementById('txtEditComment')
+
+            fetch(`/api/courses/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                const course = data.course
+
+                txtId.value = id
+                txtName.value = course.name
+                txtVideoLink.value = course.videolink
+                txtDuration.value = course.duration
+                selQualification.value = course.qualification
+                selStatus.value = course.status
+                selCategory.value = course.category
+                selTrainer.value = course.trainer
+                txtDescription.value = course.description
+                txtComment.value = course.comment
+
+                if (typeof(Event) === 'function') {
+                    var event = new Event('change');
+                } else {  // for IE11
+                    var event = document.createEvent('Event');
+                    event.initEvent('change', true, true);
+                }
+                M.updateTextFields();
+                M.textareaAutoResize(txtDescription);
+                M.textareaAutoResize(txtComment);
+                selQualification.dispatchEvent(event);
+                selStatus.dispatchEvent(event);
+                selCategory.dispatchEvent(event);
+                selTrainer.dispatchEvent(event);
+            })
+
+            modal.open()
+        }
+
+        function setEditState(state) {
+            [
+                document.getElementById('txtEditName'),
+                document.getElementById('txtEditVideoLink'),
+                document.getElementById('txtEditDuration'),
+                document.getElementById('selEditQualification'),
+                document.getElementById('selEditStatus'),
+                document.getElementById('selEditCategory'),
+                document.getElementById('selEditTrainer'),
+                document.getElementById('txtEditDescription'),
+                document.getElementById('txtEditComment')
+            ].forEach(inp => inp.disabled = !state)
+        }
+    
+        function editCancel() {
+            if (editState){
+                editState = false;
+                setEditState(false)
+                document.getElementById('editEnableBtn').style.display = 'inline-block'
+                document.getElementById('editSaveBtn').style.display = 'none'
+            }else{
+                var modal = M.Modal.getInstance(document.getElementById('edit-modal'));
+                modal.close()
+            }
+        }
+
+        function editEnable() {
+            editState = true
+            setEditState(true);
+            document.getElementById('editEnableBtn').style.display = 'none'
+            document.getElementById('editSaveBtn').style.display = 'inline-block'
+        }
+    </script>
 {% endblock %}
+ 
