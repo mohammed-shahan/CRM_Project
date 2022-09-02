@@ -139,8 +139,14 @@ def categories_post():
 @admin_required
 def courses_get():
     trainers = {}
+    qualifications = {}
+    categories = {}
     for t in Trainers.query.all():
         trainers[t.id] = t.name
+    for q in Qualifications.query.all():
+        qualifications[q.id] = {'name': q.qualification, 'status': q.status}
+    for c in Categories.query.all():
+        categories[c.id] = c.category
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     search = request.args.get('search', '')
@@ -149,7 +155,14 @@ def courses_get():
         courses = Courses.query.filter(Courses.name.like(search)).paginate(page=page, per_page=rowsPerPage)
     else:
         courses = Courses.query.order_by(Courses.id.desc()).paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/courses.html', user=current_user, courses=courses, trainers=trainers)
+    return render_template(
+        'admin/pages/courses.html',
+        user=current_user,
+        courses=courses,
+        trainers=trainers,
+        categories=categories,
+        qualifications=qualifications
+    )
 
 @bp.route('/enquiries', methods=['GET'])
 @login_required

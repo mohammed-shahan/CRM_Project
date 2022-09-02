@@ -72,13 +72,16 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="qualification" id="selAddQualification">
-                            <option value=""></option>
+                            {% for id, q in qualifications.items() %}
+                                <option value="{{ id }}" {{ 'disabled' if not q.status }}>{{ q.name }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selAddQualification">Qualification</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="status" id="selAddStatus">
-                            <option value=""></option>
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
                         </select>
                         <label for="selAddStatus">Status</label>
                     </div>
@@ -86,13 +89,17 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="category" id="selAddCategory">
-                            <option value=""></option>
+                            {% for id, c in categories.items() %}
+                                <option value="{{ id }}">{{ c }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selAddCategory">Category</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="trainer" id="selAddTrainer">
-                            <option value=""></option>
+                            {% for id, t in trainers.items() %}
+                                <option value="{{ id }}">{{ t }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selAddTrainer">Trainer</label>
                     </div>
@@ -140,13 +147,16 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="qualification" id="selEditQualification" disabled>
-                            <option value=""></option>
+                            {% for id, q in qualifications.items() %}
+                                <option value="{{ id }}" {{ 'disabled' if not q.status }}>{{ q.name }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selEditQualification">Qualification</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="status" id="selEditStatus" disabled>
-                            <option value=""></option>
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
                         </select>
                         <label for="selEditStatus">Status</label>
                     </div>
@@ -154,13 +164,17 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="category" id="selEditCategory" disabled>
-                            <option value=""></option>
+                            {% for id, c in categories.items() %}
+                                <option value="{{ id }}">{{ c }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selEditCategory">Category</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="trainer" id="selEditTrainer" disabled>
-                            <option value=""></option>
+                            {% for id, t in trainers.items() %}
+                                <option value="{{ id }}">{{ t }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selEditTrainer">Trainer</label>
                     </div>
