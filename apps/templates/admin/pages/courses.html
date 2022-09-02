@@ -26,6 +26,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Duration (weeks)</th>
+                            <th>Status</th>
                             <th>Trainer</th>
                         </tr>
                     </thead>
@@ -34,6 +35,7 @@
                             <tr id="{{ course.id }}" onclick="viewCourse(event)">
                                 <td>{{ course.name }}</td>
                                 <td>{{ course.durationWeeks }}</td>
+                                <td>{{ 'Enabled' if course.status else 'Disabled' }}</td>
                                 <td>{{ trainers[course.trainer] }}</td>
                             </tr>
                         {% endfor %}
@@ -72,13 +74,16 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="qualification" id="selAddQualification">
-                            <option value=""></option>
+                            {% for id, q in qualifications.items() %}
+                                <option value="{{ id }}" {{ 'disabled' if not q.status }}>{{ q.name }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selAddQualification">Qualification</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="status" id="selAddStatus">
-                            <option value=""></option>
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
                         </select>
                         <label for="selAddStatus">Status</label>
                     </div>
@@ -86,13 +91,17 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="category" id="selAddCategory">
-                            <option value=""></option>
+                            {% for id, c in categories.items() %}
+                                <option value="{{ id }}">{{ c }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selAddCategory">Category</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="trainer" id="selAddTrainer">
-                            <option value=""></option>
+                            {% for id, t in trainers.items() %}
+                                <option value="{{ id }}">{{ t }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selAddTrainer">Trainer</label>
                     </div>
@@ -140,13 +149,16 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="qualification" id="selEditQualification" disabled>
-                            <option value=""></option>
+                            {% for id, q in qualifications.items() %}
+                                <option value="{{ id }}" {{ 'disabled' if not q.status }}>{{ q.name }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selEditQualification">Qualification</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="status" id="selEditStatus" disabled>
-                            <option value=""></option>
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
                         </select>
                         <label for="selEditStatus">Status</label>
                     </div>
@@ -154,13 +166,17 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <select name="category" id="selEditCategory" disabled>
-                            <option value=""></option>
+                            {% for id, c in categories.items() %}
+                                <option value="{{ id }}">{{ c }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selEditCategory">Category</label>
                     </div>
                     <div class="input-field col s6">
                         <select name="trainer" id="selEditTrainer" disabled>
-                            <option value=""></option>
+                            {% for id, t in trainers.items() %}
+                                <option value="{{ id }}">{{ t }}</option>
+                            {% endfor %}
                         </select>
                         <label for="selEditTrainer">Trainer</label>
                     </div>
@@ -180,7 +196,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#" class="waves-effect btn-flat red" onclick="editCancel()">Cancel</a>
+            <a href="#" class="waves-effect btn-flat red" onclick="del()" style="float: left;">Delete</a>
+            <a href="#" class="waves-effect btn-flat grey" onclick="editCancel()">Cancel</a>
             <a href="#" class="waves-effect btn-flat green" onclick="editEnable()" id="editEnableBtn">Edit</a>
             <a href="#" class="waves-effect btn-flat green" onclick="editConfirm()" id="editSaveBtn">Save</a>
         </div>
@@ -228,19 +245,10 @@
                 txtDescription.value = course.description
                 txtComment.value = course.comment
 
-                if (typeof(Event) === 'function') {
-                    var event = new Event('change');
-                } else {  // for IE11
-                    var event = document.createEvent('Event');
-                    event.initEvent('change', true, true);
-                }
                 M.updateTextFields();
                 M.textareaAutoResize(txtDescription);
                 M.textareaAutoResize(txtComment);
-                selQualification.dispatchEvent(event);
-                selStatus.dispatchEvent(event);
-                selCategory.dispatchEvent(event);
-                selTrainer.dispatchEvent(event);
+                M.FormSelect.init(document.querySelectorAll('select'));
             })
 
             modal.open()
@@ -258,6 +266,7 @@
                 document.getElementById('txtEditDescription'),
                 document.getElementById('txtEditComment')
             ].forEach(inp => inp.disabled = !state)
+            M.FormSelect.init(document.querySelectorAll('select'));
         }
     
         function editCancel() {
@@ -277,6 +286,33 @@
             setEditState(true);
             document.getElementById('editEnableBtn').style.display = 'none'
             document.getElementById('editSaveBtn').style.display = 'inline-block'
+        }
+    
+        function addConfirm() {
+            if (document.addForm.checkValidity()){
+                document.addForm.submit()
+            } else {
+                document.addForm.reportValidity()
+            }
+        }
+        
+        function editConfirm() {
+            if (document.editForm.checkValidity()){
+                document.editForm.submit()
+            } else {
+                document.editForm.reportValidity()
+            }
+        }
+    
+        function del() {
+            const id = document.getElementById('txtEditId').value;
+            const name = document.getElementById('txtEditName').value
+            if(confirm(`You sure you want to delete ${name}?`)){
+                fetch(`/api/courses/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
         }
     </script>
 {% endblock %}
