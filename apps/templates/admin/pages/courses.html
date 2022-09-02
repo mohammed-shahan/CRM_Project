@@ -1,21 +1,8 @@
 {% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
+{% import "search.html" as s %}
+
 {% block title %}Courses{% endblock %}
-
-{% block style %}
-{{ super() }}
-    <style>
-        #course-detail .details {
-            width: 50%;
-            display: inline-block;
-        }
-
-        #course-detail .desc {
-            width: 50%;
-            display: inline-block;
-        }
-    </style>
-{% endblock %}
-
 
 {% block content %}
     <div class="container">
@@ -23,22 +10,73 @@
             <div class="card-content row" id="course-detail" style="display: none;"></div>
         </div>
         <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Trainer</th>
-                        <th>Start Date</th>
-                    </tr>
-                </thead>
-                <tbody id="courselist"></tbody>
-            </table>
+            <div class="row">
+                <div class="col s11">
+                    {{ s.search('admin_bp.courses_get') }}
+                </div>
+                <div class="col s1">
+                    {{ pg.rows(courses, 'admin_bp.courses_get') }}
+                </div>
+            </div>
         </div>
+        <div class="card">
+            <div class="card-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Duration (weeks)</th>
+                            <th>Trainer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses.items %}
+                            <tr id="{{ course.id }}" onclick="viewCourse(event)">
+                                <td>{{ course.name }}</td>
+                                <td>{{ course.durationWeeks }}</td>
+                                <td>{{ trainers[course.trainer] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {{ pg.pagination(courses, 'admin_bp.courses_get') }}
     </div>    
+
+    <div class="fixed-action-btn">
+        <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-modal">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+
+    <div id="add-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/courses" method="post" name="addForm">
+                <label>Name: <input type="text" id="txtAddName" name="qName" required></label>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addCancel()">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="addConfirm()">Add</a>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <form action="/admin/courses" method="post" name="editForm">
+                <label>Name: <input type="text" id="txtEditName" name="qName" required></label>
+                <input type="hidden" id="txtEditId" name="id">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <script src="static/js/courselist.js"></script>
+    <script></script>
 {% endblock %}

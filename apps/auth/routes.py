@@ -55,6 +55,7 @@ def register():
         email = request.form.get('email')
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
+        phone_number = request.form.get('phone')
         password = request.form.get('password')
 
         user = Users.query.filter_by(email=email).first()
@@ -64,10 +65,12 @@ def register():
             flash('Email must be greater than 3 characters.', category='error')
         elif len(first_name) < 2:
             flash('First name must be greater than 1 character.', category='error')
+        elif len(phone_number) < 10:
+            flash('Please enter 10 digits for phone number.', category='error')
         elif len(password) < 6:
             flash('Password must be at least 6 characters.', category='error')
         else:
-            new_user = Users(email=email, firstName=first_name, lastName=last_name, password=generate_password_hash(
+            new_user = Users(email=email, firstName=first_name, lastName=last_name, phone=phone_number, password=generate_password_hash(
                 password, method='sha256'),role=2)
             db.session.add(new_user)
             db.session.commit()

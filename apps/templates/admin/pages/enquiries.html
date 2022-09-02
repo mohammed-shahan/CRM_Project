@@ -4,24 +4,35 @@
 {% block title %}Enquiries{% endblock %}
 
 {% block content %}
+
     <div class="container">
         <div class="card">
             <div class="card-content">
-                <table id="categories">
+                <table id="enquiries">
                     <thead>
                         <tr>
-                            <th>Category</th>
+                            <th>User</th>
+                            <th>Course</th>
+                            <th>Descriprtion</th>
+                            <th>Status</th>
                             <th>Actions</th>
-                            <td id="rows-select">{{ pg.rows(categories, 'admin_bp.categories_get') }}</td>
+                            <td id="rows-select">{{ pg.rows(enquiries, 'admin_bp.enquiries_get') }}</td>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for category in categories.items %}
-                            <tr id="{{ category.id }}">
-                                <td>{{ category.category }}</td>
+                        {% for enquiry in enquiries.items %}
+                            <tr id="{{ enquiry.id }}">
+                                <td class="user">{{ users[enquiry.user] }}</td>
+                                <td class="course">{{ courses[enquiry.course] }}</td>
+                                <td class="desc">{{ enquiry.description }}</td>
+                                {% if enquiry.status==False %}
+                                    <td class="status">Pending</td>
+                                {% else %}
+                                    <td class="status">Approved</td>
+                                {% endif %}
                                 <td class="actions" colspan="2">
-                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ category.id }})">Edit<i class="material-icons left">edit</i></a>
-                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ category.id }})">Delete<i class="material-icons left">delete</i></a>
+                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ enquiry.id }})">Edit<i class="material-icons left">edit</i></a>
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ enquiry.id }})">Delete<i class="material-icons left">delete</i></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -29,33 +40,23 @@
                 </table>
             </div>
         </div>
-        
-        {{ pg.pagination(categories, 'admin_bp.categories_get') }}
+        {{ pg.pagination(enquiries, 'admin_bp.enquiries_get') }}
     </div>
 
-    <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-cat-modal">
-            <i class="large material-icons">add</i>
-        </a>
-    </div>
-
-    <div id="add-cat-modal" class="modal">
+    <div id="edit-enquiry-modal" class="modal">
         <div class="modal-content">
-            <form action="/admin/categories" method="post" name="addForm">
-                <label>Category Name: <input type="text" name="catName" id="txtAddName" required></label>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addCancel()">Cancel</a>
-            <a href="#" class="waves-effect waves-green btn-flat green" onclick="addConfirm()">Add</a>
-        </div>
-    </div>
-
-    <div id="edit-cat-modal" class="modal">
-        <div class="modal-content">
-            <form action="/admin/categories" method="post" name="editForm">
-                <label>Category Name: <input type="text" name="catName" id="txtEditName" required></label>
-                <input type="hidden" id="txtEditId" name="id">
+            <form action="/admin/enquiries" method="post" name="editForm">
+                <input type="hidden" id="editId" name="id">
+                <label>User: <input disabled type="text" name="user" id="editUser" required></label>
+                <label>Course: <input disabled type="text" name="course" id="editCourse" required></label>
+                <label>Description: <input disabled type="text" name="description" id="editdescription" required></label>
+                <div class="input-field">
+                    <select name="status" id="editStatus">
+                        <option value="false">Pending</option>
+                        <option value="true">Approved</option>
+                    </select>
+                    <label>Status</label>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -70,40 +71,56 @@
 {{ super() }}
     <script>
         function edit(id) {
-            fetch(`/api/categories/${id}`)
+            fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
-                var modal = M.Modal.getInstance(document.getElementById('edit-cat-modal'));
+                var modal = M.Modal.getInstance(document.getElementById('edit-enquiry-modal'));
+
+                const Id = document.getElementById('editId');
+                const user = document.getElementById('editUser');
+                const course = document.getElementById('editCourse');
+                const description = document.getElementById('editdescription');
+                const status = document.getElementById('editStatus');
+                console.log(data);
+
+                Id.value=id;
+                fetch(`/api/users/${data.enquiry.user}`)
+                .then(response => response.json())
+                .then(data => {
+                    user.value = data.user.email;
+                })
+                fetch(`/api/courses/${data.enquiry.course}`)
+                .then(response => response.json())
+                .then(data => {
+                    course.value = data.course.name;
+                })
+                description.value = data.enquiry.description;
+                status.value = `${data.enquiry.status}`;
+                console.log(status.value);
+                if (typeof(Event) === 'function') {
+                    var event = new Event('change');
+                } else {  // for IE11
+                    var event = document.createEvent('Event');
+                    event.initEvent('change', true, true);
+                }
+                status.dispatchEvent(event);
                 
-                const txtName = document.getElementById('txtEditName');
-                const txtId = document.getElementById('txtEditId');
-
-                txtId.value = id;
-                txtName.value = data.category.category;
-
+                
                 modal.open();
             })
         }
 
         function del(id) {
-            fetch(`/api/categories/${id}`)
+            fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
-                if (confirm(`You sure you want to delete ${data.category.category}?`)){
-                    fetch(`/api/categories/${id}`, {
+                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.user}, description: ${data.enquiry.description}?`)){
+                    fetch(`/api/enquiries/${id}`, {
                         method: 'DELETE',
                         credentials: 'include'
                     }).then(() => location.reload());
                 }
             })
-        }
-
-        function addConfirm() {
-            if (document.addForm.checkValidity()){
-                document.addForm.submit()
-            } else {
-                document.addForm.reportValidity()
-            }
         }
 
         function editConfirm() {
@@ -112,11 +129,6 @@
             } else {
                 document.editForm.reportValidity()
             }
-        }
-
-        function addCancel() {
-            const txtName = document.getElementById('txtAddName');
-            txtName.value = '';
-        }
+        }   
     </script>
 {% endblock %}
