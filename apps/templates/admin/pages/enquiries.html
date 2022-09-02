@@ -42,11 +42,13 @@
                                 {% else %}
                                     <td class="status">Approved</td>
                                 {% endif %}
-                                {% if enquiry.status==False %}
-                                    <td class="actions" colspan="2">
+                                <td class="actions center" colspan="2">
+                                    {% if enquiry.status==False %}
                                         <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ enquiry.id }}, {{enquiry.user}}, {{enquiry.course}})">Edit<i class="material-icons left">edit</i></a>
-                                    </td>
-                                {% endif %}
+                                    {% else %}
+                                        <i class="material-icons green-text">checked</i>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
