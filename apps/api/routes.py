@@ -40,7 +40,9 @@ def qualifications_get(id):
     if q:
         return jsonify({'qualification': {
             'id': id,
-            'qualification': q.qualification
+            'qualification': q.qualification,
+            'level': q.level,
+            'status': q.status,
         }}), 200
     else:
         abort(404)

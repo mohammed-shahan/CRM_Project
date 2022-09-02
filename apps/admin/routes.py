@@ -21,22 +21,28 @@ def dashboard():
 def qualifications_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    qualifications = Qualifications.query.paginate(page=page, per_page=rowsPerPage)
+    qualifications = Qualifications.query.order_by(Qualifications.level.desc()).paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/qualifications.html', qualifications=qualifications, user=current_user)
 
 @bp.route("/qualifications", methods=['POST'])
 @login_required
 @admin_required
 def qualifications_post():
+    # POST not working
     id = request.form.get('id')
     qName = request.form.get('qName')
+    status = request.form.get('status') == 'true'
+    level = request.form.get('level', type=int)
+    print(id, qName, status, level)
     try:
         if id:
             q = Qualifications.query.filter_by(id=int(id)).first()
             setattr(q, 'qualification', qName)
+            setattr(q, 'status', status)
+            setattr(q, 'level', level)
             db.session.commit()
         else:
-            db.session.add(Qualifications(qName))
+            db.session.add(Qualifications(qName, status, level))
             db.session.commit()
     except:
         flash('Failed to add Qualification')
@@ -102,7 +108,7 @@ def categories_get():
         search = f'%{search}%'
         categories = Categories.query.filter(Categories.category.like(search)).paginate(page=page, per_page=rowsPerPage)
     else:
-        categories = Categories.query.paginate(page=page, per_page=rowsPerPage)
+        categories = Categories.query.order_by(Categories.id.desc()).paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/categories.html', categories=categories, user=current_user)
 
 
@@ -142,7 +148,7 @@ def courses_get():
         search = f'%{search}%'
         courses = Courses.query.filter(Courses.name.like(search)).paginate(page=page, per_page=rowsPerPage)
     else:
-        courses = Courses.query.paginate(page=page, per_page=rowsPerPage)
+        courses = Courses.query.order_by(Courses.id.desc()).paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/courses.html', user=current_user, courses=courses, trainers=trainers)
 
 @bp.route('/enquiries', methods=['GET'])
