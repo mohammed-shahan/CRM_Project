@@ -1,11 +1,23 @@
 {% extends 'admin/base.html' %}
 {% import "pagination.html" as pg %}
+{% import "search.html" as s %}
+
 
 {% block title %}Enquiries{% endblock %}
 
 {% block content %}
 
     <div class="container">
+        <div class="card">
+            <div class="row">
+                <div class="col s11">
+                    {{ s.search('admin_bp.enquiries_get') }}
+                </div>
+                <div class="col s1">
+                    {{ pg.rows(enquiries, 'admin_bp.enquiries_get') }}
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-content">
                 <table id="enquiries">
@@ -16,7 +28,7 @@
                             <th>Descriprtion</th>
                             <th>Status</th>
                             <th>Actions</th>
-                            <td id="rows-select">{{ pg.rows(enquiries, 'admin_bp.enquiries_get') }}</td>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,10 +42,11 @@
                                 {% else %}
                                     <td class="status">Approved</td>
                                 {% endif %}
-                                <td class="actions" colspan="2">
-                                    <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ enquiry.id }})">Edit<i class="material-icons left">edit</i></a>
-                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ enquiry.id }})">Delete<i class="material-icons left">delete</i></a>
-                                </td>
+                                {% if enquiry.status==False %}
+                                    <td class="actions" colspan="2">
+                                        <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ enquiry.id }}, {{enquiry.user}}, {{enquiry.course}})">Edit<i class="material-icons left">edit</i></a>
+                                    </td>
+                                {% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -47,13 +60,15 @@
         <div class="modal-content">
             <form action="/admin/enquiries" method="post" name="editForm">
                 <input type="hidden" id="editId" name="id">
+                <input type="hidden" id="editUserId" name="user_id">
+                <input type="hidden" id="editCourseId" name="course_id">
                 <label>User: <input disabled type="text" name="user" id="editUser" required></label>
                 <label>Course: <input disabled type="text" name="course" id="editCourse" required></label>
                 <label>Description: <input disabled type="text" name="description" id="editdescription" required></label>
                 <div class="input-field">
                     <select name="status" id="editStatus">
-                        <option value="false">Pending</option>
                         <option value="true">Approved</option>
+                        <option value="false">Pending</option>
                     </select>
                     <label>Status</label>
                 </div>
@@ -70,20 +85,24 @@
 {% block scripts %}
 {{ super() }}
     <script>
-        function edit(id) {
+        function edit(id, user_id, course_id) {
             fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
                 var modal = M.Modal.getInstance(document.getElementById('edit-enquiry-modal'));
 
                 const Id = document.getElementById('editId');
+                const user_Id = document.getElementById('editUserId');
+                const course_Id = document.getElementById('editCourseId');
                 const user = document.getElementById('editUser');
                 const course = document.getElementById('editCourse');
                 const description = document.getElementById('editdescription');
                 const status = document.getElementById('editStatus');
                 console.log(data);
 
-                Id.value=id;
+                Id.value = id;
+                user_Id.value = user_id;
+                course_Id.value = course_id;
                 fetch(`/api/users/${data.enquiry.user}`)
                 .then(response => response.json())
                 .then(data => {

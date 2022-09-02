@@ -1,9 +1,8 @@
-from xmlrpc.client import boolean
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import bp
-from apps.models import Categories, Qualifications, Trainers, Users, Batches, Roles, Courses, Enquiries
+from apps.models import Categories, Qualifications, Trainers, Users, Batches, Roles, Courses, Enquiries, Enrollments
 from apps.database import db
 from apps.auth.utils import admin_required
 
@@ -152,12 +151,22 @@ def enquiries_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     enquiries = Enquiries.query.paginate(page=page, per_page=rowsPerPage)
+    search = request.args.get('search', '')
     users = {}
     for user in Users.query.all():
         users[user.id] = user.email
     courses = {}
     for course in Courses.query.all():
         courses[course.id] = course.name
+    if search != '':
+        search = f'%{search}%'
+        _users = Users.query.filter(Users.email.like(search))
+        for user in _users:
+            enquiries = Enquiries.query.filter(Enquiries.user == user.id).paginate(page=page, per_page=rowsPerPage)
+            if enquiries.pages:
+                break
+    else:
+        enquiries = Enquiries.query.paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses)
 
 @bp.route("/enquiries", methods=['POST'])
@@ -165,15 +174,18 @@ def enquiries_get():
 @admin_required
 def enquiries_post():
     id = request.form.get('id')
+    user_id = request.form.get('user_id')
+    course_id = request.form.get('course_id')
     user = request.form.get('user')
     course = request.form.get('course')
-    print(course)
     description = request.form.get('description')
     status = request.form.get('status')
     stat = "true" == status
     try:
             enquiry = Enquiries.query.filter_by(id=int(id)).first()
-            setattr(enquiry, 'status', stat)
+            if stat:
+                setattr(enquiry, 'status', stat)
+                db.session.add(Enrollments(user_id,course_id))
             db.session.commit()
     except:
         flash('Failed to add Enquiry')
