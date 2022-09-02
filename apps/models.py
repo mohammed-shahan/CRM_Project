@@ -56,6 +56,7 @@ class Courses(db.Model):
         self.comment        = comment
         self.qualification  = qualification
         self.status         = status
+        self.rating         = 0
 
 
 class Roles(db.Model):
