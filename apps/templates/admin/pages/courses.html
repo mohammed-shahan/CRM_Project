@@ -196,7 +196,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#" class="waves-effect btn-flat red" onclick="editCancel()">Cancel</a>
+            <a href="#" class="waves-effect btn-flat red" onclick="del()" style="float: left;">Delete</a>
+            <a href="#" class="waves-effect btn-flat grey" onclick="editCancel()">Cancel</a>
             <a href="#" class="waves-effect btn-flat green" onclick="editEnable()" id="editEnableBtn">Edit</a>
             <a href="#" class="waves-effect btn-flat green" onclick="editConfirm()" id="editSaveBtn">Save</a>
         </div>
@@ -300,6 +301,17 @@
                 document.editForm.submit()
             } else {
                 document.editForm.reportValidity()
+            }
+        }
+    
+        function del() {
+            const id = document.getElementById('txtEditId').value;
+            const name = document.getElementById('txtEditName').value
+            if(confirm(`You sure you want to delete ${name}?`)){
+                fetch(`/api/courses/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
             }
         }
     </script>
