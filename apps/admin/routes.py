@@ -20,22 +20,28 @@ def dashboard():
 def qualifications_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    qualifications = Qualifications.query.paginate(page=page, per_page=rowsPerPage)
+    qualifications = Qualifications.query.order_by(Qualifications.level.desc()).paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/qualifications.html', qualifications=qualifications, user=current_user)
 
 @bp.route("/qualifications", methods=['POST'])
 @login_required
 @admin_required
 def qualifications_post():
+    # POST not working
     id = request.form.get('id')
     qName = request.form.get('qName')
+    status = request.form.get('status') == 'true'
+    level = request.form.get('level', type=int)
+    print(id, qName, status, level)
     try:
         if id:
             q = Qualifications.query.filter_by(id=int(id)).first()
             setattr(q, 'qualification', qName)
+            setattr(q, 'status', status)
+            setattr(q, 'level', level)
             db.session.commit()
         else:
-            db.session.add(Qualifications(qName))
+            db.session.add(Qualifications(qName, status, level))
             db.session.commit()
     except:
         flash('Failed to add Qualification')
@@ -101,7 +107,7 @@ def categories_get():
         search = f'%{search}%'
         categories = Categories.query.filter(Categories.category.like(search)).paginate(page=page, per_page=rowsPerPage)
     else:
-        categories = Categories.query.paginate(page=page, per_page=rowsPerPage)
+        categories = Categories.query.order_by(Categories.id.desc()).paginate(page=page, per_page=rowsPerPage)
     return render_template('admin/pages/categories.html', categories=categories, user=current_user)
 
 
@@ -132,8 +138,14 @@ def categories_post():
 @admin_required
 def courses_get():
     trainers = {}
+    qualifications = {}
+    categories = {}
     for t in Trainers.query.all():
         trainers[t.id] = t.name
+    for q in Qualifications.query.all():
+        qualifications[q.id] = {'name': q.qualification, 'status': q.status}
+    for c in Categories.query.all():
+        categories[c.id] = c.category
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
     search = request.args.get('search', '')
@@ -141,8 +153,64 @@ def courses_get():
         search = f'%{search}%'
         courses = Courses.query.filter(Courses.name.like(search)).paginate(page=page, per_page=rowsPerPage)
     else:
-        courses = Courses.query.paginate(page=page, per_page=rowsPerPage)
-    return render_template('admin/pages/courses.html', user=current_user, courses=courses, trainers=trainers)
+        courses = Courses.query.order_by(Courses.id.desc()).paginate(page=page, per_page=rowsPerPage)
+    return render_template(
+        'admin/pages/courses.html',
+        user=current_user,
+        courses=courses,
+        trainers=trainers,
+        categories=categories,
+        qualifications=qualifications
+    )
+
+@bp.route('/courses', methods=['POST'])
+@login_required
+@admin_required
+def courses_post():
+    id            = request.form.get('id', type=int)
+    name          = request.form.get('name')
+    videolink     = request.form.get('videolink')
+    duration      = request.form.get('duration', type=int)
+    qualification = request.form.get("qualification", type=int)
+    status        = request.form.get("status") == 'true'
+    category      = request.form.get("category", type=int)
+    trainer       = request.form.get('trainer', type=int)
+    description   = request.form.get("description", '')
+    comment       = request.form.get('comment', '')
+
+    try:
+        if id:
+            course = Courses.query.filter_by(id=id).first()
+            setattr(course, 'name', name)
+            setattr(course, 'durationWeeks', duration)
+            setattr(course, 'description', description)
+            setattr(course, 'comment', comment)
+            setattr(course, 'videoLink', videolink)
+            setattr(course, 'status', status)
+            setattr(course, "category", category)
+            setattr(course, "trainer", trainer)
+            setattr(course, "qualification", qualification)
+            db.session.commit()
+        else:
+            db.session.add(Courses(
+                name,
+                description,
+                duration,
+                category,
+                trainer,
+                videolink,
+                comment,
+                qualification,
+                status
+            ))
+            db.session.commit()
+    except:
+        flash('Failed to add Course')
+        return redirect(url_for('admin_bp.courses_get'))
+    else:
+        flash('Course added successfully')
+        return redirect(url_for('admin_bp.courses_get'))
+
 
 @bp.route('/enquiries', methods=['GET'])
 @login_required
