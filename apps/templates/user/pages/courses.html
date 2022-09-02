@@ -4,19 +4,139 @@
 {% block style %}
 {{ super() }}
     <style>
+        
+        .card-action {
+            
+            border-top: 1px solid rgba(245, 241, 241, 0.5) !important;
+            
+        }
     </style>
 {% endblock %}
 
 
 {% block content %}
-    <div class="container">
-        <div class="card">
-            <div class="card-content"></div>
+    
+<div class="container">
+    
+    <h4 class="center">Courses</h4>
+    
+    <div class="row fl-box">
+        {% for course in courses.items %}
+        <div class="col s12 m6 " id="{{ course.id }}">
+        <div class="card light-blue darken-1">
+            <div class="card-content white-text">
+            <span class="card-title">{{ course.name }}</span>
+            <p>{{ course.description }}</p>
+            </div>
+            <div class="card-action">
+            <a href="#modal1" class="modal-trigger">Enquire</a>
+            
+            </div>
         </div>
-    </div>    
+        </div>
+        {% endfor %}
+    </div>
+           
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4 class="title center">Course Title</h4>
+      <p>Course Description  Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta corrupti doloremque odit, impedit repellat quo nam laboriosam iure est! Aspernatur quibusdam cumque ab dolores aliquid iusto voluptatem ipsam dignissimos quaerat!</p>
+    </div>
+
+    <div class="row fl-box">
+        
+        <div class="col s6 m4 center">
+            <label id="trainer">Trainer:</label>
+            <span>Trainer Name</span>
+        </div>
+        <div class="col s6 m4 center">
+            <label id="trainer">Duration:</label>
+            <span>Trainer Name</span>
+        </div>
+        <div class="col s6 m4 center">
+            <label id="trainer">Rating:</label>
+            <span>Trainer Name</span>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn modal-trigger modal-close" id="{{ course.id }}" onclick="fetchdata(event)"">Enquire</button>
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
+    </div>
+  </div>
+
+
+  <div id="modal2" class="modal">
+    <div class="modal-content center">
+      <h4 class="green">Enquired Successfully</h4>
+      
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
+          
+
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <script src="static/js/courses.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>  
+          $(document).ready(function(){
+    $('.modal').modal();
+  });
+        
+
+
+//   function viewCourse(e) {
+//             setEditState(false)
+//             editState = false
+//             document.getElementById('editSaveBtn').style.display = 'none'
+//             document.getElementById('editEnableBtn').style.display = 'inline-block'
+
+//             var modal = M.Modal.getInstance(document.getElementById('edit-modal'));
+//             const id = e.target.parentElement.id
+
+//             const txtId = document.getElementById('txtEditId');
+//             const txtName = document.getElementById('txtEditName')
+//             const txtVideoLink = document.getElementById('txtEditVideoLink')
+//             const txtDuration = document.getElementById('txtEditDuration')
+//             const selQualification = document.getElementById('selEditQualification')
+//             const selStatus = document.getElementById('selEditStatus')
+//             const selCategory = document.getElementById('selEditCategory')
+//             const selTrainer = document.getElementById('selEditTrainer')
+//             const txtDescription = document.getElementById('txtEditDescription')
+//             const txtComment = document.getElementById('txtEditComment')
+
+//             fetch(`/api/courses/${id}`)
+//             .then(response => response.json())
+//             .then(data => {
+//                 const course = data.course
+
+//                 txtId.value = id
+//                 txtName.value = course.name
+//                 txtVideoLink.value = course.videolink
+//                 txtDuration.value = course.duration
+//                 selQualification.value = course.qualification
+//                 selStatus.value = course.status
+//                 selCategory.value = course.category
+//                 selTrainer.value = course.trainer
+//                 txtDescription.value = course.description
+//                 txtComment.value = course.comment
+
+//                 M.updateTextFields();
+//                 M.textareaAutoResize(txtDescription);
+//                 M.textareaAutoResize(txtComment);
+//                 M.FormSelect.init(document.querySelectorAll('select'));
+//             })
+
+//             modal.open()
+//         }
+
+
+
+      </script>
 {% endblock %}
