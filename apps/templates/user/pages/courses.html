@@ -4,74 +4,90 @@
 {% block style %}
 {{ super() }}
     <style>
+        
+        .card-action {
+            
+            border-top: 1px solid rgba(245, 241, 241, 0.5) !important;
+            
+        }
     </style>
 {% endblock %}
 
 
 {% block content %}
     
-    <div class="container">
+<div class="container">
     
+    <h4 class="center">Courses</h4>
+    
+    <div class="row fl-box">
 
-        <h4>Courses</h4>
-
-<div class="row fl-box">
-
-    <div class="col s12 m6">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-          <span class="card-title">Card Title</span>
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
+        <div class="col s12 m6 ">
+        <div class="card light-blue darken-1">
+            <div class="card-content white-text">
+            <span class="card-title">Course Name</span>
+            <p>I am a very simple card. I am good at containing small bits of information.
+            I am convenient because I require little markup to use effectively.</p>
+            </div>
+            <div class="card-action">
+            <a href="#modal1" class="modal-trigger">Enquire</a>
+            
+            </div>
         </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-          <a href="#">This is a link</a>
         </div>
-      </div>
+    </div>
+           
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4 class="title center">Course Title</h4>
+      <p>Course Description  Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta corrupti doloremque odit, impedit repellat quo nam laboriosam iure est! Aspernatur quibusdam cumque ab dolores aliquid iusto voluptatem ipsam dignissimos quaerat!</p>
     </div>
 
-
-    <div class="col s12 m6">
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">Card Title</span>
-            <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-          </div>
-          <div class="card-action">
-            <a href="#">This is a link</a>
-            <a href="#">This is a link</a>
-          </div>
+    <div class="row fl-box">
+        
+        <div class="col s6 m4 center">
+            <label id="trainer">Trainer:</label>
+            <span>Trainer Name</span>
         </div>
-      </div>
-
-
-      <div class="col s12 m6">
-        <div class="card blue-grey darken-1">
-          <div class="card-content white-text">
-            <span class="card-title">Card Title</span>
-            <p>I am a very simple card. I am good at containing small bits of information.
-            I am convenient because I require little markup to use effectively.</p>
-          </div>
-          <div class="card-action">
-            <a href="#">This is a link</a>
-            <a href="#">This is a link</a>
-          </div>
+        <div class="col s6 m4 center">
+            <label id="trainer">Duration:</label>
+            <span>Trainer Name</span>
         </div>
-      </div>
+        <div class="col s6 m4 center">
+            <label id="trainer">Rating:</label>
+            <span>Trainer Name</span>
+        </div>
+    </div>
 
-
-
+    <div class="modal-footer">
+        <button data-target="modal2" class="btn modal-trigger modal-close">Enquire</button>
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
+    </div>
   </div>
-           
 
 
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <h4>Modal Header</h4>
+      <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
   </div>
-</div>
+          
+
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <script src="static/js/courses.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>  
+          $(document).ready(function(){
+    $('.modal').modal();
+  });
+        
+      </script>
 {% endblock %}
