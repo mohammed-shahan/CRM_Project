@@ -1,5 +1,5 @@
 from flask import redirect, url_for, render_template, jsonify, abort, request
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 from . import bp
 from apps.models import Categories, Qualifications, Users, Roles, Enquiries, Courses, Trainers
@@ -142,6 +142,17 @@ def enquiries_delete(id):
         else:
             abort(404)
 
+@bp.route('/enquiries/<int:id>', methods=['POST'])
+@login_required
+@admin_required
+def enquiries_post(id):
+    course = Courses.query.filter_by(id=id).first()
+    if course:
+        db.session.add(Enquiries(current_user.id, id))
+        db.session.commit()
+        return jsonify({'message': 'success'}), 200
+    else:
+        return jsonify({'error': 'course does not exist'})
 
         
 @bp.route('/courses/<int:id>', methods=['GET'])
