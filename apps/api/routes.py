@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from . import bp
 from apps.models import Categories, Qualifications, Users, Roles, Enquiries, Courses, Trainers
 from apps.database import db
-from apps.auth.utils import admin_required
+from apps.auth.utils import admin_required, user_required
 
 
 @bp.route('/categories/<int:id>', methods=['GET'])
@@ -144,7 +144,7 @@ def enquiries_delete(id):
 
 @bp.route('/enquiries/<int:id>', methods=['POST'])
 @login_required
-@admin_required
+@user_required
 def enquiries_post(id):
     course = Courses.query.filter_by(id=id).first()
     if course:
