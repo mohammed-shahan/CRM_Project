@@ -93,12 +93,12 @@ def users_post():
     email = request.form.get('email')
     role = request.form.get('role')
     try:
-            user = Users.query.filter_by(id=int(id)).first()
-            setattr(user, 'firstName', firstName)
-            setattr(user, 'lastName', lastName)
-            setattr(user, 'email', email)
-            setattr(user, 'role', role)
-            db.session.commit()
+        user = Users.query.filter_by(id=int(id)).first()
+        setattr(user, 'firstName', firstName)
+        setattr(user, 'lastName', lastName)
+        setattr(user, 'email', email)
+        setattr(user, 'role', role)
+        db.session.commit()
     except:
         flash('Failed to add User')
         return redirect(url_for('admin_bp.users_get'))
