@@ -93,18 +93,19 @@ def users_post():
     email = request.form.get('email')
     role = request.form.get('role')
     try:
-            user = Users.query.filter_by(id=int(id)).first()
-            setattr(user, 'firstName', firstName)
-            setattr(user, 'lastName', lastName)
-            setattr(user, 'email', email)
-            setattr(user, 'role', role)
-            db.session.commit()
+        user = Users.query.filter_by(id=int(id)).first()
+        setattr(user, 'firstName', firstName)
+        setattr(user, 'lastName', lastName)
+        setattr(user, 'email', email)
+        setattr(user, 'role', role)
+        db.session.commit()
     except:
         flash('Failed to add User')
         return redirect(url_for('admin_bp.users_get'))
     else:
         flash('User added successfully')
         return redirect(url_for('admin_bp.users_get'))
+
 
 @bp.route('/categories', methods=['GET'])
 @login_required
@@ -260,14 +261,54 @@ def enquiries_post():
     status = request.form.get('status')
     stat = "true" == status
     try:
-            enquiry = Enquiries.query.filter_by(id=int(id)).first()
-            if stat:
-                setattr(enquiry, 'status', stat)
-                db.session.add(Enrollments(user_id,course_id))
-            db.session.commit()
+        enquiry = Enquiries.query.filter_by(id=int(id)).first()
+        if stat:
+            setattr(enquiry, 'status', stat)
+            db.session.add(Enrollments(user_id,course_id))
+        db.session.commit()
     except:
         flash('Failed to add Enquiry')
         return redirect(url_for('admin_bp.enquiries_get'))
     else:
         flash('Enquiry added successfully')
         return redirect(url_for('admin_bp.enquiries_get'))
+
+
+@bp.route('/trainers', methods=['GET'])
+@login_required
+@admin_required
+def trainers_get():
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    search = request.args.get('search', '')
+    if search != '':
+        search = f'%{search}%'
+        ts = Trainers.query.filter(Trainers.email.like(search)).paginate(page=page, per_page=rowsPerPage)
+    else:
+        ts = Trainers.query.order_by(Trainers.id.desc()).paginate(page=page, per_page=rowsPerPage)
+    return render_template('admin/pages/trainers.html', trainers=ts, user=current_user)
+
+@bp.route("/trainers", methods=['POST'])
+@login_required
+@admin_required
+def trainers_post():
+    id = request.form.get('id', type=int)
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    try:
+        if id:
+            t = Trainers.query.filter_by(id=id).first()
+            setattr(t, 'name', name)
+            setattr(t, 'email', email)
+            setattr(t, 'phone', phone)
+        else:
+            db.session.add(Trainers(name, email, phone))
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        flash('Failed to add Trainer')
+        return redirect(url_for('admin_bp.trainers_get'))
+    else:
+        flash('Trainer added successfully')
+        return redirect(url_for('admin_bp.trainers_get'))
