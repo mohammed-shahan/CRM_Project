@@ -166,14 +166,12 @@ class Enrollments(db.Model):
 
 class Enquiries(db.Model):
     id          = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(100))
     status      = db.Column(db.Boolean)
     
     user        = db.Column(db.Integer, db.ForeignKey("users.id"))
     course      = db.Column(db.Integer, db.ForeignKey('courses.id'))
 
-    def __init__(self, description, status, user, course) -> None:
-        self.description = description
-        self.status      = status
+    def __init__(self, user, course) -> None:
+        self.status      = False
         self.user        = user
         self.course      = course

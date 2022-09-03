@@ -90,22 +90,22 @@ def dummy():
                 Qualifications.query.filter_by(qualification=q).first().id,
                 'Enabled'==status
             ))
-        db.session.add(Courses('Test 1', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-        db.session.add(Courses('Test 2', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-        db.session.add(Courses('Test 3', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-        db.session.add(Courses('Test 4', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-        db.session.commit()
-        Courses.query.filter_by(name='Test 1').first().rating = 5
-        Courses.query.filter_by(name='Test 2').first().rating = 3.5
-        Courses.query.filter_by(name='Test 3').first().rating = 2.7
-        Courses.query.filter_by(name='Test 4').first().rating = 1.3
-        db.session.commit()
+    db.session.add(Courses('Test 1', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
+    db.session.add(Courses('Test 2', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
+    db.session.add(Courses('Test 3', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
+    db.session.add(Courses('Test 4', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
+    db.session.commit()
+    Courses.query.filter_by(name='Test 1').first().rating = 5
+    Courses.query.filter_by(name='Test 2').first().rating = 3.5
+    Courses.query.filter_by(name='Test 3').first().rating = 2.7
+    Courses.query.filter_by(name='Test 4').first().rating = 1.3
+    db.session.commit()
 
     
     #adding some enquiries
-    db.session.add(Enquiries('This is the description of enquiry 1', True, 4, 1))
-    db.session.add(Enquiries('This is the description of enquiry 2', False, 5, 1))
-    db.session.add(Enquiries('This is the description of enquiry 3', False, 4, 2))
+    db.session.add(Enquiries(4, 1))
+    db.session.add(Enquiries(5, 1))
+    db.session.add(Enquiries(4, 2))
     db.session.commit()
 
 if __name__ == '__main__':
