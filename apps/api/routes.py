@@ -2,7 +2,7 @@ from flask import redirect, url_for, render_template, jsonify, abort, request
 from flask_login import login_required
 
 from . import bp
-from apps.models import Categories, Qualifications, Users, Roles, Enquiries, Courses
+from apps.models import Categories, Qualifications, Users, Roles, Enquiries, Courses, Trainers
 from apps.database import db
 from apps.auth.utils import admin_required
 
@@ -174,6 +174,36 @@ def courses_delete(id):
         abort(500)
     else:
         if course.delete() == 1:
+            db.session.commit()
+            return jsonify({}), 204
+        else:
+            abort(404)
+
+
+
+@bp.route('/trainers/<int:id>', methods=['GET'])
+def trainers_get(id):
+    t = Trainers.query.filter_by(id=id).first()
+    if t:
+        return jsonify({'trainer': {
+            'id': id,
+            'name': t.name,
+            'email': t.email,
+            'phone': t.phone,
+        }}), 200
+    else:
+        abort(404)
+
+@bp.route('/trainers/<int:id>', methods=['DELETE'])
+@login_required
+@admin_required
+def trainers_delete(id):
+    try:
+        t = Trainers.query.filter_by(id=id)
+    except:
+        abort(500)
+    else:
+        if t.delete() == 1:
             db.session.commit()
             return jsonify({}), 204
         else:

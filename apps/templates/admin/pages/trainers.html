@@ -1,0 +1,178 @@
+{% extends 'admin/base.html' %}
+{% import "pagination.html" as pg %}
+{% import "search.html" as s %}
+
+{% block title %}Trainers{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card">
+        <div class="row">
+            <div class="col s11">
+                {{ s.search('admin_bp.trainers_get') }}
+            </div>
+            <div class="col s1">
+                {{ pg.rows(trainers, 'admin_bp.trainers_get') }}
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-content">
+            <table id="qualifications">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in trainers.items %}
+                        <tr id="{{ t.id }}">
+                            <td>{{ t.name }}</td>
+                            <td>{{ t.email }}</td>
+                            <td>{{ t.phone }}</td>
+                            <td class="actions">
+                                <a href="#" class="waves-effect waves-light btn indigo accent-4" onclick="edit({{ t.id }})">Edit<i class="material-icons left">edit</i></a>
+                                <a href="#" class="waves-effect waves-light btn red" onclick="del({{ t.id }})">Delete<i class="material-icons left">delete</i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {{ pg.pagination(trainers, 'admin_bp.trainers_get') }}
+</div>
+<div class="fixed-action-btn">
+    <a class="btn-floating btn-large waves-effect waves-light modal-trigger indigo accent-4" href="#add-modal">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
+
+<div id="add-modal" class="modal">
+    <div class="modal-content">
+        <form action="/admin/trainers" method="post" name="addForm">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="text" id="txtAddName" name="name" required>
+                    <label for="txtAddName">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="email" id="txtAddEmail" name="email" required>
+                    <label for="txtAddEmail">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="tel" id="txtAddPhone" name="phone" required>
+                    <label for="txtAddPhone">Phone</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="modal-close waves-effect waves-green btn-flat red" onclick="addCancel()">Cancel</a>
+        <a href="#" class="waves-effect waves-green btn-flat green" onclick="addConfirm()">Add</a>
+    </div>
+</div>
+
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <form action="/admin/trainers" method="post" name="editForm">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="text" id="txtEditName" name="name" required>
+                    <label for="txtEditName">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="email" id="txtEditEmail" name="email" required>
+                    <label for="txtEditEmail">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input type="tel" id="txtEditPhone" name="phone" required>
+                    <label for="txtEditPhone">Phone</label>
+                </div>
+            </div>
+            <input type="hidden" id="txtEditId" name="id">
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
+        <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    function edit(id) {
+        fetch(`/api/trainers/${id}`)
+        .then(response => response.json())
+        .then((data) => {
+            const t = data.trainer
+            var modal = M.Modal.getInstance(document.getElementById('edit-modal'));
+            
+            const txtId = document.getElementById('txtEditId');
+            const txtName = document.getElementById('txtEditName');
+            const txtEmail = document.getElementById('txtEditEmail')
+            const txtPhone = document.getElementById('txtEditPhone')
+
+            txtId.value = id;
+            txtName.value = t.name;
+            txtEmail.value = t.email;
+            txtPhone.value = t.phone;
+
+            M.updateTextFields();
+
+            modal.open();
+        })
+    }
+
+    function del(id) {
+        fetch(`/api/trainers/${id}`)
+        .then(response => response.json())
+        .then((data) => {
+            if (confirm(`You sure you want to delete ${data.trainer.name} ${data.trainer.email}?`)){
+                fetch(`/api/trainers/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
+        })
+    }
+    
+    function addConfirm() {
+        if (document.addForm.checkValidity()){
+            document.addForm.submit()
+        } else {
+            document.addForm.reportValidity()
+        }
+    }
+
+    function editConfirm() {
+        if (document.editForm.checkValidity()){
+            document.editForm.submit()
+        } else {
+            document.editForm.reportValidity()
+        }
+    }
+
+    function addCancel() {
+        const txtName = document.getElementById('txtAddName');
+        const txtEmail = document.getElementById('txtEditEmail')
+        const txtPhone = document.getElementById('txtEditPhone')
+        txtName.value = '';
+        txtEmail.value = ''
+        txtPhone.value = ''
+    }
+</script>
+{% endblock %}
