@@ -33,7 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
 // Pagination rows select
 function pageRows(url) {
     const rows = event.target.value
-    window.location.href =  url + `?rows=${rows}`
+    if (queryDict['search']){
+        window.location.href =  url + `?rows=${rows}` + `&search=${queryDict['search']}`
+    }else{
+        window.location.href =  url + `?rows=${rows}`
+    }
 }
 
 

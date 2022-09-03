@@ -26,10 +26,10 @@
     <div class="card">
         <div class="row">
             <div class="col s11">
-                {{ s.search('admin_bp.courses_get') }}
+                {{ s.search('user_bp.courses_get') }}
             </div>
             <div class="col s1">
-                {{ pg.rows(courses, 'admin_bp.courses_get') }}
+                {{ pg.rows(courses, 'user_bp.courses_get') }}
             </div>
         </div>
     </div>
@@ -52,6 +52,8 @@
         </div>
         {% endfor %}
     </div>
+
+    {{ pg.pagination(courses, 'user_bp.courses_get') }}
 
 </div>
 
