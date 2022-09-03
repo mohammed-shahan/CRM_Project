@@ -12,12 +12,12 @@
                 <div class="col s11">
                     {{ s.search('admin_bp.users_get') }}
                 </div>
-                <div class="col s1">
+                <div class="cols1">
                     {{ pg.rows(users, 'admin_bp.users_get') }}
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card l8 m10 s12">
             <div class="card-content">
                 <table id="users">
                     <thead>
@@ -26,7 +26,8 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>Role</th>
-                            <th>Actions</th>
+                            <th width="250px">Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
