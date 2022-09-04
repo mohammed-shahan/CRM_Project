@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 
 from . import bp
 from apps.auth.utils import user_required
-from apps.models import Trainers, Qualifications, Courses, Categories
+from apps.models import Trainers, Qualifications, Courses, Categories, Enquiries, Users
 
 @bp.route('/')
 @login_required
@@ -11,11 +11,25 @@ from apps.models import Trainers, Qualifications, Courses, Categories
 def dashboard():
     return render_template('user/pages/dashboard.html', user=current_user,)
 
-@bp.route('/enquiries')
+@bp.route('/enquiries', methods=['GET'])
 @login_required
 @user_required
-def enquiries():
-    return render_template('user/pages/enquiries.html', user=current_user,)
+def enquiries_get():
+    rowsPerPage = request.args.get('rows', 10, type=int)
+    page = request.args.get('page', 1, type=int)
+    enquiries = Enquiries.query.paginate(page=page, per_page=rowsPerPage)
+    print(current_user.email)
+    users = {}
+    for user in Users.query.all():
+        users[user.id] = user.email
+    courses = {}
+    for course in Courses.query.all():
+        courses[course.id] = course.name
+    for user in users:
+        enquiries = Enquiries.query.filter_by(user=current_user.email).paginate(page=page, per_page=rowsPerPage)
+        if enquiries.pages:
+            break
+    return render_template('user/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses)
 
 @bp.route('/courses')
 @login_required

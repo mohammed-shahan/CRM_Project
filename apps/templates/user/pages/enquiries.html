@@ -11,9 +11,7 @@
                 <table id="enquiries">
                     <thead>
                         <tr>
-                            <th>enquiry</th>
                             <th>Course</th>
-                            <th>Descriprtion</th>
                             <th>Status</th>
                             <th>Actions</th>
                             <td id="rows-select">{{ pg.rows(enquiries, 'user_bp.enquiries_get') }}</td>
@@ -21,6 +19,25 @@
                     </thead>
                     <tbody>
                         <!-- TODO: Enquiries List only the user enquiries -->
+                        {% for enquiry in enquiries.items %}
+                            <tr id="{{ enquiry.id }}">
+                                <td class="course">{{ courses[enquiry.course] }}</td>
+                                <td class="desc">{{ enquiry.description }}</td>
+                                {% if enquiry.status==False %}
+                                    <td class="status">Pending</td>
+                                {% else %}
+                                    <td class="status">Approved</td>
+                                {% endif %}
+                                <td class="actions center" colspan="2">
+                                    {% if enquiry.status==False %}
+                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
+                                    {% else %}
+                                        <i class="material-icons green-text">checked</i>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
                     </tbody>
                 </table>
             </div>
@@ -35,14 +52,6 @@
                 <label>First Name: <input type="text" name="firstName" id="editFname" required></label>
                 <label>Last Name: <input type="text" name="lastName" id="editLname" required></label>
                 <label>Email: <input type="text" name="email" id="editEmail" required></label>
-                <div class="input-field">
-                    <select name="role" id="editRole">
-                        {% for id, role in roles.items() %}
-                            <option value="{{ id }}">{{ role }}</option>
-                        {% endfor %}
-                    </select>
-                    <label>Role</label>
-                </div>
             </form>
         </div>
         <div class="modal-footer">
