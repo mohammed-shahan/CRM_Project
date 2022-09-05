@@ -40,3 +40,17 @@ To get started, do the following :
     ```
 
 ## Modules
+
+This project has 3 core modules:
+
+- User
+
+  > This module contains user side enquiry and profile management. 
+
+- Admin
+
+  > This module contains all admin side operations. The admin has higher privileges than the user and has power to control users, enquiries, courses, etc.
+
+- Authentication
+ 
+  >  This module deals with the authentication of the user. It maps user and admin to their pages respectively
