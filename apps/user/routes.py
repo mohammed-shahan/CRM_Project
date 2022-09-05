@@ -17,19 +17,26 @@ def dashboard():
 def enquiries_get():
     rowsPerPage = request.args.get('rows', 10, type=int)
     page = request.args.get('page', 1, type=int)
-    enquiries = Enquiries.query.paginate(page=page, per_page=rowsPerPage)
-    print(current_user.email)
+    search = request.args.get('search', '')
     users = {}
     for user in Users.query.all():
         users[user.id] = user.email
     courses = {}
     for course in Courses.query.all():
         courses[course.id] = course.name
-    for user in users:
-        enquiries = Enquiries.query.filter_by(user=current_user.email).paginate(page=page, per_page=rowsPerPage)
-        if enquiries.pages:
-            break
-    return render_template('user/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses)
+    if search != '':
+        search = f'%{search}%'
+        _courses = Courses.query.filter(Courses.name.like(search))
+        for course in _courses:
+            enquiries = Enquiries.query.filter(Enquiries.course == course.id).paginate(page=page, per_page=rowsPerPage)
+            courses = Enquiries.query.filter(Enquiries.course.like(search)).paginate(page=page, per_page=rowsPerPage)
+    else:
+        for user in users:
+            enquiries = Enquiries.query.filter_by(user=current_user.id)
+            enquiries = Enquiries.query.order_by(Enquiries.id.desc()).paginate(page=page, per_page=rowsPerPage)
+            if enquiries.pages:
+                break
+    return render_template('user/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses,)
 
 @bp.route('/courses')
 @login_required

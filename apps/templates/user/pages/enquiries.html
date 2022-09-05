@@ -1,4 +1,5 @@
 {% extends 'user/base.html' %}
+{% import "search.html" as s %}
 {% import "pagination.html" as pg %}
 
 {% block title %}Enquiries{% endblock %}
@@ -6,115 +7,89 @@
 {% block content %}
 
     <div class="container">
+
+        <h4 class="center">My Enquiries</h4>
+
         <div class="card">
-            <div class="card-content">
-                <table id="enquiries">
-                    <thead>
-                        <tr>
-                            <th>Course</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                            <td id="rows-select">{{ pg.rows(enquiries, 'user_bp.enquiries_get') }}</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- TODO: Enquiries List only the user enquiries -->
-                        {% for enquiry in enquiries.items %}
-                            <tr id="{{ enquiry.id }}">
-                                <td class="course">{{ courses[enquiry.course] }}</td>
-                                <td class="desc">{{ enquiry.description }}</td>
-                                {% if enquiry.status==False %}
-                                    <td class="status">Pending</td>
-                                {% else %}
-                                    <td class="status">Approved</td>
-                                {% endif %}
-                                <td class="actions center" colspan="2">
-                                    {% if enquiry.status==False %}
-                                    <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
-                                    {% else %}
-                                        <i class="material-icons green-text">checked</i>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                    </tbody>
-                </table>
+            <div class="row">
+                <div class="col s11">
+                    {{ s.search('user_bp.enquiries_get') }}
+                </div>
+                <div class="col s1">
+                    {{ pg.rows(enquiries, 'user_bp.enquiries_get') }}
+                </div>
             </div>
+        </div>        
+
+        <div class="row">
+            {% for enquiry in enquiries.items %}
+
+            <div class="col s12 m12 l5 card light-blue darken-1" style="margin-left: 60px;">
+
+                <div class="card-content white-text" id="{{ enquiry.id }}">
+                    <div class="row">
+                        <span class="card-title">Course: {{ courses[enquiry.course] }}
+                            {% if enquiry.status==True %}
+                                <p class="text right"><i class="material-icons lime-text">checked</i></p>
+                            {% endif %}
+                    </span>
+                    </div>
+                    {% if enquiry.status==False %}
+                        <span class="status">Status: Pending</span>
+                    {% else %}
+                        <span class="status">Status: Approved</span>
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+            {% endfor %}
         </div>
-        {{ pg.pagination(enquiries, 'admin_bp.enquiries_get') }}
+
+        {{ pg.pagination(enquiries, 'user_bp.enquiries_get') }}
+
     </div>
 
-    <div id="edit-enquiry-modal" class="modal">
-        <div class="modal-content">
-            <form action="/admin/enquiries" method="post" name="editForm">
-                <input type="hidden" id="editId" name="id">
-                <label>First Name: <input type="text" name="firstName" id="editFname" required></label>
-                <label>Last Name: <input type="text" name="lastName" id="editLname" required></label>
-                <label>Email: <input type="text" name="email" id="editEmail" required></label>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="#" class="modal-close waves-effect waves-green btn-flat red">Cancel</a>
-            <a href="#" class="waves-effect waves-green btn-flat green" onclick="editConfirm()">Save</a>
-        </div>
-    </div>
+
+
 
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
-    <!-- <script>
-        function edit(id) {
-            fetch(`/api/enquiries/${id}`)
-            .then(response => response.json())
-            .then((data) => {
-                var modal = M.Modal.getInstance(document.getElementById('edit-enquiry-modal'));
-
-                const Id = document.getElementById('editId');
-                const fName = document.getElementById('editFname');
-                const lName = document.getElementById('editLname');
-                const email = document.getElementById('editEmail');
-                const role = document.getElementById('editRole');
-                console.log(data);
-
-                Id.value=id;
-                fName.value = data.enquiry.firstname;
-                lName.value = data.enquiry.lastname;
-                email.value = data.enquiry.email;
-                role.value = `${data.enquiry.role}`
-                if (typeof(Event) === 'function') {
-                    var event = new Event('change');
-                } else {  // for IE11
-                    var event = document.createEvent('Event');
-                    event.initEvent('change', true, true);
-                }
-                role.dispatchEvent(event);
-                
-                
-                modal.open();
-            })
-        }
-
-        function del(id) {
-            fetch(`/api/enquiries/${id}`)
-            .then(response => response.json())
-            .then((data) => {
-                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.firstname}, email: ${data.enquiry.email}?`)){
-                    fetch(`/api/enquiries/${id}`, {
-                        method: 'DELETE',
-                        credentials: 'include'
-                    }).then(() => location.reload());
-                }
-            })
-        }
-
-        function editConfirm() {
-            if (document.editForm.checkValidity()){
-                document.editForm.submit()
-            } else {
-                document.editForm.reportValidity()
-            }
-        }   
-    </script> -->
+    <script>
+        
+    </script>
 {% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% for enquiry in enquiries.items %}
+    <tr id="{{ enquiry.id }}">
+        <td class="enquiry">{{ enquiries[enquiry.enquiry] }}</td>
+        {% if enquiry.status==False %}
+            <td class="status">Pending</td>
+        {% else %}
+            <td class="status">Approved</td>
+        {% endif %}
+        <td class="actions center" colspan="2">
+            {% if enquiry.status==False %}
+            <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
+            {% else %}
+                <i class="material-icons green-text">checked</i>
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %} -->

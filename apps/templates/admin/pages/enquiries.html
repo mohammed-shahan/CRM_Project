@@ -25,7 +25,6 @@
                         <tr>
                             <th>User</th>
                             <th>Course</th>
-                            <th>Descriprtion</th>
                             <th>Status</th>
                             <th>Actions</th>
                             <th></th>
@@ -36,7 +35,6 @@
                             <tr id="{{ enquiry.id }}">
                                 <td class="user">{{ users[enquiry.user] }}</td>
                                 <td class="course">{{ courses[enquiry.course] }}</td>
-                                <td class="desc">{{ enquiry.description }}</td>
                                 {% if enquiry.status==False %}
                                     <td class="status">Pending</td>
                                 {% else %}
@@ -66,7 +64,6 @@
                 <input type="hidden" id="editCourseId" name="course_id">
                 <label>User: <input disabled type="text" name="user" id="editUser" required></label>
                 <label>Course: <input disabled type="text" name="course" id="editCourse" required></label>
-                <label>Description: <input disabled type="text" name="description" id="editdescription" required></label>
                 <div class="input-field">
                     <select name="status" id="editStatus">
                         <option value="true">Approved</option>
@@ -98,7 +95,6 @@
                 const course_Id = document.getElementById('editCourseId');
                 const user = document.getElementById('editUser');
                 const course = document.getElementById('editCourse');
-                const description = document.getElementById('editdescription');
                 const status = document.getElementById('editStatus');
                 console.log(data);
 
@@ -115,7 +111,6 @@
                 .then(data => {
                     course.value = data.course.name;
                 })
-                description.value = data.enquiry.description;
                 status.value = `${data.enquiry.status}`;
                 console.log(status.value);
                 if (typeof(Event) === 'function') {
@@ -135,7 +130,7 @@
             fetch(`/api/enquiries/${id}`)
             .then(response => response.json())
             .then((data) => {
-                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.user}, description: ${data.enquiry.description}?`)){
+                if (confirm(`You sure you want to delete the enquiry: ${data.enquiry.user}?`)){
                     fetch(`/api/enquiries/${id}`, {
                         method: 'DELETE',
                         credentials: 'include'
