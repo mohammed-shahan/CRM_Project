@@ -9,3 +9,14 @@
 #rows-select {
     max-width: 1vw;
 }
+
+.jumbotron{
+    position: relative;
+    padding: 5px !important;
+    margin-top:70px !important;
+    background: #3498db;
+    margin-top: 25px;
+    text-align:center;
+    margin-bottom: 0 !important;
+    border-radius: 10px;
+}

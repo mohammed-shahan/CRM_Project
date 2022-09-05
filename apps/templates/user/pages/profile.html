@@ -1,0 +1,96 @@
+{% extends 'user/base.html' %}
+{% import "pagination.html" as pg %}
+
+{% block title %}Profile{% endblock %}
+
+{% block style %}
+{{ super() }}
+<style>
+
+
+
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+      <div class="jumbotron">
+        <img style="max-width: 30%; height: auto;" class="circle" src="/static/images/profile.webp">
+        <h1 class="display-4">{{ user.firstName }} {{ user.lastName }}</h1>
+        <p class="lead">{{ user.email }}</p>
+        <p class="lead">{{ user.phone }}</p>
+        <hr class="my-4">
+        <h4>Qualification</h4>
+        <p>B. Tech</p>
+        <p class="lead">
+          <a class="btn btn-primary btn-lg" href="#" role="button">Edit</a>
+
+        </p>
+      </div>
+
+      
+</div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    function fetchdata(e) {
+        var modal = M.Modal.getInstance(document.getElementById('modal1'));
+        const id = e.target.id
+
+        const txtId = document.getElementById('txtId');
+        const txtName = document.getElementById('coursetitle')
+        // const txtVideoLink = document.getElementById('txtEditVideoLink')
+        const txtDuration = document.getElementById('duration')
+        const selQualification = document.getElementById('qualification')
+        const selStatus = document.getElementById('status')
+        const selCategory = document.getElementById('category')
+        const selTrainer = document.getElementById('trainer')
+        const txtDescription = document.getElementById('coursedescr')
+        // const txtComment = document.getElementById('txtEditComment')
+
+        fetch(`/api/courses/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                const course = data.course
+
+                txtId.value = id
+                txtName.innerText = course.name
+                // txtVideoLink.innerText = course.videolink
+                txtDuration.innerText = course.duration
+                selQualification.innerText = course.qualification
+                selStatus.innerText = course.status
+                selCategory.innerText = course.category
+                selTrainer.innerText = course.trainer
+                txtDescription.innerText = course.description
+                // txtComment.innerText = course.comment
+
+            })
+
+        modal.open()
+    }
+
+    function enquire() {
+        const txtId = document.getElementById('txtId');
+        fetch(`/api/enquiries/${txtId.value}`, {
+            method: 'POST',
+            credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+            // TODO: do something with the response
+            // success or fail 
+        })
+    }
+
+
+
+</script>
+{% endblock %}

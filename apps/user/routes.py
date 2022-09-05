@@ -65,5 +65,5 @@ def courses_get():
 @login_required
 @user_required
 def profile_get():
-    return render_template('user/base.html', user=current_user,)
+    return render_template('user/pages/profile.html', user=current_user,)
     # return render_template('user/pages/profile.html')
