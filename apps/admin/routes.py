@@ -257,7 +257,6 @@ def enquiries_post():
     course_id = request.form.get('course_id')
     user = request.form.get('user')
     course = request.form.get('course')
-    description = request.form.get('description')
     status = request.form.get('status')
     stat = "true" == status
     try:

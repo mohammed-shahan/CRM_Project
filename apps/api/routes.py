@@ -119,7 +119,6 @@ def enquiries_get(id):
     if enq:
         return jsonify({'enquiry': {
             'id': id,
-            'description': enq.description,
             'status': enq.status,
             'user': enq.user,
             'course': enq.course
