@@ -10,6 +10,7 @@
         </div>
     </li>
     <li><a href="/user/" {% if request.path == '/user/' %}class="active indigo accent-1"{% endif %}><i class="material-icons">dashboard</i>Dashboard</a></li>
+    <li><a href="/user/mycourses" {% if request.path == '/user/mycourses' %}class="active indigo accent-1"{% endif %}><i class="material-icons">book</i>My Courses</a></li>
     <li><a href="/user/courses" {% if request.path == '/user/courses' %}class="active indigo accent-1"{% endif %}><i class="material-icons">book</i>Courses</a></li>
     <li><a href="/user/enquiries" {% if request.path == '/user/enquiries' %}class="active indigo accent-1"{% endif %}><i class="material-icons">contact_support</i>Enquiries</a></li>
     <li><a href="/user/profile" {% if request.path == '/user/profile' %}class="active indigo accent-1"{% endif %}><i class="material-icons">account_circle</i>Profile</a></li>
