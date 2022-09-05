@@ -24,18 +24,20 @@ def enquiries_get():
     courses = {}
     for course in Courses.query.all():
         courses[course.id] = course.name
+    
     if search != '':
         search = f'%{search}%'
         _courses = Courses.query.filter(Courses.name.like(search))
+        print(_courses)
         for course in _courses:
             enquiries = Enquiries.query.filter(Enquiries.course == course.id).paginate(page=page, per_page=rowsPerPage)
-            courses = Enquiries.query.filter(Enquiries.course.like(search)).paginate(page=page, per_page=rowsPerPage)
     else:
         for user in users:
             enquiries = Enquiries.query.filter_by(user=current_user.id)
             enquiries = Enquiries.query.order_by(Enquiries.id.desc()).paginate(page=page, per_page=rowsPerPage)
             if enquiries.pages:
                 break
+    print(enquiries)
     return render_template('user/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses,)
 
 @bp.route('/courses')
