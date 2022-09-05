@@ -101,7 +101,7 @@
 </center>
 
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect btn-flat green" onclick="enquire()">Enquire</a>
+        <a href="#modal2" class="modal-close waves-effect btn-flat  green " onclick="enquire()">Enquire</a>
         <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
     </div>
 </div>
@@ -169,6 +169,8 @@
         .then(data => {
             // TODO: do something with the response
             // success or fail 
+            var modal = M.Modal.getInstance(document.getElementById('modal2'));
+            modal.open()
         })
     }
 </script>
