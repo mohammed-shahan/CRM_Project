@@ -7,9 +7,10 @@
 ## Setup Guide
 
 This project requires the following tools:
- - Python : The programming language used by Flask
- - SQLAlchemy : Database toolkit for Python
+ - Flask - A microframework for Python web applications
+ - SQLAlchemy - A Flask extension that adds ORM support for your data models.
  - Virtualenv - A tool for creating an isolated Python environment
+ - Jinja - A templating language for Python, used by Flask
 
 To get started, do the following :
 
