@@ -2,7 +2,7 @@
 
 ## Introduction
 
- This is a training project
+ This project is part of the training program. We are creating a course-resource management app that allows users to browse and enquire about courses. Administrators review the user enquiries and allot corresponding resources to the user based on their qualifications and eligibilty.
 
 ## Setup Guide
 
@@ -14,7 +14,7 @@ This project requires the following tools:
 
 To get started, do the following :
 
-- Create virtual environment:
+1. Create virtual environment:
     ```console
     $ pip install virtualenv
     ```
@@ -23,18 +23,18 @@ To get started, do the following :
     $ virtualenv venv
     ```
 
-- Activate the environment
+2. Activate the environment
 
-- Install dependencies:
+3. Install dependencies:
     ```console
     $ pip install -r requirements.txt
     ```
-- Deploy database
+4. Deploy database
     ```console
     $ python manage.py
     ```
 
-- Run the app
+5. Run the app
     ```console
     $ python app.py
     ```
