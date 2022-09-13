@@ -121,6 +121,17 @@
                         <label for="txtAddComment">Comment</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>Thumbnail</span>
+                        <input type="file" name="thumbnail" id="fileAddThumb">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -196,6 +207,17 @@
                         <label for="txtEditComment">Comment</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>Thumbnail</span>
+                        <input type="file" name="thumbnail" id="fileEditThumb">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -267,7 +289,8 @@
                 document.getElementById('selEditCategory'),
                 document.getElementById('selEditTrainer'),
                 document.getElementById('txtEditDescription'),
-                document.getElementById('txtEditComment')
+                document.getElementById('txtEditComment'),
+                document.getElementById('fileEditThumb')
             ].forEach(inp => inp.disabled = !state)
             M.FormSelect.init(document.querySelectorAll('select'));
         }
