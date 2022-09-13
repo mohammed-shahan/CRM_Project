@@ -104,10 +104,9 @@ def mycourses_get():
     # print(courses)
 
     course_list = Enrollments.query.filter(Enrollments.user==current_user.id).all()
-    print(course_list)
+    course_ids = [ e.course for e in course_list ]
 
-    for course in course_list:
-        courses = Courses.query.filter_by(id=course.course).paginate(page=page, per_page=rowsPerPage)
+    courses = Courses.query.filter(Courses.id.in_(course_ids)).paginate(page=page, per_page=rowsPerPage)
 
     return render_template(
         'user/pages/mycourses.html',
