@@ -38,7 +38,12 @@
               <p>{{ courses[course.course].description }}</p>
             </div>
             <div class="card-action fit">
-                <button id="{{ course.id }}" class="btn right red" onclick="del(event)">Delete</button>
+
+                <p hidden id="idval">{{ course.id }}</p>
+                <button  class="btn right red" onclick="del()">Delete</button>
+
+               
+
             </div>
           </div>
         </div>
@@ -55,6 +60,20 @@
 </div>
 
 
+
+
+<div id="modal2" class="modal">
+    <div class="modal-content center">
+        <h4 class="green">Enquired Successfully</h4>
+
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+</div>
+
+
+
 {% endblock %}
 
 {% block scripts %}
@@ -62,12 +81,19 @@
 <script>
    
 
+
+    function del() {
+            const id = document.getElementById('idval').value;
+            const name = document.getElementById('txtEditName').value
+            if(confirm(`You sure you want to delete?`)){
+
     function del(event) {
         const id = event.target.id
         fetch(`/api/courses/${id}`)
         .then(res => res.json())
         .then(data => {
             if(confirm(`You sure you want to delete ${data.course.name}?`)){
+
                 fetch(`/api/enrollments/${id}`, {
                     method: 'DELETE',
                     credentials: 'include'
