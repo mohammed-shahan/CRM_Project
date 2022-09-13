@@ -25,22 +25,29 @@
 
 
     <div class="row">
+    {% if courses.items %}
         {% for course in courses.items %}
-
-        <div class="col s12 m12 card light-blue darken-1">
-
-            <div class="card-content white-text">
-                <span class="card-title">{{ course.name }}</span>
-                <p>{{ course.description }}</p>
-
-                <div class="card-action">
-                    <button id="{{ course.id }}" class="btn right" onclick="fetchdata(event)">Enquire</button>
-                </div>
-
+        <div class="col s12 m4">
+          <div class="card large ">
+            <div class="card-image">
+              <img src="/static/images/books.jpg">
+              
             </div>
-
+            <div class="card-content" style="padding:2%">
+                <h6 style="margin-top: 1%;">{{ course.name }}</h6>
+              <p>{{ course.description }}</p>
+            </div>
+            <div class="card-action fit">
+                <button id="{{ course.id }}" class="btn right" onclick="fetchdata(event)">Enquire</button>
+            </div>
+          </div>
         </div>
+       
+             
         {% endfor %}
+
+        {% else %}<br><br><br><h6 class="center ">No Courses are enrolled.</h6>
+        {% endif %}
     </div>
 
     {{ pg.pagination(courses, 'user_bp.courses_get') }}
