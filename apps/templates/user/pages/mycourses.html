@@ -38,7 +38,7 @@
               <p>{{ course.description }}</p>
             </div>
             <div class="card-action fit">
-                <button id="{{ course.id }}" class="btn right" onclick="fetchdata(event)">Enquire</button>
+                <button id="{{ course.id }}" class="btn right red" onclick="fetchdata(event)">Delete</button>
             </div>
           </div>
         </div>
@@ -120,55 +120,17 @@
 {% block scripts %}
 {{ super() }}
 <script>
-    function fetchdata(e) {
-        var modal = M.Modal.getInstance(document.getElementById('modal1'));
-        const id = e.target.id
+   
 
-        const txtId = document.getElementById('txtId');
-        const txtName = document.getElementById('coursetitle')
-        // const txtVideoLink = document.getElementById('txtEditVideoLink')
-        const txtDuration = document.getElementById('duration')
-        const selQualification = document.getElementById('qualification')
-        const selStatus = document.getElementById('status')
-        const selCategory = document.getElementById('category')
-        const selTrainer = document.getElementById('trainer')
-        const txtDescription = document.getElementById('coursedescr')
-        // const txtComment = document.getElementById('txtEditComment')
-
-        fetch(`/api/courses/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                const course = data.course
-
-                txtId.value = id
-                txtName.innerText = course.name
-                // txtVideoLink.innerText = course.videolink
-                txtDuration.innerText = course.duration
-                selQualification.innerText = course.qualification
-                selStatus.innerText = course.status
-                selCategory.innerText = course.category
-                selTrainer.innerText = course.trainer
-                txtDescription.innerText = course.description
-                // txtComment.innerText = course.comment
-
-            })
-
-        modal.open()
-    }
-
-    function enquire() {
-        const txtId = document.getElementById('txtId');
-        fetch(`/api/enquiries/${txtId.value}`, {
-            method: 'POST',
-            credentials: 'include'
-        })
-        .then(response => response.json())
-        .then(data => {
-            // TODO: do something with the response
-            // success or fail 
-            var modal = M.Modal.getInstance(document.getElementById('modal2'));
-            modal.open()
-        })
-    }
+    function del() {
+            const id = document.getElementById('txtEditId').value;
+            const name = document.getElementById('txtEditName').value
+            if(confirm(`You sure you want to delete ${name}?`)){
+                fetch(`/api/courses/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                }).then(() => location.reload());
+            }
+        }
 </script>
 {% endblock %}
