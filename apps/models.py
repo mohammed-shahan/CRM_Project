@@ -90,6 +90,10 @@ class UserQualifications(db.Model):
     user          = db.Column(db.Integer, db.ForeignKey('users.id'))
     qualification = db.Column(db.Integer, db.ForeignKey('qualifications.id'))
 
+    def __init__(self, user, qual) -> None:
+        self.user = user
+        self.qualification = qual
+
         
 class Users(db.Model, UserMixin):
     id          = db.Column(db.Integer, primary_key=True)

@@ -21,6 +21,7 @@
     <body{% block body_attribs %}{% endblock body_attribs %}>
     {% block body -%}
     {% block navbar %}
+    <div class="navbar-fixed">
     <nav>
         <div class="nav-wrapper indigo darken-4">
             <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
@@ -30,6 +31,7 @@
             </ul>
         </div>
     </nav>
+    </div>
     {%- endblock navbar %}
     {% block content -%}
     {%- endblock content %}
