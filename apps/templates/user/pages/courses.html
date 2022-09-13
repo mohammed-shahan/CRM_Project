@@ -48,6 +48,9 @@
               <p>{{ course.description }}</p>
             </div>
             <div class="card-action fit">
+                <i class="material-icons amber-text">{{ 'star ' * (course.rating | round(0, 'floor') | int) }}</i>
+                {% if (course.rating - course.rating | round(0, 'floor')) > 0 %}<i class="material-icons amber-text">star_half</i>{% endif %}
+                <i class="material-icons grey-text">{{ 'star_border ' * (5 - course.rating | round(0, 'ceil') | int) }}</i>
                 <button id="{{ course.id }}" class="btn right" onclick="fetchdata(event)">Enquire</button>
             </div>
           </div>
@@ -80,10 +83,6 @@
         <div class="col s4 m4 center">
             <label>Duration:</label>
             <span id="duration">Duration</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Rating:</label>
-            <span id="rating">Rating</span>
         </div>
         <br>
         <div class="col s4 m4 center">
@@ -150,11 +149,25 @@
                 txtId.value = id
                 txtName.innerText = course.name
                 // txtVideoLink.innerText = course.videolink
-                txtDuration.innerText = course.duration
-                selQualification.innerText = course.qualification
-                selStatus.innerText = course.status
-                selCategory.innerText = course.category
-                selTrainer.innerText = course.trainer
+                txtDuration.innerText = `${course.duration} weeks`
+                
+                selStatus.innerText = course.status?'Active':'Disabled'
+                fetch(`/api/qualifications/${course.qualification}`)
+                .then(response => response.json())
+                .then(data => {
+                    selQualification.innerText = data.qualification.qualification
+                })
+                fetch(`/api/categories/${course.category}`)
+                .then(response => response.json())
+                .then(data => {
+                    selCategory.innerText = data.category.category
+                })
+                fetch(`/api/trainers/${course.trainer}`)
+                .then(response => response.json())
+                .then(data => {
+                    selTrainer.innerText = data.trainer.name
+                })
+                
                 txtDescription.innerText = course.description
                 // txtComment.innerText = course.comment
 
