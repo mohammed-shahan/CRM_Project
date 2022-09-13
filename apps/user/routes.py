@@ -28,13 +28,11 @@ def enquiries_get():
     
     if search != '':
         search = f'%{search}%'
-        _courses = Courses.query.filter(Courses.name.like(search))
-        for course in _courses:
-            enquiries = Enquiries.query.filter(Enquiries.course == course.id).paginate(page=page, per_page=rowsPerPage)
+        course_ids = [c.id for c in Courses.query.filter(Courses.name.like(search))]
+        enquiries = Enquiries.query.filter(Enquiries.course.in_(course_ids)).paginate(page=page, per_page=rowsPerPage)
     else:
         for user in users:
-            enquiries = Enquiries.query.filter_by(user=current_user.id)
-            enquiries = Enquiries.query.order_by(Enquiries.id.desc()).paginate(page=page, per_page=rowsPerPage)
+            enquiries = Enquiries.query.filter_by(user=current_user.id).order_by(Enquiries.id.desc()).paginate(page=page, per_page=rowsPerPage)
             if enquiries.pages:
                 break
     return render_template('user/pages/enquiries.html', user=current_user, enquiries=enquiries, users=users, courses=courses,)
