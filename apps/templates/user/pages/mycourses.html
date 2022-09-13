@@ -25,8 +25,8 @@
 
 
     <div class="row">
-    {% if courses.items %}
-        {% for course in courses.items %}
+    {% if enrolled.items %}
+        {% for course in enrolled.items %}
         <div class="col s12 m4">
           <div class="card large ">
             <div class="card-image">
@@ -34,12 +34,16 @@
               
             </div>
             <div class="card-content" style="padding:2%">
-                <h6 style="margin-top: 1%;">{{ course.name }}</h6>
-              <p>{{ course.description }}</p>
+                <h6 style="margin-top: 1%;">{{ courses[course.course].name }}</h6>
+              <p>{{ courses[course.course].description }}</p>
             </div>
             <div class="card-action fit">
+
                 <p hidden id="idval">{{ course.id }}</p>
                 <button  class="btn right red" onclick="del()">Delete</button>
+
+               
+
             </div>
           </div>
         </div>
@@ -51,9 +55,10 @@
         {% endif %}
     </div>
 
-    {{ pg.pagination(courses, 'user_bp.courses_get') }}
+    {{ pg.pagination(enrolled, 'user_bp.courses_get') }}
 
 </div>
+
 
 
 
@@ -68,6 +73,7 @@
 </div>
 
 
+
 {% endblock %}
 
 {% block scripts %}
@@ -75,15 +81,25 @@
 <script>
    
 
+
     function del() {
             const id = document.getElementById('idval').value;
             const name = document.getElementById('txtEditName').value
             if(confirm(`You sure you want to delete?`)){
+
+    function del(event) {
+        const id = event.target.id
+        fetch(`/api/courses/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            if(confirm(`You sure you want to delete ${data.course.name}?`)){
+
                 fetch(`/api/enrollments/${id}`, {
                     method: 'DELETE',
                     credentials: 'include'
                 }).then(() => location.reload());
             }
-        }
+        })
+    }
 </script>
 {% endblock %}
