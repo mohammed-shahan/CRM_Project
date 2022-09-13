@@ -38,7 +38,8 @@
               <p>{{ course.description }}</p>
             </div>
             <div class="card-action fit">
-                <button id="{{ course.id }}" class="btn right red" onclick="fetchdata(event)">Delete</button>
+                <p hidden id="idval">{{ course.id }}</p>
+                <button  class="btn right red" onclick="del()">Delete</button>
             </div>
           </div>
         </div>
@@ -54,54 +55,6 @@
 
 </div>
 
-
-<div id="modal1" class="modal">
-    <input type="hidden" id="txtId">
-    <div class="modal-content">
-        <h4 class="title center" id="coursetitle">Course Title</h4>
-        <p id="coursedescr">Course Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta corrupti
-            doloremque odit, impedit repellat quo nam laboriosam iure est! Aspernatur quibusdam cumque ab dolores
-            aliquid iusto voluptatem ipsam dignissimos quaerat!</p>
-    </div>
-
-    <div class="row fl-box">
-
-        <div class="col s4 m4 center">
-            <label>Trainer:</label>
-            <span id="trainer">Trainer Name</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Duration:</label>
-            <span id="duration">Duration</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Rating:</label>
-            <span id="rating">Rating</span>
-        </div>
-        <br>
-        <div class="col s4 m4 center">
-            <label>Status:</label>
-            <span id="status">Status</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Qualification:</label>
-            <span id="qualification">Qualification</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Category:</label>
-            <span id="category">Category</span>
-        </div>
-
-    </div>
-<center>
-    <iframe  width="560" height="315" src="https://www.youtube.com/embed/Qr4QMBUPxWo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</center>
-
-    <div class="modal-footer">
-        <a href="#modal2" class="modal-close waves-effect btn-flat  green " onclick="enquire()">Enquire</a>
-        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
-    </div>
-</div>
 
 
 <div id="modal2" class="modal">
@@ -123,10 +76,10 @@
    
 
     function del() {
-            const id = document.getElementById('txtEditId').value;
+            const id = document.getElementById('idval').value;
             const name = document.getElementById('txtEditName').value
-            if(confirm(`You sure you want to delete ${name}?`)){
-                fetch(`/api/courses/${id}`, {
+            if(confirm(`You sure you want to delete?`)){
+                fetch(`/api/enrollments/${id}`, {
                     method: 'DELETE',
                     credentials: 'include'
                 }).then(() => location.reload());
