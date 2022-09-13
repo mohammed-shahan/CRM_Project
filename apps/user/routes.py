@@ -121,10 +121,12 @@ def mycourses_get():
     #     courses = Courses.query.filter(Courses.id == course).paginate(page=page, per_page=rowsPerPage)
     # print(courses)
 
-    course_list = Enrollments.query.filter(Enrollments.user==current_user.id).all()
-    course_ids = [ e.course for e in course_list ]
+    enrolled = Enrollments.query.filter(Enrollments.user==current_user.id).paginate(page=page, per_page=rowsPerPage)
+    course_ids = [ e.course for e in enrolled.items ]
 
-    courses = Courses.query.filter(Courses.id.in_(course_ids)).paginate(page=page, per_page=rowsPerPage)
+    courses = {}
+    for course in Courses.query.filter(Courses.id.in_(course_ids)).all():
+        courses[course.id] = course
 
     return render_template(
         'user/pages/mycourses.html',
@@ -132,5 +134,6 @@ def mycourses_get():
         courses=courses,
         trainers=trainers,
         categories=categories,
-        qualifications=qualifications
+        qualifications=qualifications,
+        enrolled = enrolled
     )
