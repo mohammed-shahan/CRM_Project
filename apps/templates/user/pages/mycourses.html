@@ -25,6 +25,7 @@
 
 
     <div class="row">
+    <!-- {% if course %} -->
         {% for course in courses.items %}
 
         <div class="col s12 m12 card light-blue darken-1">
@@ -41,6 +42,9 @@
 
         </div>
         {% endfor %}
+
+        <!-- {% else %}<br><br><br><h6 class="center ">No Courses are enrolled.</h6>
+        {% endif %} -->
     </div>
 
     {{ pg.pagination(courses, 'user_bp.courses_get') }}
