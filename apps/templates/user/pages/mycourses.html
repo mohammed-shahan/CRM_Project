@@ -25,8 +25,8 @@
 
 
     <div class="row">
-    {% if courses.items %}
-        {% for course in courses.items %}
+    {% if enrolled.items %}
+        {% for course in enrolled.items %}
         <div class="col s12 m4">
           <div class="card large ">
             <div class="card-image">
@@ -34,11 +34,11 @@
               
             </div>
             <div class="card-content" style="padding:2%">
-                <h6 style="margin-top: 1%;">{{ course.name }}</h6>
-              <p>{{ course.description }}</p>
+                <h6 style="margin-top: 1%;">{{ courses[course.course].name }}</h6>
+              <p>{{ courses[course.course].description }}</p>
             </div>
             <div class="card-action fit">
-                <button id="{{ course.id }}" class="btn right red" onclick="fetchdata(event)">Delete</button>
+                <button id="{{ course.id }}" class="btn right red" onclick="del(event)">Delete</button>
             </div>
           </div>
         </div>
@@ -50,68 +50,8 @@
         {% endif %}
     </div>
 
-    {{ pg.pagination(courses, 'user_bp.courses_get') }}
+    {{ pg.pagination(enrolled, 'user_bp.courses_get') }}
 
-</div>
-
-
-<div id="modal1" class="modal">
-    <input type="hidden" id="txtId">
-    <div class="modal-content">
-        <h4 class="title center" id="coursetitle">Course Title</h4>
-        <p id="coursedescr">Course Description Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta corrupti
-            doloremque odit, impedit repellat quo nam laboriosam iure est! Aspernatur quibusdam cumque ab dolores
-            aliquid iusto voluptatem ipsam dignissimos quaerat!</p>
-    </div>
-
-    <div class="row fl-box">
-
-        <div class="col s4 m4 center">
-            <label>Trainer:</label>
-            <span id="trainer">Trainer Name</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Duration:</label>
-            <span id="duration">Duration</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Rating:</label>
-            <span id="rating">Rating</span>
-        </div>
-        <br>
-        <div class="col s4 m4 center">
-            <label>Status:</label>
-            <span id="status">Status</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Qualification:</label>
-            <span id="qualification">Qualification</span>
-        </div>
-        <div class="col s4 m4 center">
-            <label>Category:</label>
-            <span id="category">Category</span>
-        </div>
-
-    </div>
-<center>
-    <iframe  width="560" height="315" src="https://www.youtube.com/embed/Qr4QMBUPxWo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</center>
-
-    <div class="modal-footer">
-        <a href="#modal2" class="modal-close waves-effect btn-flat  green " onclick="enquire()">Enquire</a>
-        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Back</a>
-    </div>
-</div>
-
-
-<div id="modal2" class="modal">
-    <div class="modal-content center">
-        <h4 class="green">Enquired Successfully</h4>
-
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-    </div>
 </div>
 
 
@@ -122,15 +62,18 @@
 <script>
    
 
-    function del() {
-            const id = document.getElementById('txtEditId').value;
-            const name = document.getElementById('txtEditName').value
-            if(confirm(`You sure you want to delete ${name}?`)){
-                fetch(`/api/courses/${id}`, {
+    function del(event) {
+        const id = event.target.id
+        fetch(`/api/courses/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            if(confirm(`You sure you want to delete ${data.course.name}?`)){
+                fetch(`/api/enrollments/${id}`, {
                     method: 'DELETE',
                     credentials: 'include'
                 }).then(() => location.reload());
             }
-        }
+        })
+    }
 </script>
 {% endblock %}
