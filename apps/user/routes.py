@@ -1,9 +1,10 @@
-from flask import render_template, request
+from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 
 from . import bp
+from apps.database import db
 from apps.auth.utils import user_required
-from apps.models import Trainers, Qualifications, Courses, Categories, Enquiries, Users, Enrollments
+from apps.models import Trainers, Qualifications, Courses, Categories, Enquiries, Users, Enrollments, UserQualifications
 
 @bp.route('/')
 @login_required
@@ -72,8 +73,27 @@ def courses_get():
 @login_required
 @user_required
 def profile_get():
-    return render_template('user/pages/profile.html', user=current_user,)
-    # return render_template('user/pages/profile.html')
+    quals = {}
+    for qual in Qualifications.query.all():
+        quals[qual.id] = qual.qualification
+    user_quals =  UserQualifications.query.filter_by(user=current_user.id)
+    return render_template('user/pages/profile.html', user=current_user, quals=quals, user_quals=user_quals)
+
+@bp.route('/profile', methods=['post'])
+@login_required
+@user_required
+def profile_post():
+    qual = request.form.get('qual')
+    try:
+        db.session.add(UserQualifications(current_user.id, qual))
+        db.session.commit()
+    except:
+        flash('Failed to add User')
+        return redirect(url_for('user_bp.profile_get'))
+    else:
+        flash('User added successfully')
+        return redirect(url_for('user_bp.profile_get'))
+
 
 @bp.route('/mycourses')
 @login_required
@@ -104,10 +124,9 @@ def mycourses_get():
     # print(courses)
 
     course_list = Enrollments.query.filter(Enrollments.user==current_user.id).all()
-    print(course_list)
+    course_ids = [ e.course for e in course_list ]
 
-    for course in course_list:
-        courses = Courses.query.filter_by(id=course.course).paginate(page=page, per_page=rowsPerPage)
+    courses = Courses.query.filter(Courses.id.in_(course_ids)).paginate(page=page, per_page=rowsPerPage)
 
     return render_template(
         'user/pages/mycourses.html',
