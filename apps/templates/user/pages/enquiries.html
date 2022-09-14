@@ -29,15 +29,15 @@
                 <div class="card-content white-text" id="{{ enquiry.id }}">
                     <div class="row">
                         <span class="card-title">Course: {{ courses[enquiry.course] }}
-                            {% if enquiry.status==True %}
-                                <p class="text right"><i class="material-icons lime-text">checked</i></p>
-                            {% endif %}
+
                     </span>
                     </div>
                     {% if enquiry.status==False %}
                         <span class="status">Status: Pending</span>
+                        <span class="text right" style="margin-left: 10px;"><i class="material-icons brown-text">adjust</i></span>
                     {% else %}
                         <span class="status">Status: Approved</span>
+                        <span class="text right" style="margin-left: 10px;"><i class="material-icons lime-text">done</i></span>
                     {% endif %}
 
 
