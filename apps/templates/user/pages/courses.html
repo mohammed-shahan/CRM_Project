@@ -100,7 +100,7 @@
 
     </div>
 <center>
-    <iframe  width="560" height="315" src="https://www.youtube.com/embed/Qr4QMBUPxWo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe id="video" width="560" height="315" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </center>
 
     <div class="modal-footer">
@@ -140,6 +140,7 @@
         const selTrainer = document.getElementById('trainer')
         const txtDescription = document.getElementById('coursedescr')
         // const txtComment = document.getElementById('txtEditComment')
+        const video = document.getElementById('video')
 
         fetch(`/api/courses/${id}`)
             .then(response => response.json())
@@ -170,6 +171,7 @@
                 
                 txtDescription.innerText = course.description
                 // txtComment.innerText = course.comment
+                video.src = course.videolink
 
             })
 
