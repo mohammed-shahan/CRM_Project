@@ -63,6 +63,8 @@ def register():
             flash('Email already exists.', category='error')
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
+        elif ('.' not in email):
+            flash('Not correct email format', category='error')
         elif len(first_name) < 2:
             flash('First name must be greater than 1 character.', category='error')
         elif len(phone_number) < 10:
