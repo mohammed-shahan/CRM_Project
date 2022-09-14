@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from apps import db
 from flask_login import login_user, login_required, logout_user, current_user
+import re
 
 
 from apps import login_manager
@@ -58,13 +59,15 @@ def register():
         phone_number = request.form.get('phone')
         password = request.form.get('password')
 
+        email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+
         user = Users.query.filter_by(email=email).first()
         if user:
             flash('Email already exists.', category='error')
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
-        elif ('.' not in email):
-            flash('Not correct email format', category='error')
+        elif (not(re.fullmatch(email_regex, email))):
+            flash('Please enter valid email id', category='error')
         elif len(first_name) < 2:
             flash('First name must be greater than 1 character.', category='error')
         elif len(phone_number) < 10:
