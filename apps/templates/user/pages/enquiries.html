@@ -62,34 +62,3 @@
         
     </script>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- {% for enquiry in enquiries.items %}
-    <tr id="{{ enquiry.id }}">
-        <td class="enquiry">{{ enquiries[enquiry.enquiry] }}</td>
-        {% if enquiry.status==False %}
-            <td class="status">Pending</td>
-        {% else %}
-            <td class="status">Approved</td>
-        {% endif %}
-        <td class="actions center" colspan="2">
-            {% if enquiry.status==False %}
-            <a href="#" class="waves-effect waves-light btn red" onclick="del({{ user.id }})">Delete<i class="material-icons left">delete</i></a>
-            {% else %}
-                <i class="material-icons green-text">checked</i>
-            {% endif %}
-        </td>
-    </tr>
-{% endfor %} -->
