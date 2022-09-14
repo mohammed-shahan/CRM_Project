@@ -19,16 +19,13 @@
       {% for category, message in messages %} 
           {% if category == 'error' %}
           <div class="row" id="alert_box" style="position: absolute; width:300px; margin-left:42%">
-            <div class="col s6 m8 l12">
+            <div class="col s6 m8 l12 offset-m1 offset-l1">
               <div class="card red darken-1">
                 <div class="row">
                   <div class="col">
                     <div class="card-content white-text">
                       <p>{{ message }}</p>
                   </div>
-                </div>
-                <div class="col s12 m2">
-                  <i class="fa fa-times icon_style" id="alert_close" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
