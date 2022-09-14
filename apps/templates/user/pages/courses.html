@@ -40,7 +40,7 @@
         <div class="col s12 m6 l4">
           <div class="card large">
             <div class="card-image">
-              <img src="/static/images/books.jpg">
+              <img src="{{ '/uploads/' + course.thumbnail if course.thumbnail else '/static/images/books.jpg' }}">
               
             </div>
             <div class="card-content" style="padding:2%">

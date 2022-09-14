@@ -88,12 +88,13 @@ def dummy():
                 videolink,
                 comment,
                 Qualifications.query.filter_by(qualification=q).first().id,
-                'Enabled'==status
+                'Enabled'==status,
+                ''
             ))
-    db.session.add(Courses('Test 1', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-    db.session.add(Courses('Test 2', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-    db.session.add(Courses('Test 3', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
-    db.session.add(Courses('Test 4', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True))
+    db.session.add(Courses('Test 1', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True, ''))
+    db.session.add(Courses('Test 2', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True, ''))
+    db.session.add(Courses('Test 3', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True, ''))
+    db.session.add(Courses('Test 4', 'test test', 3, 1, 3, 'example.com', 'comment', 1, True, ''))
     db.session.commit()
     Courses.query.filter_by(name='Test 1').first().rating = 5
     Courses.query.filter_by(name='Test 2').first().rating = 3.5

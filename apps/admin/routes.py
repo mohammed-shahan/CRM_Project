@@ -1,5 +1,9 @@
+import os
+from apps.config import Config
+
 from flask import render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
+from werkzeug.utils import secure_filename
 
 from . import bp
 from apps.models import Categories, Qualifications, Trainers, Users, Batches, Roles, Courses, Enquiries, Enrollments
@@ -189,6 +193,9 @@ def courses_post():
     description   = request.form.get("description", '')
     comment       = request.form.get('comment', '')
 
+    th = request.files['thumbnail']
+    th.save(os.path.join(Config.basedir, Config.UPLOAD_FOLDER, th.filename))
+
     try:
         if id:
             course = Courses.query.filter_by(id=id).first()
@@ -201,6 +208,7 @@ def courses_post():
             setattr(course, "category", category)
             setattr(course, "trainer", trainer)
             setattr(course, "qualification", qualification)
+            setattr(course, 'thumbnail', th.filename)
             db.session.commit()
         else:
             db.session.add(Courses(
@@ -212,7 +220,8 @@ def courses_post():
                 videolink,
                 comment,
                 qualification,
-                status
+                status,
+                th.filename
             ))
             db.session.commit()
     except:

@@ -57,7 +57,7 @@
 
     <div id="add-modal" class="modal">
         <div class="modal-content">
-            <form action="/admin/courses" method="post" name="addForm">
+            <form action="/admin/courses" method="post" name="addForm" enctype="multipart/form-data">
                 <div class="row">
                     <div class="input-field col s12">
                         <input type="text" id="txtAddName" name="name" required>
@@ -142,7 +142,7 @@
 
     <div id="edit-modal" class="modal">
         <div class="modal-content">
-            <form action="/admin/courses" method="post" name="editForm">
+            <form action="/admin/courses" method="post" name="editForm" enctype="multipart/form-data">
                 <input type="hidden" id="txtEditId" name="id">
                 <div class="row">
                     <div class="input-field col s12">
